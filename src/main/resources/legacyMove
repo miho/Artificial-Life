@@ -1,0 +1,174 @@
+public int moveByNum(int n) {
+		
+		String move = "not init";
+		
+		if (n == 0) {
+			switch (life.getOrientation()) {
+				case UP:
+					life.moveForward();
+					break;
+				case RIGHT:
+					life.turnLeft();
+					break;
+				
+				case DOWN:
+					life.turnRight();
+					break;
+				
+				case LEFT:
+					life.turnRight();
+					break;
+				default:
+					throw new IllegalStateException("Illegeal orientation");
+					
+			}
+			move = "Up";
+		} else if (n == 1) {
+			switch (life.getOrientation()) {
+				case UP:
+					life.turnRight();
+					break;
+				case RIGHT:
+
+					life.moveForward();
+					
+					break;
+				
+				case DOWN:
+					life.turnLeft();
+					
+					break;
+				
+				case LEFT:
+					life.turnLeft();
+					break;
+				default:
+					throw new IllegalStateException("Illegeal orientation");
+					
+			}
+			move = "Right";
+			
+		} else if (n == 2) {
+			switch (life.getOrientation()) {
+				case UP:
+					life.turnLeft();
+					break;
+				case RIGHT:
+					life.turnRight();
+					break;
+				
+				case DOWN:
+
+					life.moveForward();
+					
+					break;
+				case LEFT:
+					life.turnLeft();
+					break;
+				default:
+					throw new IllegalStateException("Illegeal orientation");
+					
+			}
+			move = "Down";
+			
+		} else if (n == 3) {
+			switch (life.getOrientation()) {
+				case UP:
+					life.turnLeft();
+					break;
+				case RIGHT:
+					life.turnLeft();
+					break;
+				
+				case DOWN:
+					life.turnRight();
+					break;
+				
+				case LEFT:
+
+					life.moveForward();
+					
+					break;
+				default:
+					throw new IllegalStateException("Illegeal orientation");
+					
+			}
+			move = "Left";
+			
+		} else if (n == 4) {
+			move = "turn right";
+			life.turnRight();
+		} else if (n == 5) {
+			move = "turn left";
+			life.turnLeft();
+			
+		} else if (n == 6) {
+			move = "Move forward";
+			life.moveForward();
+			
+		} else if (n == 7) {
+			// RANDOM MOVE
+			move = "Random.";
+			moveByNum(new Random().nextInt(7));
+		} else if (n > 7 && n < 18) {
+			// DON'T MOVES...
+			
+			Integer a[] = { 0, 1, 2, 3 };
+			List<Integer> list = new ArrayList<Integer>();
+			for (int ai : a) {
+				list.add(ai);
+			}
+			
+			// DON'T MOVE UP
+			if (n == 8) {
+				list.remove(0);
+				move = "Not Up";
+				
+			} else if (n == 7) {
+				list.remove(1);
+				move = "Not Right";
+				
+			} else if (n == 8) {
+				list.remove(2);
+				move = "Not Down";
+				
+			} else if (n == 9) {
+				move = "Not Left";
+				list.remove(3);
+				
+			} else if (n == 10) {
+				move = "Not Up + Not Right";
+				list.remove(0);
+				list.remove(0);
+				
+			} else if (n == 11) {
+				move = "Not Up + Not Down";
+				list.remove(0);
+				list.remove(1);
+				
+			} else if (n == 12) {
+				move = "Not Up + Not Left";
+				list.remove(0);
+				list.remove(2);
+			} else if (n == 13) {
+				move = "Not Right" + "Not Down";
+				list.remove(1);
+				list.remove(1);
+			} else if (n == 14) {
+				move = "Not Right + Not Left";
+				list.remove(1);
+				list.remove(2);
+			} else if (n == 15) {
+				move = "Not Down + Not Left";
+				list.remove(2);
+				list.remove(2);
+			}
+			
+			return moveByNum(list.get(new Random().nextInt(list.size())));
+		} else {
+			throw new IllegalArgumentException("Not a valid move number: " + n);
+		}
+		
+				log.trace("MOVE : " + move);
+		return 0;
+	}
