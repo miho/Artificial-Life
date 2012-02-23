@@ -4,6 +4,7 @@
   <artifactId>alife</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>Final Year Project - ALife</name>
+  <packaging>jar</packaging>
   <dependencies>
   	<dependency>
   		<groupId>net.sf.jgap</groupId>
@@ -11,10 +12,12 @@
   		<version>3.4.4</version>
   	</dependency>
   	<dependency>
-		<groupId>jfreechart</groupId>
+		<groupId>jfree</groupId>
 		<artifactId>jfreechart</artifactId>
-		<version>1.0.0</version>
+		<version>1.0.1</version>
 	</dependency>
-            
   </dependencies>
+   <build>
+  
+  </build>
 </project>
