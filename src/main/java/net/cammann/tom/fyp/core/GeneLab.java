@@ -33,7 +33,7 @@ public class GeneLab {
 	
 	public GeneLab(LifeFactory factory) {
 		this.factory = factory;
-		popSize = 2000;
+		popSize = 200;
 		evoCount = 0;
 		evolutions = 20;
 		cycleCount = 0;
