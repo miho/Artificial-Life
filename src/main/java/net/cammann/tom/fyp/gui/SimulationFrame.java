@@ -29,6 +29,9 @@ import net.cammann.tom.fyp.core.SimulationContext;
 public class SimulationFrame extends JFrame {
 	private final SimulationContext sc;
 	
+	private final JMenu removeLife = new JMenu("Remove Genotype");
+	private final JMenu cloneLife = new JMenu("Clone Genotype");
+	
 	private JCheckBoxMenuItem showLoggingFrame;
 	
 	public static LoggingFrame loggingFrame = null;
@@ -172,11 +175,10 @@ public class SimulationFrame extends JFrame {
 		bar.add(menu);
 		
 		menu = new JMenu("Life");
-		final JMenu removeLife = new JMenu("Remove Genotype");
 		
-		JMenuItem exporItem = new JMenuItem("Export Geneotype");
+		JMenuItem exportItem = new JMenuItem("Export Geneotype");
 		
-		exporItem.addActionListener(new ActionListener() {
+		exportItem.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -184,7 +186,9 @@ public class SimulationFrame extends JFrame {
 				// Save to csv
 			}
 		});
-		menu.add(exporItem);
+		
+		menu.add(exportItem);
+		
 		JMenuItem addLifeItem = new JMenuItem("Add Geneotype");
 		addLifeItem.addActionListener(new ActionListener() {
 			
@@ -197,9 +201,6 @@ public class SimulationFrame extends JFrame {
 				int[] genes = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
 						15, 16, 17, 18, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19 };
 				
-				// for (ALife i : sc.getLife()) {
-				// sc.removeLife(i);
-				// }
 				final ALife life = new BasicLife(genes, sc.getMap());
 				life.setX(new Random()
 						.nextInt((sc.getMap().getWidth() + 1) / 10) * 10);
@@ -207,60 +208,69 @@ public class SimulationFrame extends JFrame {
 						.nextInt((sc.getMap().getHeight() + 2) / 10) * 10);
 				sc.addLife(life);
 				
-				final JMenuItem _item = new JMenuItem("Life "
-						+ (sc.getLife().size()));
-				_item.addActionListener(new ActionListener() {
-					
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						sc.removeLife(life);
-						removeLife.remove(_item);
-						if (removeLife.getItemCount() == 0) {
-							removeLife.setEnabled(false);
-						}
-					}
-				});
-				removeLife.add(_item);
-				
-				removeLife.setEnabled(true);
-				
+				addLifeToMenu(life);
 			}
 		});
 		menu.add(addLifeItem);
 		
-		addLifeItem.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-		
-		int idx = 1;
 		for (final ALife i : sc.getLife()) {
-			final JMenuItem _item = new JMenuItem("Life " + (idx++));
-			_item.addActionListener(new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					sc.removeLife(i);
-					removeLife.remove(_item);
-					if (removeLife.getComponentCount() == 0) {
-						removeLife.setEnabled(false);
-					}
-				}
-			});
-			removeLife.add(_item);
+			addLifeToMenu(i);
 		}
-		menu.add(removeLife);
 		
-		JMenu addClone = new JMenu("Add Clone");
+		menu.add(cloneLife);
+		menu.add(removeLife);
 		
 		bar.add(menu);
 		
 		return bar;
 		
+	}
+	
+	private void addLifeToMenu(final ALife life) {
+		
+		final int numItems = removeLife.getItemCount();
+		final JMenuItem clone_item = new JMenuItem("Life " + numItems);
+		final JMenuItem remove_item = new JMenuItem("Life " + numItems);
+		
+		clone_item.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ALife clone = life.clone();
+				clone.setX(new Random()
+						.nextInt((sc.getMap().getWidth() + 1) / 10) * 10);
+				clone.setY(new Random()
+						.nextInt((sc.getMap().getHeight() + 2) / 10) * 10);
+				sc.addLife(clone);
+				addLifeToMenu(clone);
+				if (!removeLife.isEnabled()) {
+					cloneLife.setEnabled(true);
+					removeLife.setEnabled(true);
+				}
+			}
+		});
+		cloneLife.add(clone_item);
+		
+		remove_item.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				sc.removeLife(life);
+				cloneLife.remove(clone_item);
+				removeLife.remove(remove_item);
+				
+				if (removeLife.getItemCount() == 0) {
+					removeLife.setEnabled(false);
+					cloneLife.setEnabled(false);
+				}
+			}
+		});
+		removeLife.add(remove_item);
+		
+		if (!removeLife.isEnabled()) {
+			cloneLife.setEnabled(true);
+			removeLife.setEnabled(true);
+		}
 	}
 	
 	public void hideLogFrame() {

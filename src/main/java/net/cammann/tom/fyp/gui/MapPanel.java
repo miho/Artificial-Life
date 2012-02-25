@@ -66,14 +66,14 @@ public class MapPanel extends JPanel {
 		
 		for (int i = 0; i < sc.getLife().size(); i++) {
 			ALife life = sc.getLife().get(i);
-			
-			g2.drawImage(life.getImage(), life.getX(), life.getY(), getParent());
-			
 			g2.setColor(Color.BLACK);
+			g2.drawImage(life.getImage(), life.getX(), life.getY(), getParent());
+			g2.drawString(i + "", life.getX(), life.getY());
 			
 			g2.drawString("Current Engery: " + life.getEnergy(),
 					sc.getMapWidth() + 30, 40 + i * 20);
 		}
+		g2.setColor(Color.BLACK);
 		
 		g2.drawString("Time: " + sc.getMoveCount(), sc.getMapWidth() + 30, 20);
 		
