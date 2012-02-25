@@ -12,10 +12,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import net.cammann.tom.fyp.core.Resource.ResourceType;
+import net.cammann.tom.fyp.basicLife.NormalLifeFactory;
 import net.cammann.tom.fyp.gui.SimulationFrame;
 import net.cammann.tom.fyp.stats.StatsPackage;
-import net.cammann.tom.fyp.symbotes.SymboteFactory;
 import net.cammann.tom.fyp.utils.Logger;
 
 import org.jgap.IChromosome;
@@ -42,7 +41,7 @@ public class SimulationContext {
 		
 		final StatsPackage stats = new StatsPackage();
 		
-		LifeFactory lf = new SymboteFactory(ResourceType.S1, ResourceType.S2);
+		LifeFactory lf = new NormalLifeFactory();
 		
 		GeneLab g = new GeneLab(lf);
 		g.addEvolutionCycleListener(new EvolutionCycleListener() {
@@ -66,6 +65,8 @@ public class SimulationContext {
 		g.start();
 		// stats.showFreqFitnessGraph();
 		stats.showFitnessGraph();
+		stats.showGenerationGeneTable();
+		
 		System.out.println("Finished gene lab");
 		
 		runFromFactory(lf, g.getBestSolutionSoFar());
@@ -266,5 +267,13 @@ public class SimulationContext {
 	
 	public int getSimulationRate() {
 		return simulationRate;
+	}
+	
+	public void removeLife(ALife i) {
+		bugs.remove(i);
+	}
+	
+	public void removeLife(int i) {
+		bugs.remove(i);
 	}
 }

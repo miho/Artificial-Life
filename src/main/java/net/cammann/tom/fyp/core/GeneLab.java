@@ -33,11 +33,11 @@ public class GeneLab {
 	
 	public GeneLab(LifeFactory factory) {
 		this.factory = factory;
-		popSize = 200;
+		popSize = 10;
 		evoCount = 0;
-		evolutions = 20;
+		evolutions = 2;
 		cycleCount = 0;
-		numCycles = 10;
+		numCycles = 2;
 		cycleListeners = new ArrayList<EvolutionCycleListener>();
 		initConfig();
 	}

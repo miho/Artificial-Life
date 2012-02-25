@@ -22,6 +22,16 @@ public class EasyUtils {
 		return sb.toString();
 	}
 	
+	public static int[] getChromosoneArray(IChromosome chrome) {
+		
+		int genes[] = new int[chrome.getGenes().length];
+		int idx = 0;
+		for (Gene g : chrome.getGenes()) {
+			genes[idx++] = (Integer) g.getAllele();
+		}
+		return genes;
+	}
+	
 	public static double roundOneDecimal(double d) {
 		DecimalFormat twoDForm = new DecimalFormat("#.#");
 		return Double.valueOf(twoDForm.format(d));

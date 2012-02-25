@@ -6,7 +6,6 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.net.URL;
 import java.util.Random;
 
@@ -107,21 +106,21 @@ public abstract class SimpleResource implements Resource {
 	@Override
 	public Image getImage() {
 		
-		return getAppleImage();
+		return getResourceImage();
 	}
 	
-	private Image getAppleImage() {
+	private Image getResourceImage() {
 		if (img == null) {
 			try {
-				URL url = this.getClass()
-						.getResource("/resources/redApple.png");
+				
+				URL url = this.getClass().getResource("/redApple.png");
 				
 				BufferedImage bi = ImageIO.read(url);
 				
 				img = bi.getScaledInstance(15, 15, 0);
 				
 				return img;
-			} catch (IOException e) {
+			} catch (Exception e) {
 				
 				log.servere("Unable to locate Apple Image");
 				
