@@ -22,7 +22,7 @@ import org.jgap.IChromosome;
  */
 public abstract class ABug extends ALife {
 	
-	private Logger log;
+	protected Logger log;
 	
 	// TODO make uMC private
 	/**
@@ -113,6 +113,9 @@ public abstract class ABug extends ALife {
 	
 	@Override
 	public void moveForward() {
+		
+		MOVE_COUNT++;
+		
 		log.trace("Move forward");
 		log.trace("Orientation: " + orientation.toString());
 		int STEP = 10;
@@ -260,6 +263,8 @@ public abstract class ABug extends ALife {
 	
 	@Override
 	public void turnLeft() {
+		MOVE_COUNT++;
+		
 		switch (orientation) {
 			case UP:
 				setOrientation(ORIENTATION.LEFT);
@@ -282,6 +287,8 @@ public abstract class ABug extends ALife {
 	
 	@Override
 	public void turnRight() {
+		MOVE_COUNT++;
+		
 		switch (orientation) {
 			case UP:
 				setOrientation(ORIENTATION.RIGHT);

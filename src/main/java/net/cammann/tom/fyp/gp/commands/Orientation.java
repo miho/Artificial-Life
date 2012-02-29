@@ -7,39 +7,24 @@ import org.jgap.gp.CommandGene;
 import org.jgap.gp.impl.GPConfiguration;
 import org.jgap.gp.impl.ProgramChromosome;
 
-public class MoveForward extends CommandGene {
+public class Orientation extends CommandGene {
 	
-	public MoveForward(GPConfiguration a_conf, Class a_returnType)
+	public Orientation(GPConfiguration a_conf, Class a_returnType)
 			throws InvalidConfigurationException {
-		super(a_conf, 1, a_returnType);
+		super(a_conf, 0, a_returnType);
 		// TODO Auto-generated constructor stub
 	}
 	
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return "MoveForward &1";
-	}
-	
-	@Override
-	public void execute_void(ProgramChromosome c, int n, Object[] args) {
-		Commandable life = (Commandable) args[0];
-		
-		double x = c.execute_double(n, 0, args);
-		
-		for (int i = 0; i < x; i++) {
-			life.moveForward();
-		}
+		return "orientation";
 	}
 	
 	@Override
 	public double execute_double(ProgramChromosome c, int n, Object[] args) {
 		Commandable life = (Commandable) args[0];
-		double x = c.execute_double(n, 0, args);
+		return life.getOrientation().ordinal();
 		
-		for (int i = 0; i < x; i++) {
-			life.moveForward();
-		}
-		return 1;
 	}
 }

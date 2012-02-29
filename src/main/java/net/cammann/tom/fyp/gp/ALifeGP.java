@@ -26,7 +26,7 @@ public class ALifeGP extends ABug {
 		log = new Logger("GP");
 		orientation = ORIENTATION.UP;
 		
-		energy = 100;
+		energy = 1000;
 		
 		this.moveMemory = new ArrayList<Point>();
 		
@@ -52,6 +52,7 @@ public class ALifeGP extends ABug {
 	@Override
 	public boolean consume() {
 		// TODO FIXXXX
+		energy -= 5;
 		try {
 			consumeResource(map.getResource(getPosition()));
 			return true;

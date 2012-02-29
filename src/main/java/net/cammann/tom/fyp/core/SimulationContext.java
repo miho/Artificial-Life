@@ -97,8 +97,7 @@ public class SimulationContext {
 		
 	}
 	
-	private static void createAndShowGUI(SimulationFrame sf,
-			SimulationContext sc) {
+	public static void createAndShowGUI(SimulationFrame sf, SimulationContext sc) {
 		sf.setVisible(true);
 		sc.start();
 	}
@@ -138,7 +137,7 @@ public class SimulationContext {
 			life.setY(new Random().nextInt((map.getHeight() + 2) / 10) * 10);
 			life.addMoveToMemory(life.getPosition());
 			life.setMoveMemory(new ArrayList<Point>());
-			life.setEnergy(life.getGene(GENE_TYPE.START_ENGERY));
+			// life.setEnergy(life.getGene(GENE_TYPE.START_ENGERY));
 			
 			counter = 0;
 			log.debug("Starting energy: " + life.getEnergy());
@@ -222,7 +221,10 @@ public class SimulationContext {
 		while (!(counter > numRuns)) {
 			for (ALife life : bugs) {
 				if (life.getEnergy() < 0) {
-					log.trace("Life is dead");
+					// log.trace("Life is dead");
+				}
+				if (life.MOVE_COUNT > numRuns) {
+					// break;
 				}
 				life.doMove();
 				

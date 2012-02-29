@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.event.TableModelListener;
+import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
 import net.cammann.tom.fyp.utils.BucketList;
@@ -105,13 +106,24 @@ public class StatsPackage {
 		};
 		
 		JTable table = new JTable(tm);
-		table.setPreferredScrollableViewportSize(new Dimension(1500, 400));
-		JScrollPane sp = new JScrollPane(table);
-		sp.setSize(1000, 400);
+		table.setPreferredScrollableViewportSize(new Dimension(600, 300));
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		
+		for (int i = 0; i < table.getColumnCount(); i++) {
+			TableColumn column = table.getColumnModel().getColumn(i);
+			
+			column.setPreferredWidth(50);
+			
+		}
+		
+		JScrollPane sp = new JScrollPane(table,
+				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		sp.setSize(600, 400);
 		jp.add(sp);
 		jf.setContentPane(jp);
 		
-		jf.setSize(600, 400);
+		jf.setSize(700, 400);
 		jf.setLocationByPlatform(true);
 		jf.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		jf.setVisible(true);

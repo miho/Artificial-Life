@@ -8,7 +8,7 @@ public class Apple extends SimpleResource {
 		super(x, y);
 	}
 	
-	public Apple(int x, int y, int a, int b) {
-		super(x, y, a, b);
+	public Apple(int x, int y, int min_cals, int max_cals) {
+		super(x, y, min_cals, max_cals);
 	}
 }

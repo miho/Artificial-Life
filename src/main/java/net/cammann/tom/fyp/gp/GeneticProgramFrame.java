@@ -11,7 +11,6 @@ package net.cammann.tom.fyp.gp;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 
 import net.cammann.tom.fyp.basicLife.BasicMap;
 import net.cammann.tom.fyp.core.ABug;
@@ -21,10 +20,14 @@ import net.cammann.tom.fyp.core.SimulationContext;
 import net.cammann.tom.fyp.gp.commands.Consume;
 import net.cammann.tom.fyp.gp.commands.FoodAhead;
 import net.cammann.tom.fyp.gp.commands.MoveForward;
+import net.cammann.tom.fyp.gp.commands.MoveTowards;
 import net.cammann.tom.fyp.gp.commands.OnResource;
+import net.cammann.tom.fyp.gp.commands.Orientation;
+import net.cammann.tom.fyp.gp.commands.SmellResource;
 import net.cammann.tom.fyp.gp.commands.TurnLeft;
 import net.cammann.tom.fyp.gp.commands.TurnRight;
 import net.cammann.tom.fyp.gp.commands.WallAhead;
+import net.cammann.tom.fyp.gui.SimulationFrame;
 
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Logger;
@@ -34,63 +37,33 @@ import org.jgap.gp.CommandGene;
 import org.jgap.gp.GPFitnessFunction;
 import org.jgap.gp.GPProblem;
 import org.jgap.gp.IGPProgram;
-import org.jgap.gp.function.Abs;
 import org.jgap.gp.function.Add;
-import org.jgap.gp.function.Add3;
-import org.jgap.gp.function.Add4;
-import org.jgap.gp.function.And;
-import org.jgap.gp.function.ArcCosine;
-import org.jgap.gp.function.ArcSine;
-import org.jgap.gp.function.ArcTangent;
-import org.jgap.gp.function.Ceil;
-import org.jgap.gp.function.Cosine;
-import org.jgap.gp.function.Divide;
-import org.jgap.gp.function.Exp;
-import org.jgap.gp.function.Floor;
-import org.jgap.gp.function.ForLoop;
-import org.jgap.gp.function.ForXLoop;
+import org.jgap.gp.function.Equals;
 import org.jgap.gp.function.GreaterThan;
 import org.jgap.gp.function.If;
-import org.jgap.gp.function.IfDyn;
 import org.jgap.gp.function.IfElse;
-import org.jgap.gp.function.Increment;
 import org.jgap.gp.function.LesserThan;
-import org.jgap.gp.function.Log;
-import org.jgap.gp.function.Loop;
-import org.jgap.gp.function.Modulo;
 import org.jgap.gp.function.Multiply;
-import org.jgap.gp.function.Multiply3;
-import org.jgap.gp.function.Not;
-import org.jgap.gp.function.Or;
-import org.jgap.gp.function.Pow;
-import org.jgap.gp.function.Push;
-import org.jgap.gp.function.Round;
-import org.jgap.gp.function.Sine;
-import org.jgap.gp.function.StoreTerminal;
-import org.jgap.gp.function.SubProgram;
 import org.jgap.gp.function.Subtract;
-import org.jgap.gp.function.Tangent;
-import org.jgap.gp.function.Xor;
 import org.jgap.gp.impl.DeltaGPFitnessEvaluator;
 import org.jgap.gp.impl.GPConfiguration;
 import org.jgap.gp.impl.GPGenotype;
 import org.jgap.gp.impl.GPPopulation;
 import org.jgap.gp.impl.ProgramChromosome;
 import org.jgap.gp.impl.TournamentSelector;
-import org.jgap.gp.terminal.Constant;
 import org.jgap.gp.terminal.Terminal;
 import org.jgap.gp.terminal.Variable;
 import org.jgap.util.NumberKit;
 import org.jgap.util.SystemKit;
 
-public class SymbolicRegression extends GPProblem {
+public class GeneticProgramFrame extends GPProblem {
 	private transient static Logger LOGGER = Logger
-			.getLogger(SymbolicRegression.class);
+			.getLogger(GeneticProgramFrame.class);
 	
 	/*
 	 * public variables which may be changed by configuration file
 	 */
-
+	public static IGPProgram fittest;
 	// number of variables to use (output variable is excluded)
 	public static int numInputVariables;
 	
@@ -121,21 +94,21 @@ public class SymbolicRegression extends GPProblem {
 	// standard GP parameters
 	public static int minInitDepth = 2;
 	
-	public static int maxInitDepth = 4;
+	public static int maxInitDepth = 8;
 	
-	public static int populationSize = 100;
+	public static int populationSize = 1000;
 	
 	public static int maxCrossoverDepth = 8;
 	
 	public static int programCreationMaxTries = 5;
 	
-	public static int numEvolutions = 1800;
+	public static int numEvolutions = 300;
 	
 	public static boolean verboseOutput = true;
 	
-	public static int maxNodes = 21;
+	public static int maxNodes = 60;
 	
-	public static double functionProb = 0.9d;
+	public static double functionProb = 0.8d;
 	
 	public static float reproductionProb = 0.1f; // float
 	
@@ -152,7 +125,7 @@ public class SymbolicRegression extends GPProblem {
 	// lower/upper ranges for the Terminal
 	public static double lowerRange = -10.0d;
 	
-	public static double upperRange = -10.0d;
+	public static double upperRange = 10.0d;
 	
 	// Should the terminal be a wholenumber or not?
 	public static boolean terminalWholeNumbers = true;
@@ -162,16 +135,9 @@ public class SymbolicRegression extends GPProblem {
 	public static String presentation = "";
 	
 	// Using ADF
-	public static int adfArity = 0;
-	
-	public static String adfType = "double";
 	
 	// list of functions (as strings)
 	public static String[] functions = { "Multiply", "Divide", "Add",
-			"Subtract" };
-	
-	// list of functions for ADF
-	public static String[] adfFunctions = { "Multiply3", "Divide", "Add3",
 			"Subtract" };
 	
 	// Should we punish length of solutions?
@@ -205,7 +171,7 @@ public class SymbolicRegression extends GPProblem {
 	
 	public static boolean showSimiliar = false;
 	
-	public SymbolicRegression(GPConfiguration a_conf)
+	public GeneticProgramFrame(GPConfiguration a_conf)
 			throws InvalidConfigurationException {
 		super(a_conf);
 	}
@@ -227,32 +193,41 @@ public class SymbolicRegression extends GPProblem {
 		// there is a specification here, otherwise it is empty as in first
 		// case.
 		// -----------------------------------------------------------------------
-		Class[] types;
-		Class[][] argTypes;
+		Class<?>[] types;
+		Class<?>[][] argTypes;
 		
 		types = new Class[] { CommandGene.DoubleClass };
 		argTypes = new Class[][] { {} };
-		
-		// Configure desired minimum number of nodes per sub program.
-		// Same as with types: First entry here corresponds with first entry in
-		// nodeSets.
-		// Configure desired maximum number of nodes per sub program.
-		// First entry here corresponds with first entry in nodeSets.
-		//
-		// This is experimental!
-		int[] minDepths;
-		int[] maxDepths;
-		
-		minDepths = new int[] { 1 };
-		maxDepths = new int[] { 9 };
 		
 		// Next, we define the set of available GP commands and terminals to
 		// use.
 		// Please see package org.jgap.gp.function and org.jgap.gp.terminal
 		// You can easily add commands and terminals of your own.
 		// ----------------------------------------------------------------------
-		CommandGene[] commands = makeCommands(conf, functions, lowerRange,
-				upperRange, "plain");
+		
+		CommandGene[] commands = { new Consume(conf, CommandGene.DoubleClass),
+				new MoveForward(conf, CommandGene.DoubleClass),
+				new TurnLeft(conf, CommandGene.DoubleClass),
+				new TurnRight(conf, CommandGene.DoubleClass),
+				new Add(conf, CommandGene.DoubleClass),
+				new Subtract(conf, CommandGene.DoubleClass),
+				new Multiply(conf, CommandGene.DoubleClass),
+				new OnResource(conf, CommandGene.DoubleClass),
+				new If(conf, CommandGene.DoubleClass),
+				new IfElse(conf, CommandGene.DoubleClass),
+				new LesserThan(conf, CommandGene.DoubleClass),
+				new GreaterThan(conf, CommandGene.DoubleClass),
+				new Consume(conf, CommandGene.DoubleClass),
+				new Terminal(conf, CommandGene.DoubleClass, 0, 0),
+				new Terminal(conf, CommandGene.DoubleClass, 1, 1),
+				new Terminal(conf, CommandGene.DoubleClass, 5, 5),
+				new Terminal(conf, CommandGene.DoubleClass, 2, 2),
+				new FoodAhead(conf, CommandGene.DoubleClass),
+				new WallAhead(conf, CommandGene.DoubleClass),
+				new Orientation(conf, CommandGene.DoubleClass),
+				new MoveTowards(conf, CommandGene.DoubleClass),
+				new Equals(conf, CommandGene.DoubleClass),
+				new SmellResource(conf, CommandGene.DoubleClass) };
 		// Create the node sets
 		int command_len = commands.length;
 		CommandGene[][] nodeSets = new CommandGene[1][numInputVariables
@@ -285,12 +260,6 @@ public class SymbolicRegression extends GPProblem {
 		}
 		// ADF functions in the second array in nodeSets
 		
-		// this is experimental.
-		boolean[] full;
-		
-		full = new boolean[] { true };
-		
-		boolean[] fullModeAllowed = full;
 		// Create genotype with initial population. Here, we use the
 		// declarations made above:
 		// ----------------------------------------------------------
@@ -323,211 +292,7 @@ public class SymbolicRegression extends GPProblem {
 	 * the configurations file
 	 * ------------------------------------------------------------
 	 */
-	static CommandGene[] makeCommands(GPConfiguration conf, String[] functions,
-			Double lowerRange, Double upperRange, String type) {
-		ArrayList<CommandGene> commandsList = new ArrayList<CommandGene>();
-		int len = functions.length;
-		try {
-			
-			for (int i = 0; i < len; i++) {
-				//
-				// Note: Not all functions are applicable here...
-				//
-				
-				if ("Consume".equals(functions[i])) {
-					commandsList
-							.add(new Consume(conf, CommandGene.DoubleClass));
-				} else if ("FoodAhead".equals(functions[i])) {
-					commandsList.add(new FoodAhead(conf,
-							CommandGene.DoubleClass));
-				} else if ("OnResource".equals(functions[i])) {
-					commandsList.add(new OnResource(conf,
-							CommandGene.DoubleClass));
-				} else if ("TurnLeft".equals(functions[i])) {
-					commandsList
-							.add(new TurnLeft(conf, CommandGene.DoubleClass));
-				} else if ("TurnRight".equals(functions[i])) {
-					commandsList.add(new TurnRight(conf,
-							CommandGene.DoubleClass));
-				} else if ("WallAhead".equals(functions[i])) {
-					commandsList.add(new WallAhead(conf,
-							CommandGene.DoubleClass));
-				} else if ("MoveForward".equals(functions[i])) {
-					commandsList.add(new MoveForward(conf,
-							CommandGene.DoubleClass));
-					
-				}
 
-				else if ("Multiply".equals(functions[i])) {
-					commandsList
-							.add(new Multiply(conf, CommandGene.DoubleClass));
-					
-				} else if ("Multiply3".equals(functions[i])) {
-					commandsList.add(new Multiply3(conf,
-							CommandGene.DoubleClass));
-					
-				} else if ("Add".equals(functions[i])) {
-					commandsList.add(new Add(conf, CommandGene.DoubleClass));
-					
-				} else if ("Divide".equals(functions[i])) {
-					commandsList.add(new Divide(conf, CommandGene.DoubleClass));
-					
-				} else if ("Add3".equals(functions[i])) {
-					commandsList.add(new Add3(conf, CommandGene.DoubleClass));
-					
-				} else if ("Add4".equals(functions[i])) {
-					commandsList.add(new Add4(conf, CommandGene.DoubleClass));
-					
-				} else if ("Subtract".equals(functions[i])) {
-					commandsList
-							.add(new Subtract(conf, CommandGene.DoubleClass));
-					
-				} else if ("Sine".equals(functions[i])) {
-					commandsList.add(new Sine(conf, CommandGene.DoubleClass));
-				} else if ("ArcSine".equals(functions[i])) {
-					commandsList
-							.add(new ArcSine(conf, CommandGene.DoubleClass));
-				} else if ("Tangent".equals(functions[i])) {
-					commandsList
-							.add(new Tangent(conf, CommandGene.DoubleClass));
-				} else if ("ArcTangent".equals(functions[i])) {
-					commandsList.add(new ArcTangent(conf,
-							CommandGene.DoubleClass));
-				} else if ("Cosine".equals(functions[i])) {
-					commandsList.add(new Cosine(conf, CommandGene.DoubleClass));
-				} else if ("ArcCosine".equals(functions[i])) {
-					commandsList.add(new ArcCosine(conf,
-							CommandGene.DoubleClass));
-				} else if ("Exp".equals(functions[i])) {
-					commandsList.add(new Exp(conf, CommandGene.DoubleClass));
-				} else if ("Log".equals(functions[i])) {
-					commandsList.add(new Log(conf, CommandGene.DoubleClass));
-				} else if ("Abs".equals(functions[i])) {
-					commandsList.add(new Abs(conf, CommandGene.DoubleClass));
-				} else if ("Pow".equals(functions[i])) {
-					commandsList.add(new Pow(conf, CommandGene.DoubleClass));
-				} else if ("Round".equals(functions[i])) {
-					commandsList.add(new Round(conf, CommandGene.DoubleClass));
-				} else if ("Ceil".equals(functions[i])) {
-					commandsList.add(new Ceil(conf, CommandGene.DoubleClass));
-				} else if ("Floor".equals(functions[i])) {
-					commandsList.add(new Floor(conf, CommandGene.DoubleClass));
-				} else if ("Modulo".equals(functions[i])) {
-					commandsList.add(new Modulo(conf, CommandGene.DoubleClass));
-					
-				} else if ("LesserThan".equals(functions[i])) {
-					// experimental
-					commandsList.add(new LesserThan(conf,
-							CommandGene.BooleanClass));
-				} else if ("GreaterThan".equals(functions[i])) {
-					// experimental
-					commandsList.add(new GreaterThan(conf,
-							CommandGene.BooleanClass));
-				} else if ("If".equals(functions[i])) {
-					// Note: This is just If on DoubleClass, not a proper
-					// Boolean
-					commandsList.add(new If(conf, CommandGene.DoubleClass));
-					
-				} else if ("IfElse".equals(functions[i])) {
-					commandsList.add(new IfElse(conf, CommandGene.DoubleClass));
-					
-				} else if ("IfDyn".equals(functions[i])) {
-					// Well, this don't work as expected...
-					// System.out.println("IfDyn is not supported yet");
-					commandsList.add(new IfDyn(conf, CommandGene.BooleanClass,
-							1, 1, 5));
-					
-				} else if ("Loop".equals(functions[i])) { // experimental
-					commandsList
-							.add(new Loop(conf, CommandGene.DoubleClass, 3));
-					
-				} else if ("Equals".equals(functions[i])) {
-					// experimental
-					// commandsList.add(new Equals(conf,
-					// CommandGene.DoubleClass));
-					
-				} else if ("ForXLoop".equals(functions[i])) {
-					// experimental
-					commandsList.add(new ForXLoop(conf,
-							CommandGene.IntegerClass));
-					
-				} else if ("ForLoop".equals(functions[i])) {
-					// experimental
-					commandsList.add(new ForLoop(conf,
-							CommandGene.IntegerClass, 10));
-					
-				} else if ("Increment".equals(functions[i])) {
-					commandsList.add(new Increment(conf,
-							CommandGene.DoubleClass));
-					
-				} else if ("StoreTerminal".equals(functions[i])) {
-					// experimental
-					commandsList.add(new StoreTerminal(conf, "dmem0",
-							CommandGene.DoubleClass));
-					commandsList.add(new StoreTerminal(conf, "dmem1",
-							CommandGene.DoubleClass));
-					
-				} else if ("Pop".equals(functions[i])) {
-					// experimental
-					// commandsList.add(new Pop(conf, CommandGene.DoubleClass));
-					
-				} else if ("Push".equals(functions[i])) {
-					// experimental
-					commandsList.add(new Push(conf, CommandGene.DoubleClass));
-				} else if ("And".equals(functions[i])) {
-					// experimental
-					commandsList.add(new And(conf));
-				} else if ("Or".equals(functions[i])) {
-					// experimental
-					commandsList.add(new Or(conf));
-				} else if ("Xor".equals(functions[i])) {
-					// experimental
-					commandsList.add(new Xor(conf));
-				} else if ("Not".equals(functions[i])) {
-					// experimental
-					commandsList.add(new Not(conf));
-				} else if ("SubProgram".equals(functions[i])) {
-					// experimental
-					
-					commandsList
-							.add(new SubProgram(conf, new Class[] {
-									CommandGene.DoubleClass,
-									CommandGene.DoubleClass }));
-					commandsList.add(new SubProgram(conf, new Class[] {
-							CommandGene.DoubleClass, CommandGene.DoubleClass,
-							CommandGene.DoubleClass }));
-				} else if ("Tupel".equals(functions[i])) {
-					// experimental
-					
-				} else {
-					System.out.println("Unkown function: " + functions[i]);
-					System.exit(1);
-				}
-			}
-			commandsList.add(new Terminal(conf, CommandGene.DoubleClass,
-					lowerRange, upperRange, terminalWholeNumbers));
-			// commandsList.add(new Terminal(conf, CommandGene.BooleanClass,
-			// lowerRange, upperRange, terminalWholeNumbers));
-			
-			// ADF
-			// Just add the ADF to the "normal" command list (i.e. not to the
-			// ADF list)
-			
-			if (constants != null) {
-				for (int i = 0; i < constants.size(); i++) {
-					Double constant = constants.get(i);
-					commandsList.add(new Constant(conf,
-							CommandGene.DoubleClass, constant));
-				}
-			}
-		} catch (Exception e) {
-			System.out.println(e);
-		}
-		CommandGene[] commands = new CommandGene[commandsList.size()];
-		commandsList.toArray(commands);
-		return commands;
-	}
-	
 	/**
 	 * Starts the example.
 	 * 
@@ -547,13 +312,10 @@ public class SymbolicRegression extends GPProblem {
 		// somewhat harder.
 		// -------------------------------------------------------
 		numRows = 21;
-		numInputVariables = 3;
+		numInputVariables = 0;
 		// Note: The last array is the output array
 		
-		functions = "Multiply,Divide,Add,Subtract,Consume,FoodAhead,OnResource,TurnLeft,TurnRight,WallAhead,MoveForward"
-				.split(",");
-		variableNames = "F1,F2,F3,F4".split(",");
-		presentation = "Fibonacci series";
+		presentation = "TC ALife";
 		
 		// Present the problem
 		// -------------------
@@ -588,7 +350,7 @@ public class SymbolicRegression extends GPProblem {
 		 * The maximum depth of an individual resulting from crossover.
 		 */
 		config.setMaxCrossoverDepth(maxCrossoverDepth);
-		config.setFitnessFunction(new SymbolicRegression.FormulaFitnessFunction());
+		config.setFitnessFunction(new GeneticProgramFrame.FormulaFitnessFunction());
 		/**
 		 * @param a_strict
 		 *            true: throw an error during evolution in case a situation
@@ -635,7 +397,7 @@ public class SymbolicRegression extends GPProblem {
 		 * construct a valid program.
 		 */
 		config.setProgramCreationMaxTries(programCreationMaxTries);
-		GPProblem problem = new SymbolicRegression(config);
+		GPProblem problem = new GeneticProgramFrame(config);
 		// Create the genotype of the problem, i.e., define the GP commands and
 		// terminals that can be used, and constrain the structure of the GP
 		// program.
@@ -656,7 +418,8 @@ public class SymbolicRegression extends GPProblem {
 		System.out.println("Creating initial population");
 		System.out.println("Mem free: "
 				+ SystemKit.niceMemory(SystemKit.getTotalMemoryMB()) + " MB");
-		IGPProgram fittest = null;
+		fittest = null;
+		new GPVisual((GeneticProgramFrame) problem);
 		double bestFit = -1.0d;
 		String bestProgram = "";
 		int bestGen = 0;
@@ -666,6 +429,7 @@ public class SymbolicRegression extends GPProblem {
 		}
 		for (int gen = 1; gen <= numEvolutions; gen++) {
 			gp.evolve(); // evolve one generation
+			System.out.println("Generation: " + gen);
 			gp.calcFitness();
 			GPPopulation pop = gp.getGPPopulation();
 			IGPProgram thisFittest = pop.determineFittestProgram();
@@ -718,13 +482,6 @@ public class SymbolicRegression extends GPProblem {
 				}
 				// Ensure that the best solution is in the population.
 				// gp.addFittestProgram(thisFittest);
-			} else {
-				/*
-				 * if (gen % 25 == 0 && gen != numEvolutions) {
-				 * System.out.println("Generation " + gen +
-				 * " (This is a keep alive message.)"); //
-				 * myOutputSolution(fittest, gen); }
-				 */
 			}
 		}
 		
@@ -752,7 +509,26 @@ public class SymbolicRegression extends GPProblem {
 				System.out.println(p + " (" + similiar.get(p) + ")");
 			}
 		}
-		System.exit(0);
+		
+		EnvironmentMap map = new BasicMap();
+		
+		final SimulationContext sc = new SimulationContext(map);
+		
+		sc.addLife(new ALifeGP(fittest, map));
+		
+		sc.initSimulation();
+		sc.setVerbosity(0);
+		sc.setTimerListener();
+		
+		final SimulationFrame sf = new SimulationFrame(sc);
+		
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				SimulationContext.createAndShowGUI(sf, sc);
+			}
+		});
+		
 	}
 	
 	/**
@@ -770,58 +546,32 @@ public class SymbolicRegression extends GPProblem {
 		
 		public double computeRawFitness(final IGPProgram ind) {
 			
-			// Object[] robot = { new ALifeGP(ind) };
+			double fitness = 100000;
 			
-			// Evaluate function for the input numbers
-			// --------------------------------------------
-			int variableIndex = 0;
-			for (int i = 0; i < numInputVariables + 1; i++) {
-				if (i != outputVariable) {
-					variables[variableIndex].set(new Random().nextDouble());
-					variableIndex++;
-				}
-			}
-			
-			SimulationContext sc = null;
-			double fitness = 2000;
-			
-			EnvironmentMap map = new BasicMap();
-			sc = new SimulationContext(map);
-			
-			sc.addLife(new ALifeGP(ind, map));
-			
-			sc.initSimulation();
-			sc.setVerbosity(0);
-			sc.limitedRun(500);
-			
-			// TODO will not take into account
-			for (ALife life : sc.getLife()) {
-				if (life.getEnergy() > 0) {
-					fitness -= ((ABug) life).uniqueMoveCount
-							- (life.getEnergy() / 8);
-				} else {
-					fitness -= ((ABug) life).uniqueMoveCount;
+			for (int i = 0; i < 3; i++) {
+				
+				EnvironmentMap map = new BasicMap();
+				SimulationContext sc = new SimulationContext(map);
+				
+				sc.addLife(new ALifeGP(ind, map));
+				
+				sc.initSimulation();
+				sc.setVerbosity(0);
+				sc.limitedRun(200);
+				
+				for (ALife life : sc.getLife()) {
+					
+					fitness -= (life.getEnergy());
+					
+					fitness -= ((ABug) life).uniqueMoveCount / 10;
 					
 				}
 			}
+			if (fitness > 0) {
+				return (fitness);
+			}
+			return 0;
 			
-			return (fitness / sc.getLife().size());
-			/*
-			 * // experimental ProgramChromosome chrom = ind.getChromosome(0);
-			 * String program = chrom.toStringNorm(0); double length =
-			 * program.length();
-			 */
-
-			// If the fitness is very close to 0.0 then we maybe bump it
-			// up to see alternative solutions.
-			// -------------------------------------------------------
-			
-			// a simplistc version of length punishing
-			/*
-			 * // too experimental if (punishLength) { return error + length; }
-			 * else { return error; }
-			 */
-
 		}
 	}
 	

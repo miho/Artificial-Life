@@ -12,7 +12,7 @@ public abstract class Brain {
 	
 	public static final int STEP = 10;
 	
-	protected final ALife life;
+	protected ALife life;
 	protected Logger log;
 	
 	public Brain(ALife life) {

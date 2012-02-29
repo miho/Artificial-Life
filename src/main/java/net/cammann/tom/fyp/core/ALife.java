@@ -11,7 +11,7 @@ import java.util.List;
  * 
  */
 public abstract class ALife implements Cloneable, Commandable {
-	
+	public int MOVE_COUNT = 0;
 	protected int x, y;
 	protected int energy;
 	protected List<Point> moveMemory;
@@ -80,6 +80,7 @@ public abstract class ALife implements Cloneable, Commandable {
 	/**
 	 * @return x
 	 */
+	@Override
 	public int getX() {
 		return x;
 	}
@@ -87,6 +88,7 @@ public abstract class ALife implements Cloneable, Commandable {
 	/**
 	 * @return y
 	 */
+	@Override
 	public int getY() {
 		return y;
 	}
@@ -197,6 +199,7 @@ public abstract class ALife implements Cloneable, Commandable {
 		this.map = map;
 	}
 	
+	@Override
 	public EnvironmentMap getMap() {
 		return map;
 	}

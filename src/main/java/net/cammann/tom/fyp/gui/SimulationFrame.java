@@ -44,7 +44,7 @@ public class SimulationFrame extends JFrame {
 		this.setContentPane(panel);
 		this.setSize(sc.getMapWidth() + 200, sc.getMapHeight() + 100);
 		this.setLocationByPlatform(true);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		loggingFrame = new LoggingFrame(this);
 		

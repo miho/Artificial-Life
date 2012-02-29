@@ -26,4 +26,10 @@ public interface Commandable {
 	public boolean consume();
 	
 	public Point getPosition();
+	
+	public int getY();
+	
+	public int getX();
+	
+	public EnvironmentMap getMap();
 }
