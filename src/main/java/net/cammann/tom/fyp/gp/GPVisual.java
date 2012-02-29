@@ -7,7 +7,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import net.cammann.tom.fyp.basicLife.StaticMap;
 import net.cammann.tom.fyp.core.EnvironmentMap;
 import net.cammann.tom.fyp.core.EvolutionFactory;
 import net.cammann.tom.fyp.core.SimulationContext;
@@ -15,12 +14,13 @@ import net.cammann.tom.fyp.gui.SimulationFrame;
 
 public class GPVisual extends JFrame {
 	
-	private final GeneticProgramFrame gpf;
-	private final EvolutionFactory factory;
+	// private final GeneticProgramFrame gpf;
+	// private final EvolutionFactory factory;
 	
-	public GPVisual(final GeneticProgramFrame gpf, EvolutionFactory lf) {
-		this.gpf = gpf;
-		this.factory = lf;
+	public GPVisual(final GeneticProgramFrame gpf,
+			final EvolutionFactory factory) {
+		// this.gpf = gpf;
+		// this.factory = factory;
 		
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
@@ -32,12 +32,12 @@ public class GPVisual extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if (gpf.fittest != null) {
-					EnvironmentMap map = new StaticMap();
+				if (GeneticProgramFrame.fittest != null) {
+					EnvironmentMap map = factory.createMap();
 					
 					final SimulationContext sc = new SimulationContext(map);
 					
-					sc.addLife(new ALifeGP(gpf.fittest, map));
+					sc.addLife(new ALifeGP(GeneticProgramFrame.fittest, map));
 					
 					sc.initSimulation();
 					sc.setVerbosity(0);

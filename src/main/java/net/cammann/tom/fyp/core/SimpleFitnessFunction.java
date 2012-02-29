@@ -12,41 +12,44 @@ public abstract class SimpleFitnessFunction extends FitnessFunction {
 		
 	}
 	
-	@Override
-	protected double evaluate(IChromosome chromo) {
+	protected double run(IChromosome chromo) {
 		SimulationContext sc = null;
 		double fitness = 0;
 		
-		int num_runs = fact.getFitnessFunctionRuns();
 		int num_clones = fact.getNumClones();
 		
 		// TODO add checks on num_runs and clones
 		
-		for (int i = 0; i < num_runs; i++) {
-			
-			EnvironmentMap map = fact.createMap();
-			sc = new SimulationContext(map);
-			
-			for (int j = 0; j < num_clones; j++) {
-				sc.addLife(fact.createLife(chromo, map));
-			}
-			
-			sc.initSimulation();
-			sc.setVerbosity(0);
-			sc.limitedRun(500);
-			
-			// TODO will not take into account
-			for (ALife life : sc.getLife()) {
-				if (life.getEnergy() > 0) {
-					fitness += ((ABug) life).uniqueMoveCount
-							+ (life.getEnergy() / 8);
-				} else {
-					fitness += ((ABug) life).uniqueMoveCount;
-					
-				}
-			}
-			
+		EnvironmentMap map = fact.createMap();
+		sc = new SimulationContext(map);
+		
+		for (int j = 0; j < num_clones; j++) {
+			sc.addLife(fact.createLife(chromo, map));
 		}
-		return (fitness / sc.getLife().size()) / num_runs;
+		
+		sc.initSimulation();
+		sc.setVerbosity(0);
+		sc.limitedRun(fact.getLenOfFitFuncRun());
+		
+		for (ALife life : sc.getLife()) {
+			fitness += computeRawFitness(life);
+		}
+		
+		return fitness / sc.getLife().size();
+		
 	}
+	
+	@Override
+	protected double evaluate(IChromosome chromo) {
+		
+		double fitness = 0;
+		
+		int num_runs = fact.getFitnessFunctionRuns();
+		for (int i = 0; i < num_runs; i++) {
+			fitness += run(chromo);
+		}
+		return fitness / num_runs;
+	}
+	
+	public abstract double computeRawFitness(ALife life);
 }

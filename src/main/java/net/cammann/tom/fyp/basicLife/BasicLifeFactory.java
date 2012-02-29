@@ -15,6 +15,7 @@ public class BasicLifeFactory implements EvolutionFactory {
 	
 	private final int NUM_FIT_FUNC_CYCLES = 2;
 	private final int NUM_CLONES = 1;
+	private final int RUN_LEN = 400;
 	
 	@Override
 	public ALife createLife(int[] genes, EnvironmentMap map) {
@@ -59,5 +60,10 @@ public class BasicLifeFactory implements EvolutionFactory {
 	@Override
 	public GPFitnessFunction getGPFitnessFunction() {
 		return new GPLifeFitFunc(this);
+	}
+	
+	@Override
+	public int getLenOfFitFuncRun() {
+		return RUN_LEN;
 	}
 }

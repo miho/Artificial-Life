@@ -8,6 +8,7 @@ import net.cammann.tom.fyp.core.Resource.ResourceType;
 import net.cammann.tom.fyp.core.SimpleFitnessFunction;
 
 import org.jgap.IChromosome;
+import org.jgap.gp.GPFitnessFunction;
 import org.jgap.gp.IGPProgram;
 
 public class SymboteFactory implements EvolutionFactory {
@@ -63,6 +64,17 @@ public class SymboteFactory implements EvolutionFactory {
 	@Override
 	public int getFitnessFunctionRuns() {
 		return 1;
+	}
+	
+	@Override
+	public GPFitnessFunction getGPFitnessFunction() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public int getLenOfFitFuncRun() {
+		return 400;
 	}
 	
 }

@@ -44,4 +44,6 @@ public interface EvolutionFactory {
 	 * @return
 	 */
 	public int getFitnessFunctionRuns();
+	
+	public int getLenOfFitFuncRun();
 }

@@ -1,6 +1,5 @@
 package net.cammann.tom.fyp.gp;
 
-import net.cammann.tom.fyp.basicLife.BasicMap;
 import net.cammann.tom.fyp.core.ALife;
 import net.cammann.tom.fyp.core.EnvironmentMap;
 import net.cammann.tom.fyp.core.EvolutionFactory;
@@ -17,39 +16,57 @@ public class GPLifeFitFunc extends GPFitnessFunction {
 		this.factory = factory;
 	}
 	
-	@Override
-	protected double evaluate(final IGPProgram a_subject) {
-		return computeRawFitness(a_subject);
+	public double run(IGPProgram gp) {
+		SimulationContext sc = null;
+		double fitness = 0;
+		
+		int num_clones = factory.getNumClones();
+		
+		// TODO add checks on num_runs and clones
+		
+		EnvironmentMap map = factory.createMap();
+		sc = new SimulationContext(map);
+		
+		for (int j = 0; j < num_clones; j++) {
+			sc.addLife(factory.createLife(gp, map));
+		}
+		
+		sc.initSimulation();
+		sc.setVerbosity(0);
+		sc.limitedRun(factory.getLenOfFitFuncRun());
+		
+		for (ALife life : sc.getLife()) {
+			fitness += computeRawFitness(life);
+		}
+		
+		return fitness / sc.getLife().size();
+		
 	}
 	
-	public double computeRawFitness(final IGPProgram ind) {
+	/**
+	 * Lower fitness is better here
+	 */
+	@Override
+	protected double evaluate(IGPProgram gp) {
 		
 		double fitness = 100000;
 		
-		for (int i = 0; i < factory.getFitnessFunctionRuns(); i++) {
-			
-			EnvironmentMap map = new BasicMap();
-			// EnvironmentMap map = new BasicMap();
-			SimulationContext sc = new SimulationContext(map);
-			for (int j = 0; j < factory.getNumClones(); j++) {
-				sc.addLife(factory.createLife(ind, map));
-			}
-			sc.initSimulation();
-			sc.setVerbosity(0);
-			sc.limitedRun(400);
-			
-			for (ALife life : sc.getLife()) {
-				
-				fitness -= (life.getEnergy());
-				
-				// fitness -= ((ABug) life).uniqueMoveCount / 10;
-				
-			}
+		int num_runs = factory.getFitnessFunctionRuns();
+		for (int i = 0; i < num_runs; i++) {
+			fitness -= run(gp);
 		}
-		if (fitness > 0) {
-			return (fitness);
-		}
-		return 0;
-		
+		return fitness / num_runs;
 	}
+	
+	/**
+	 * Higher fitness equals fitter here.
+	 * 
+	 * @param life
+	 * @return
+	 */
+	
+	public double computeRawFitness(ALife life) {
+		return (life.getEnergy());
+	}
+	
 }

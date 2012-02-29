@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import net.cammann.tom.fyp.basicLife.BasicLifeFactory;
-import net.cammann.tom.fyp.basicLife.BasicMap;
 import net.cammann.tom.fyp.core.EnvironmentMap;
 import net.cammann.tom.fyp.core.SimulationContext;
 import net.cammann.tom.fyp.gp.commands.Consume;
@@ -205,8 +204,8 @@ public class GeneticProgramFrame extends GPProblem {
 				new MoveTowards(conf, CommandGene.DoubleClass),
 				new Equals(conf, CommandGene.DoubleClass),
 				new SmellResource(conf, CommandGene.DoubleClass),
-				new SubProgram(conf, 5, CommandGene.DoubleClass),
-				new SubProgram(conf, 4, CommandGene.DoubleClass),
+				// new SubProgram(conf, 5, CommandGene.DoubleClass),
+				// new SubProgram(conf, 4, CommandGene.DoubleClass),
 				new SubProgram(conf, 3, CommandGene.DoubleClass),
 				new SubProgram(conf, 2, CommandGene.DoubleClass), };
 		// Create the node sets
@@ -475,11 +474,11 @@ public class GeneticProgramFrame extends GPProblem {
 			}
 		}
 		
-		EnvironmentMap map = new BasicMap();
-		// EnvironmentMap map = new BasicMap();
+		EnvironmentMap map = factory.createMap();
+		
 		final SimulationContext sc = new SimulationContext(map);
 		
-		sc.addLife(new ALifeGP(fittest, map));
+		sc.addLife(factory.createLife(fittest, map));
 		
 		sc.initSimulation();
 		sc.setVerbosity(0);
