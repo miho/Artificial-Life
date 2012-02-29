@@ -2,7 +2,9 @@ package net.cammann.tom.fyp.basicLife;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
+import net.cammann.tom.fyp.core.ALife;
 import net.cammann.tom.fyp.core.Resource;
 import net.cammann.tom.fyp.core.Resource.ResourceType;
 import net.cammann.tom.fyp.core.ResourceFactory;
@@ -12,16 +14,19 @@ public class StaticMap extends SimpleMap {
 	
 	public static List<Resource> RESOURCE_LIST;
 	
-	public void resetMap() {
-		// TODO Auto-generated method stub
-		
+	private static int x = -1;
+	private static int y = -1;
+	
+	public StaticMap() {
+		super(300, 300);
 	}
 	
+	@Override
 	public void initResources() {
 		if (RESOURCE_LIST == null) {
 			RESOURCE_LIST = new ArrayList<Resource>();
 			ResourceFactory r = new ResourceFactory(getWidth(), getHeight());
-			for (int i = 0; i < 200; i++) {
+			for (int i = 0; i < 50; i++) {
 				RESOURCE_LIST.add(r.createResource(ResourceType.APPLE));
 			}
 		}
@@ -29,5 +34,22 @@ public class StaticMap extends SimpleMap {
 			addResource(r);
 		}
 		
+	}
+	
+	@Override
+	public void resetMap() {
+		resourceList.clear();
+		initResources();
+		
+	}
+	
+	@Override
+	public void initLife(ALife life) {
+		if (x == -1) {
+			x = new Random().nextInt((life.getMap().getWidth() + 1) / 10) * 10;
+			y = new Random().nextInt((life.getMap().getHeight() + 1) / 10) * 10;
+		}
+		life.setX(x);
+		life.setY(y);
 	}
 }

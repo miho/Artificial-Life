@@ -7,7 +7,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import net.cammann.tom.fyp.basicLife.BasicMap;
+import net.cammann.tom.fyp.basicLife.StaticMap;
 import net.cammann.tom.fyp.core.EnvironmentMap;
 import net.cammann.tom.fyp.core.SimulationContext;
 import net.cammann.tom.fyp.gui.SimulationFrame;
@@ -19,17 +19,18 @@ public class GPVisual extends JFrame {
 	public GPVisual(final GeneticProgramFrame gpf) {
 		this.gpf = gpf;
 		
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setResizable(false);
 		
 		JPanel jp = new JPanel();
-		
+		// setUndecorated(true);
 		JButton jb = new JButton("Launch Best");
 		jb.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (gpf.fittest != null) {
-					EnvironmentMap map = new BasicMap();
+					EnvironmentMap map = new StaticMap();
 					
 					final SimulationContext sc = new SimulationContext(map);
 					
@@ -54,7 +55,7 @@ public class GPVisual extends JFrame {
 		
 		setContentPane(jp);
 		
-		setSize(200, 100);
+		setSize(200, 80);
 		setLocationByPlatform(true);
 		
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {

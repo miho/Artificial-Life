@@ -1,5 +1,8 @@
 package net.cammann.tom.fyp.symbotes;
 
+import java.util.Random;
+
+import net.cammann.tom.fyp.core.ALife;
 import net.cammann.tom.fyp.core.SimpleMap;
 
 public class SymboticMap extends SimpleMap {
@@ -19,5 +22,12 @@ public class SymboticMap extends SimpleMap {
 	public void initResources() {
 		// DO nothing
 		resourceList.clear();
+	}
+	
+	@Override
+	public void initLife(ALife life) {
+		life.setX(new Random().nextInt((life.getMap().getWidth() + 1) / 10) * 10);
+		life.setY(new Random().nextInt((life.getMap().getHeight() + 1) / 10) * 10);
+		
 	}
 }

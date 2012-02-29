@@ -19,7 +19,7 @@ import net.cammann.tom.fyp.utils.Logger;
  * @since 31/01/2012
  * 
  */
-public abstract class SimpleResource implements Resource {
+public class SimpleResource implements Resource {
 	
 	protected int x;
 	protected int y;

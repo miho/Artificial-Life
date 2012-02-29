@@ -70,8 +70,13 @@ public class MapPanel extends JPanel {
 			g2.drawImage(life.getImage(), life.getX(), life.getY(), getParent());
 			g2.drawString(i + "", life.getX(), life.getY());
 			
+			g2.drawString("Life Form: " + (i + 1) + " - ",
+					sc.getMapWidth() + 30, 60 + i * 50 - 20);
+			
 			g2.drawString("Current Engery: " + life.getEnergy(),
-					sc.getMapWidth() + 30, 40 + i * 20);
+					sc.getMapWidth() + 30, 75 + i * 50 - 20);
+			g2.drawString("Move Count: " + life.MOVE_COUNT,
+					sc.getMapWidth() + 30, 90 + i * 50 - 20);
 		}
 		g2.setColor(Color.BLACK);
 		

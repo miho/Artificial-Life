@@ -4,10 +4,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.io.File;
 import java.util.Random;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -19,6 +23,7 @@ import javax.swing.JRadioButtonMenuItem;
 import net.cammann.tom.fyp.basicLife.BasicLife;
 import net.cammann.tom.fyp.core.ALife;
 import net.cammann.tom.fyp.core.SimulationContext;
+import net.cammann.tom.fyp.utils.MapUtils;
 
 /**
  * @author TC
@@ -36,8 +41,16 @@ public class SimulationFrame extends JFrame {
 	
 	public static LoggingFrame loggingFrame = null;
 	
-	public SimulationFrame(SimulationContext sc) {
+	public SimulationFrame(final SimulationContext sc) {
 		this.sc = sc;
+		
+		try {
+			// UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 		JPanel panel = new MapPanel(sc);
 		sc.RegisterFrame(this, panel);
 		this.setJMenuBar(createJMenuBar());
@@ -47,13 +60,48 @@ public class SimulationFrame extends JFrame {
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		loggingFrame = new LoggingFrame(this);
-		
+		addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+					sc.pause();
+				}
+				if (e.getKeyCode() == KeyEvent.VK_F) {
+					sc.moveOnce();
+				}
+				if (e.getKeyCode() == KeyEvent.VK_S) {
+					sc.stop();
+				}
+				if (e.getKeyCode() == KeyEvent.VK_C) {
+					sc.start();
+				}
+				if (e.getKeyCode() == KeyEvent.VK_X) {
+					dispose();
+				}
+				
+			}
+		});
 	}
 	
 	public JMenuBar createJMenuBar() {
 		JMenuBar bar = new JMenuBar();
 		
 		JMenu menu = new JMenu("Simulation");
+		menu.setMnemonic(KeyEvent.VK_S);
+		
 		JMenuItem start = new JMenuItem("Start");
 		
 		start.addActionListener(new ActionListener() {
@@ -87,6 +135,7 @@ public class SimulationFrame extends JFrame {
 				
 			}
 		});
+		stop.setMnemonic(KeyEvent.VK_S);
 		menu.add(stop);
 		
 		menu.addSeparator();
@@ -222,8 +271,49 @@ public class SimulationFrame extends JFrame {
 		
 		bar.add(menu);
 		
+		menu = new JMenu("Map");
+		
+		JMenuItem exportMap = new JMenuItem("Export Map");
+		exportMap.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				String home = System.getProperty("user.home");
+				JFileChooser jfc = new JFileChooser(home);
+				int r = jfc.showSaveDialog(getThis());
+				if (r == JFileChooser.APPROVE_OPTION) {
+					File file = jfc.getSelectedFile();
+					MapUtils.SaveMap(file, sc.getMap());
+				}
+			}
+		});
+		
+		menu.add(exportMap);
+		JMenuItem importMap = new JMenuItem("Import Map");
+		importMap.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				String home = System.getProperty("user.home");
+				JFileChooser jfc = new JFileChooser(home);
+				int r = jfc.showOpenDialog(getThis());
+				if (r == JFileChooser.APPROVE_OPTION) {
+					File file = jfc.getSelectedFile();
+					sc.setMap(MapUtils.LoadMap(file));
+				}
+			}
+		});
+		menu.add(importMap);
+		JMenuItem mapEdit = new JMenuItem("Edit Map");
+		
+		bar.add(menu);
+		
 		return bar;
 		
+	}
+	
+	private JFrame getThis() {
+		return this;
 	}
 	
 	private void addLifeToMenu(final ALife life) {

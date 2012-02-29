@@ -167,6 +167,7 @@ public abstract class ABug extends ALife {
 			
 			decrementEnegery(15);
 		}
+		addMoveToMemory(getPosition());
 	}
 	
 	public void consumePosition(int x, int y) {
@@ -281,7 +282,7 @@ public abstract class ABug extends ALife {
 			default:
 				throw new IllegalStateException("Illegeal orientation");
 		}
-		decrementEnegery(1);
+		decrementEnegery(4);
 		
 	}
 	
@@ -305,7 +306,7 @@ public abstract class ABug extends ALife {
 			default:
 				throw new IllegalStateException("Illegeal orientation");
 		}
-		decrementEnegery(1);
+		decrementEnegery(4);
 	}
 	
 	@Override

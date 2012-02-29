@@ -8,6 +8,7 @@ import net.cammann.tom.fyp.symbotes.SymbResource;
 
 public class ResourceFactory {
 	int x, y;
+	int max_cals, min_cals;
 	
 	public ResourceFactory(int x, int y) {
 		this.x = x;
@@ -33,5 +34,14 @@ public class ResourceFactory {
 				
 		}
 		
+	}
+	
+	public void setMaxCal(int max_cals) {
+		this.max_cals = max_cals;
+		
+	}
+	
+	public void setMinCal(int min_cal) {
+		this.min_cals = min_cal;
 	}
 }

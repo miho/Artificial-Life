@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import net.cammann.tom.fyp.basicLife.BasicMap;
-import net.cammann.tom.fyp.core.ABug;
 import net.cammann.tom.fyp.core.ALife;
 import net.cammann.tom.fyp.core.EnvironmentMap;
 import net.cammann.tom.fyp.core.SimulationContext;
@@ -44,6 +43,7 @@ import org.jgap.gp.function.If;
 import org.jgap.gp.function.IfElse;
 import org.jgap.gp.function.LesserThan;
 import org.jgap.gp.function.Multiply;
+import org.jgap.gp.function.SubProgram;
 import org.jgap.gp.function.Subtract;
 import org.jgap.gp.impl.DeltaGPFitnessEvaluator;
 import org.jgap.gp.impl.GPConfiguration;
@@ -70,23 +70,12 @@ public class GeneticProgramFrame extends GPProblem {
 	// the variables to use (of size numInputVariables)
 	public static Variable[] variables;
 	
-	// variable name
-	public static String[] variableNames;
-	
 	// index of the output variable
-	public static Integer outputVariable; // default last
 	
 	public static int[] ignoreVariables; // TODO
 	
 	// constants
 	public static ArrayList<Double> constants = new ArrayList<Double>();
-	
-	// size of data
-	public static int numRows;
-	
-	// the data (as Double)
-	// Note: the last row is the output variable per default
-	protected static Double[][] data;
 	
 	// If we have found a perfect solution.
 	public static boolean foundPerfect = false;
@@ -94,38 +83,35 @@ public class GeneticProgramFrame extends GPProblem {
 	// standard GP parameters
 	public static int minInitDepth = 2;
 	
-	public static int maxInitDepth = 8;
+	public static int maxInitDepth = 30;
 	
-	public static int populationSize = 1000;
+	public static int populationSize = 200;
 	
-	public static int maxCrossoverDepth = 8;
+	public static int maxCrossoverDepth = 40;
 	
 	public static int programCreationMaxTries = 5;
 	
-	public static int numEvolutions = 300;
+	public static int numEvolutions = 500;
 	
 	public static boolean verboseOutput = true;
 	
-	public static int maxNodes = 60;
+	public static int maxNodes = 30000;
 	
 	public static double functionProb = 0.8d;
 	
 	public static float reproductionProb = 0.1f; // float
 	
-	public static float mutationProb = 0.1f; // float
+	public static float mutationProb = 0.2f; // float
 	
 	public static double crossoverProb = 0.9d;
 	
 	public static float dynamizeArityProb = 0.08f; // float
 	
-	public static double newChromsPercent = 0.3d;
+	public static double newChromsPercent = 0.1d;
 	
 	public static int tournamentSelectorSize = 0;
 	
 	// lower/upper ranges for the Terminal
-	public static double lowerRange = -10.0d;
-	
-	public static double upperRange = 10.0d;
 	
 	// Should the terminal be a wholenumber or not?
 	public static boolean terminalWholeNumbers = true;
@@ -133,13 +119,6 @@ public class GeneticProgramFrame extends GPProblem {
 	public static String returnType = "DoubleClass"; // not used yet
 	
 	public static String presentation = "";
-	
-	// Using ADF
-	
-	// list of functions (as strings)
-	public static String[] functions = { "Multiply", "Divide", "Add",
-			"Subtract" };
-	
 	// Should we punish length of solutions?
 	// Note: Very simplistic version.
 	// public static boolean punishLength = false;
@@ -218,16 +197,20 @@ public class GeneticProgramFrame extends GPProblem {
 				new LesserThan(conf, CommandGene.DoubleClass),
 				new GreaterThan(conf, CommandGene.DoubleClass),
 				new Consume(conf, CommandGene.DoubleClass),
-				new Terminal(conf, CommandGene.DoubleClass, 0, 0),
+				new Terminal(conf, CommandGene.DoubleClass, 3, 3),
 				new Terminal(conf, CommandGene.DoubleClass, 1, 1),
-				new Terminal(conf, CommandGene.DoubleClass, 5, 5),
+				new Terminal(conf, CommandGene.DoubleClass, 0, 0),
 				new Terminal(conf, CommandGene.DoubleClass, 2, 2),
 				new FoodAhead(conf, CommandGene.DoubleClass),
 				new WallAhead(conf, CommandGene.DoubleClass),
 				new Orientation(conf, CommandGene.DoubleClass),
 				new MoveTowards(conf, CommandGene.DoubleClass),
 				new Equals(conf, CommandGene.DoubleClass),
-				new SmellResource(conf, CommandGene.DoubleClass) };
+				new SmellResource(conf, CommandGene.DoubleClass),
+				new SubProgram(conf, 5, CommandGene.DoubleClass),
+				new SubProgram(conf, 4, CommandGene.DoubleClass),
+				new SubProgram(conf, 3, CommandGene.DoubleClass),
+				new SubProgram(conf, 2, CommandGene.DoubleClass), };
 		// Create the node sets
 		int command_len = commands.length;
 		CommandGene[][] nodeSets = new CommandGene[1][numInputVariables
@@ -236,22 +219,7 @@ public class GeneticProgramFrame extends GPProblem {
 		// 1) in the nodeSets matrix
 		// 2) as variables (to be used for fitness checking)
 		// --------------------------------------------------
-		variables = new Variable[numInputVariables];
-		int variableIndex = 0;
-		for (int i = 0; i < numInputVariables + 1; i++) {
-			String variableName = variableNames[i];
-			if (i != outputVariable) {
-				if (variableNames != null && variableNames.length > 0) {
-					variableName = variableNames[i];
-				}
-				variables[variableIndex] = Variable.create(conf, variableName,
-						CommandGene.DoubleClass);
-				nodeSets[0][variableIndex] = variables[variableIndex];
-				System.out.println("input variable: "
-						+ variables[variableIndex]);
-				variableIndex++;
-			}
-		}
+		
 		// assign the functions/terminals
 		// ------------------------------
 		for (int i = 0; i < command_len; i++) {
@@ -307,30 +275,12 @@ public class GeneticProgramFrame extends GPProblem {
 		//
 		// Read a configuration file, or not...
 		
-		// Default problem
-		// Fibonacci series, with three input variables to make it
-		// somewhat harder.
-		// -------------------------------------------------------
-		numRows = 21;
-		numInputVariables = 0;
-		// Note: The last array is the output array
-		
 		presentation = "TC ALife";
 		
 		// Present the problem
 		// -------------------
 		System.out.println("Presentation: " + presentation);
-		if (outputVariable == null) {
-			outputVariable = numInputVariables;
-		}
-		if (variableNames == null) {
-			variableNames = new String[numInputVariables + 1];
-			for (int i = 0; i < numInputVariables + 1; i++) {
-				variableNames[i] = "V" + i;
-			}
-		}
-		System.out.println("output_variable: " + variableNames[outputVariable]
-				+ " (index: " + outputVariable + ")");
+		
 		// Setup the algorithm's parameters.
 		// ---------------------------------
 		GPConfiguration config = new GPConfiguration();
@@ -346,6 +296,7 @@ public class GeneticProgramFrame extends GPProblem {
 			config.setSelectionMethod(new TournamentSelector(
 					tournamentSelectorSize));
 		}
+		
 		/**
 		 * The maximum depth of an individual resulting from crossover.
 		 */
@@ -427,9 +378,12 @@ public class GeneticProgramFrame extends GPProblem {
 		if (showSimiliar) {
 			similiar = new HashMap<String, Integer>();
 		}
+		int plateau = 0;
 		for (int gen = 1; gen <= numEvolutions; gen++) {
 			gp.evolve(); // evolve one generation
-			System.out.println("Generation: " + gen);
+			if (gen % 100 == 0) {
+				System.out.println("Generation: " + gen);
+			}
 			gp.calcFitness();
 			GPPopulation pop = gp.getGPPopulation();
 			IGPProgram thisFittest = pop.determineFittestProgram();
@@ -480,8 +434,22 @@ public class GeneticProgramFrame extends GPProblem {
 					// reset the hash
 					similiar.clear(); // = new HashMap<String,Integer>();
 				}
+				plateau = 0;
+				config.setMutationProb(0.1f);
+				mutationProb = 0.1f;
 				// Ensure that the best solution is in the population.
 				// gp.addFittestProgram(thisFittest);
+			} else {
+				plateau++;
+				
+			}
+			
+			if (plateau > 15 && gen > 30 && mutationProb < 0.3) {
+				System.out.println("Increase Mutation Rate");
+				mutationProb *= 1.2;
+				config.setMutationProb(mutationProb);
+				
+				plateau = 0;
 			}
 		}
 		
@@ -511,7 +479,7 @@ public class GeneticProgramFrame extends GPProblem {
 		}
 		
 		EnvironmentMap map = new BasicMap();
-		
+		// EnvironmentMap map = new BasicMap();
 		final SimulationContext sc = new SimulationContext(map);
 		
 		sc.addLife(new ALifeGP(fittest, map));
@@ -548,22 +516,23 @@ public class GeneticProgramFrame extends GPProblem {
 			
 			double fitness = 100000;
 			
-			for (int i = 0; i < 3; i++) {
+			for (int i = 0; i < 1; i++) {
 				
 				EnvironmentMap map = new BasicMap();
+				// EnvironmentMap map = new BasicMap();
 				SimulationContext sc = new SimulationContext(map);
 				
 				sc.addLife(new ALifeGP(ind, map));
 				
 				sc.initSimulation();
 				sc.setVerbosity(0);
-				sc.limitedRun(200);
+				sc.limitedRun(1500);
 				
 				for (ALife life : sc.getLife()) {
 					
 					fitness -= (life.getEnergy());
 					
-					fitness -= ((ABug) life).uniqueMoveCount / 10;
+					// fitness -= ((ABug) life).uniqueMoveCount / 10;
 					
 				}
 			}

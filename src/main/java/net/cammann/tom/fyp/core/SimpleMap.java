@@ -30,6 +30,9 @@ public abstract class SimpleMap implements EnvironmentMap {
 	}
 	
 	@Override
+	public abstract void initLife(ALife life);
+	
+	@Override
 	public int getHeight() {
 		return height;
 	}

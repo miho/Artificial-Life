@@ -6,13 +6,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import net.cammann.tom.fyp.basicLife.NormalLifeFactory;
+import net.cammann.tom.fyp.core.Commandable.ORIENTATION;
 import net.cammann.tom.fyp.gui.SimulationFrame;
 import net.cammann.tom.fyp.stats.StatsPackage;
 import net.cammann.tom.fyp.utils.Logger;
@@ -27,7 +27,7 @@ import org.jgap.IChromosome;
  */
 public class SimulationContext {
 	private final List<ALife> bugs;
-	private final EnvironmentMap map;
+	private EnvironmentMap map;
 	private Timer timer;
 	private boolean isVisual = false;
 	// private JPanel panel;
@@ -133,11 +133,10 @@ public class SimulationContext {
 		
 		for (ALife life : bugs) {
 			
-			life.setX(new Random().nextInt((map.getWidth() + 1) / 10) * 10);
-			life.setY(new Random().nextInt((map.getHeight() + 2) / 10) * 10);
-			life.addMoveToMemory(life.getPosition());
+			map.initLife(life);
+			life.setEnergy(1000);
+			life.setOrientation(ORIENTATION.UP);
 			life.setMoveMemory(new ArrayList<Point>());
-			// life.setEnergy(life.getGene(GENE_TYPE.START_ENGERY));
 			
 			counter = 0;
 			log.debug("Starting energy: " + life.getEnergy());
@@ -162,6 +161,12 @@ public class SimulationContext {
 		// this.panel = panel;
 		this.frame = frame;
 		
+	}
+	
+	public void moveOnce() {
+		for (ALife life : bugs) {
+			life.doMove();
+		}
 	}
 	
 	public void setTimerListener() {
@@ -224,7 +229,7 @@ public class SimulationContext {
 					// log.trace("Life is dead");
 				}
 				if (life.MOVE_COUNT > numRuns) {
-					// break;
+					break;
 				}
 				life.doMove();
 				
@@ -277,5 +282,14 @@ public class SimulationContext {
 	
 	public void removeLife(int i) {
 		bugs.remove(i);
+	}
+	
+	public void setMap(EnvironmentMap _map) {
+		stop();
+		for (ALife life : getLife()) {
+			life.setMap(_map);
+		}
+		map = _map;
+		
 	}
 }

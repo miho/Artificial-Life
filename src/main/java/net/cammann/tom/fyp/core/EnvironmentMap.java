@@ -14,6 +14,8 @@ public interface EnvironmentMap {
 	
 	public int getWidth();
 	
+	public void initLife(ALife life);
+	
 	public Dimension getDimension();
 	
 	public void setHeight(int height);

@@ -52,6 +52,7 @@ public class ALifeGP extends ABug {
 	@Override
 	public boolean consume() {
 		// TODO FIXXXX
+		MOVE_COUNT++;
 		energy -= 5;
 		try {
 			consumeResource(map.getResource(getPosition()));
@@ -70,6 +71,8 @@ public class ALifeGP extends ABug {
 			public int think() {
 				Object[] o = { getThis() };
 				gp.execute_double(0, o);
+				MOVE_COUNT++;
+				energy -= 5;
 				return 1;
 			}
 		});
@@ -78,8 +81,7 @@ public class ALifeGP extends ABug {
 	
 	@Override
 	public ALife clone() {
-		// TODO Auto-generated method stub
-		return null;
+		return new ALifeGP(gp, getMap());
 	}
 	
 }

@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>net.cammann.tom.fyp</groupId>
   <artifactId>alife</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.5-SNAPSHOT</version>
   <name>Final Year Project - ALife</name>
   <packaging>jar</packaging>
   <dependencies>
@@ -25,7 +25,7 @@
                 <archive>
                     <manifest>
                     <addClasspath>true</addClasspath>
-                        <mainClass>net.cammann.tom.fyp.core.SimulationContext</mainClass>
+                        <mainClass>net.cammann.tom.fyp.gp.GeneticProgramFrame</mainClass>
                     </manifest>
                 </archive>
                 <descriptorRefs>
