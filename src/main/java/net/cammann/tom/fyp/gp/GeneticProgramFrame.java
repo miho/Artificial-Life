@@ -12,19 +12,16 @@ package net.cammann.tom.fyp.gp;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import net.cammann.tom.fyp.basicLife.BasicLifeFactory;
 import net.cammann.tom.fyp.basicLife.BasicMap;
-import net.cammann.tom.fyp.core.ALife;
 import net.cammann.tom.fyp.core.EnvironmentMap;
 import net.cammann.tom.fyp.core.SimulationContext;
 import net.cammann.tom.fyp.gp.commands.Consume;
 import net.cammann.tom.fyp.gp.commands.FoodAhead;
-import net.cammann.tom.fyp.gp.commands.MoveForward;
 import net.cammann.tom.fyp.gp.commands.MoveTowards;
 import net.cammann.tom.fyp.gp.commands.OnResource;
 import net.cammann.tom.fyp.gp.commands.Orientation;
 import net.cammann.tom.fyp.gp.commands.SmellResource;
-import net.cammann.tom.fyp.gp.commands.TurnLeft;
-import net.cammann.tom.fyp.gp.commands.TurnRight;
 import net.cammann.tom.fyp.gp.commands.WallAhead;
 import net.cammann.tom.fyp.gui.SimulationFrame;
 
@@ -33,7 +30,6 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.SimpleLayout;
 import org.jgap.InvalidConfigurationException;
 import org.jgap.gp.CommandGene;
-import org.jgap.gp.GPFitnessFunction;
 import org.jgap.gp.GPProblem;
 import org.jgap.gp.IGPProgram;
 import org.jgap.gp.function.Add;
@@ -95,7 +91,7 @@ public class GeneticProgramFrame extends GPProblem {
 	
 	public static boolean verboseOutput = true;
 	
-	public static int maxNodes = 30000;
+	public static int maxNodes = 3000;
 	
 	public static double functionProb = 0.8d;
 	
@@ -184,10 +180,11 @@ public class GeneticProgramFrame extends GPProblem {
 		// You can easily add commands and terminals of your own.
 		// ----------------------------------------------------------------------
 		
-		CommandGene[] commands = { new Consume(conf, CommandGene.DoubleClass),
-				new MoveForward(conf, CommandGene.DoubleClass),
-				new TurnLeft(conf, CommandGene.DoubleClass),
-				new TurnRight(conf, CommandGene.DoubleClass),
+		CommandGene[] commands = {
+				new Consume(conf, CommandGene.DoubleClass),
+				// new MoveForward(conf, CommandGene.DoubleClass),
+				// new TurnLeft(conf, CommandGene.DoubleClass),
+				// new TurnRight(conf, CommandGene.DoubleClass),
 				new Add(conf, CommandGene.DoubleClass),
 				new Subtract(conf, CommandGene.DoubleClass),
 				new Multiply(conf, CommandGene.DoubleClass),
@@ -201,6 +198,7 @@ public class GeneticProgramFrame extends GPProblem {
 				new Terminal(conf, CommandGene.DoubleClass, 1, 1),
 				new Terminal(conf, CommandGene.DoubleClass, 0, 0),
 				new Terminal(conf, CommandGene.DoubleClass, 2, 2),
+				new Terminal(conf, CommandGene.DoubleClass, 5, 5),
 				new FoodAhead(conf, CommandGene.DoubleClass),
 				new WallAhead(conf, CommandGene.DoubleClass),
 				new Orientation(conf, CommandGene.DoubleClass),
@@ -261,11 +259,6 @@ public class GeneticProgramFrame extends GPProblem {
 	 * ------------------------------------------------------------
 	 */
 
-	/**
-	 * Starts the example.
-	 * 
-	 * @author Hakan Kjellerstrand
-	 */
 	public static void main(String[] args) throws Exception {
 		// Use the log4j configuration
 		// Log to stdout instead of file
@@ -274,6 +267,8 @@ public class GeneticProgramFrame extends GPProblem {
 		LOGGER.addAppender(new ConsoleAppender(new SimpleLayout(), "System.out"));
 		//
 		// Read a configuration file, or not...
+		
+		BasicLifeFactory factory = new BasicLifeFactory();
 		
 		presentation = "TC ALife";
 		
@@ -301,7 +296,8 @@ public class GeneticProgramFrame extends GPProblem {
 		 * The maximum depth of an individual resulting from crossover.
 		 */
 		config.setMaxCrossoverDepth(maxCrossoverDepth);
-		config.setFitnessFunction(new GeneticProgramFrame.FormulaFitnessFunction());
+		
+		config.setFitnessFunction(factory.getGPFitnessFunction());
 		/**
 		 * @param a_strict
 		 *            true: throw an error during evolution in case a situation
@@ -370,7 +366,8 @@ public class GeneticProgramFrame extends GPProblem {
 		System.out.println("Mem free: "
 				+ SystemKit.niceMemory(SystemKit.getTotalMemoryMB()) + " MB");
 		fittest = null;
-		new GPVisual((GeneticProgramFrame) problem);
+		
+		new GPVisual((GeneticProgramFrame) problem, factory);
 		double bestFit = -1.0d;
 		String bestProgram = "";
 		int bestGen = 0;
@@ -506,43 +503,6 @@ public class GeneticProgramFrame extends GPProblem {
 	 * differences between expected Y and actual Y is the fitness, the lower the
 	 * better (as it is a defect rate here).
 	 */
-	public static class FormulaFitnessFunction extends GPFitnessFunction {
-		@Override
-		protected double evaluate(final IGPProgram a_subject) {
-			return computeRawFitness(a_subject);
-		}
-		
-		public double computeRawFitness(final IGPProgram ind) {
-			
-			double fitness = 100000;
-			
-			for (int i = 0; i < 1; i++) {
-				
-				EnvironmentMap map = new BasicMap();
-				// EnvironmentMap map = new BasicMap();
-				SimulationContext sc = new SimulationContext(map);
-				
-				sc.addLife(new ALifeGP(ind, map));
-				
-				sc.initSimulation();
-				sc.setVerbosity(0);
-				sc.limitedRun(1500);
-				
-				for (ALife life : sc.getLife()) {
-					
-					fitness -= (life.getEnergy());
-					
-					// fitness -= ((ABug) life).uniqueMoveCount / 10;
-					
-				}
-			}
-			if (fitness > 0) {
-				return (fitness);
-			}
-			return 0;
-			
-		}
-	}
 	
 	/**
 	 * Outputs the best solution until now at standard output.

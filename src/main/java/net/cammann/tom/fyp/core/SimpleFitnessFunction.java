@@ -1,37 +1,34 @@
 package net.cammann.tom.fyp.core;
 
-import java.util.List;
-
 import org.jgap.FitnessFunction;
 import org.jgap.IChromosome;
 
 public abstract class SimpleFitnessFunction extends FitnessFunction {
-	public static final int NUM_RUNS = 1;
 	
-	public abstract EnvironmentMap getNewMap();
+	private final EvolutionFactory fact;
 	
-	public abstract List<ALife> getNewLife(IChromosome chromo,
-			EnvironmentMap map);
+	public SimpleFitnessFunction(EvolutionFactory fact) {
+		this.fact = fact;
+		
+	}
 	
-	@SuppressWarnings("unused")
 	@Override
 	protected double evaluate(IChromosome chromo) {
 		SimulationContext sc = null;
 		double fitness = 0;
 		
-		if (NUM_RUNS < 1) {
-			
-			throw new IllegalArgumentException(
-					"NUM RUNS has to be greater than 0");
-		}
+		int num_runs = fact.getFitnessFunctionRuns();
+		int num_clones = fact.getNumClones();
 		
-		for (int i = 0; i < NUM_RUNS; i++) {
-			EnvironmentMap map = getNewMap();
+		// TODO add checks on num_runs and clones
+		
+		for (int i = 0; i < num_runs; i++) {
+			
+			EnvironmentMap map = fact.createMap();
 			sc = new SimulationContext(map);
 			
-			for (ALife j : getNewLife(chromo, map)) {
-				
-				sc.addLife(j);
+			for (int j = 0; j < num_clones; j++) {
+				sc.addLife(fact.createLife(chromo, map));
 			}
 			
 			sc.initSimulation();
@@ -50,6 +47,6 @@ public abstract class SimpleFitnessFunction extends FitnessFunction {
 			}
 			
 		}
-		return (fitness / sc.getLife().size()) / NUM_RUNS;
+		return (fitness / sc.getLife().size()) / num_runs;
 	}
 }

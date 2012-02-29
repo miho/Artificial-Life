@@ -23,21 +23,18 @@ public class GeneLab {
 	
 	private int popSize;
 	private int evolutions;
-	private final int numCycles;
-	private final LifeFactory factory;
+	
+	private final EvolutionFactory factory;
 	private Configuration conf;
 	private Genotype population;
 	private final List<EvolutionCycleListener> cycleListeners;
-	private int cycleCount;
-	private int evoCount;
 	
-	public GeneLab(LifeFactory factory) {
+	public GeneLab(EvolutionFactory factory) {
 		this.factory = factory;
 		popSize = 10;
-		evoCount = 0;
+		
 		evolutions = 2;
-		cycleCount = 0;
-		numCycles = 2;
+		
 		cycleListeners = new ArrayList<EvolutionCycleListener>();
 		initConfig();
 	}
@@ -139,47 +136,19 @@ public class GeneLab {
 	
 	public void start() {
 		
-		for (int i = 0; i < numCycles; i++) {
+		for (int i = 0; i < evolutions; i++) {
 			for (EvolutionCycleListener e : cycleListeners) {
 				e.startCycle(new EvolutionCycleEvent(
-						population.getPopulation(), cycleCount, evoCount));
+						population.getPopulation(), evolutions));
 			}
 			
-			cycle();
+			population.evolve();
 			
 			for (EvolutionCycleListener e : cycleListeners) {
 				e.endCycle(new EvolutionCycleEvent(population.getPopulation(),
-						cycleCount, evoCount));
+						evolutions));
 			}
 		}
-		
-	}
-	
-	public void cycle() {
-		
-		int mEvo = evolutions / numCycles;
-		int extra = evolutions - (mEvo * numCycles);
-		
-		if (cycleCount < numCycles) {
-			
-			if (cycleCount == numCycles - 1 && extra != 0) {
-				population.evolve(mEvo + extra);
-				
-				evoCount += mEvo + extra;
-				
-			} else {
-				
-				population.evolve(mEvo);
-				evoCount += mEvo;
-			}
-			cycleCount++;
-			
-		}
-		// stats.setPopulation(population.getPopulation());
-		// stats.printNFittest(0);
-		// stats.printNFittest(1);
-		// stats.printNFittest(2);
-		// stats.showFitnessGraph("Generation " + (i + 1));
 		
 	}
 	

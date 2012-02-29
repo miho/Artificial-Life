@@ -9,15 +9,18 @@ import javax.swing.JPanel;
 
 import net.cammann.tom.fyp.basicLife.StaticMap;
 import net.cammann.tom.fyp.core.EnvironmentMap;
+import net.cammann.tom.fyp.core.EvolutionFactory;
 import net.cammann.tom.fyp.core.SimulationContext;
 import net.cammann.tom.fyp.gui.SimulationFrame;
 
 public class GPVisual extends JFrame {
 	
 	private final GeneticProgramFrame gpf;
+	private final EvolutionFactory factory;
 	
-	public GPVisual(final GeneticProgramFrame gpf) {
+	public GPVisual(final GeneticProgramFrame gpf, EvolutionFactory lf) {
 		this.gpf = gpf;
+		this.factory = lf;
 		
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);

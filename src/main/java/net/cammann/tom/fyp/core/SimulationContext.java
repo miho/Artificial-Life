@@ -11,7 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import net.cammann.tom.fyp.basicLife.NormalLifeFactory;
+import net.cammann.tom.fyp.basicLife.BasicLifeFactory;
 import net.cammann.tom.fyp.core.Commandable.ORIENTATION;
 import net.cammann.tom.fyp.gui.SimulationFrame;
 import net.cammann.tom.fyp.stats.StatsPackage;
@@ -41,14 +41,14 @@ public class SimulationContext {
 		
 		final StatsPackage stats = new StatsPackage();
 		
-		LifeFactory lf = new NormalLifeFactory();
+		EvolutionFactory lf = new BasicLifeFactory();
 		
 		GeneLab g = new GeneLab(lf);
 		g.addEvolutionCycleListener(new EvolutionCycleListener() {
 			
 			@Override
 			public void startCycle(EvolutionCycleEvent e) {
-				System.out.println("Starting cycle: " + e.getCycleNo());
+				System.out.println("Generation: " + e.getGenerationNum());
 				System.out.println("Highest fitness: "
 						+ e.getPopulation().determineFittestChromosome()
 								.getFitnessValue());
@@ -57,7 +57,8 @@ public class SimulationContext {
 			
 			@Override
 			public void endCycle(EvolutionCycleEvent e) {
-				System.out.println("Finished cycle: " + e.getCycleNo());
+				System.out.println("Finished Generation: "
+						+ e.getGenerationNum());
 				stats.add(e.getPopulation(), e.getGenerationNum());
 			}
 		});
@@ -73,15 +74,17 @@ public class SimulationContext {
 		
 	}
 	
-	public static void runFromFactory(LifeFactory lf, IChromosome chromo) {
+	public static void runFromFactory(EvolutionFactory lf, IChromosome chromo) {
 		
-		EnvironmentMap map = lf.getFitnessFunction().getNewMap();
+		EnvironmentMap map = lf.createMap();
 		
 		final SimulationContext sc = new SimulationContext(map);
 		
-		for (ALife i : lf.getFitnessFunction().getNewLife(chromo, map)) {
-			sc.addLife(i);
+		for (int j = 0; j < lf.getNumClones(); j++) {
+			
+			sc.addLife(lf.createLife(chromo, map));
 		}
+		
 		sc.initSimulation();
 		sc.setVerbosity(5);
 		sc.setTimerListener();
