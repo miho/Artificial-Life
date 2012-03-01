@@ -145,10 +145,10 @@ public class StatsPackage {
 		String title = "Fitness across generations";
 		XYSeriesCollection data = new XYSeriesCollection();
 		final XYSeries avgFit = new XYSeries("Average Fitness");
-		final XYSeries minFit = new XYSeries("Minimum Fitness");
+		// final XYSeries minFit = new XYSeries("Minimum Fitness");
 		final XYSeries maxFit = new XYSeries("Maximum Fitness");
 		
-		data.addSeries(minFit);
+		// data.addSeries(minFit);
 		data.addSeries(avgFit);
 		data.addSeries(maxFit);
 		
@@ -171,9 +171,9 @@ public class StatsPackage {
 				GenerationInformation info = (GenerationInformation) e
 						.getElement();
 				
-				avgFit.add(info.getGenNum(), info.getAvgFitness());
-				minFit.add(info.getGenNum(), info.getMinFitness());
-				maxFit.add(info.getGenNum(), info.getMaxFitness());
+				avgFit.add(info.getGenNum(), 25000 - info.getAvgFitness());
+				// minFit.add(info.getGenNum(), info.getMinFitness());
+				maxFit.add(info.getGenNum(), 25000 - info.getMaxFitness());
 			}
 		});
 		

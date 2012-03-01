@@ -53,7 +53,7 @@ public class GPLifeFitFunc extends GPFitnessFunction {
 	@Override
 	protected double evaluate(IGPProgram gp) {
 		
-		double fitness = 100000;
+		double fitness = 50000;
 		
 		int num_runs = factory.getFitnessFunctionRuns();
 		for (int i = 0; i < num_runs; i++) {

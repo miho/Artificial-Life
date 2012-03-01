@@ -71,10 +71,12 @@ public class ALifeGP extends ABug {
 			public int think() {
 				Object[] o = { getThis() };
 				double x = gp.execute_double(0, o);
-				
-				if (x >= 0) {
+				if (x < 0) {
 					moveForward();
-					consume();
+				} else if (x > 0 && x < 10) {
+					turnLeft();
+				} else if (x > 10 && x < 20) {
+					turnRight();
 				}
 				MOVE_COUNT++;
 				energy -= 5;

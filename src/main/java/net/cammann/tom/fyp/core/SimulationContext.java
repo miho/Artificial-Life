@@ -233,9 +233,9 @@ public class SimulationContext {
 				if (life.getEnergy() < 0) {
 					// log.trace("Life is dead");
 				}
-				// if (life.MOVE_COUNT > numRuns) {
-				// break;
-				// }
+				if (life.MOVE_COUNT > 600) {
+					break;
+				}
 				life.doMove();
 				
 			}

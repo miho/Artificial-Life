@@ -41,6 +41,10 @@ public class EvolutionCycleEvent {
 		return !isGeneticProgram;
 	}
 	
+	public GPPopulation getGPPopulation() {
+		return gpPopulation;
+	}
+	
 	public Population getPopulation() {
 		return population;
 	}

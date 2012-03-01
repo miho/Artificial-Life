@@ -17,15 +17,16 @@ import net.cammann.tom.fyp.basicLife.BasicLifeFactory;
 import net.cammann.tom.fyp.core.EnvironmentMap;
 import net.cammann.tom.fyp.core.EvolutionCycleEvent;
 import net.cammann.tom.fyp.core.EvolutionCycleListener;
+import net.cammann.tom.fyp.core.EvolutionFactory;
 import net.cammann.tom.fyp.core.SimulationContext;
 import net.cammann.tom.fyp.gp.commands.Consume;
 import net.cammann.tom.fyp.gp.commands.FoodAhead;
 import net.cammann.tom.fyp.gp.commands.OnResource;
+import net.cammann.tom.fyp.gp.commands.Orientation;
 import net.cammann.tom.fyp.gp.commands.SmellResource;
-import net.cammann.tom.fyp.gp.commands.TurnLeft;
-import net.cammann.tom.fyp.gp.commands.TurnRight;
 import net.cammann.tom.fyp.gp.commands.WallAhead;
 import net.cammann.tom.fyp.gui.SimulationFrame;
+import net.cammann.tom.fyp.stats.StatsPackage;
 
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Logger;
@@ -99,7 +100,7 @@ public class GeneticProgramFrame extends GPProblem {
 	
 	public static float reproductionProb = 0.1f; // float
 	
-	public static float mutationProb = 0.2f; // float
+	public static float mutationProb = 0.06f; // float
 	
 	public static double crossoverProb = 0.9d;
 	
@@ -158,10 +159,11 @@ public class GeneticProgramFrame extends GPProblem {
 		cycleListeners.remove(ecl);
 	}
 	
-	public GeneticProgramFrame(GPConfiguration a_conf)
-			throws InvalidConfigurationException {
-		super(a_conf);
+	private final EvolutionFactory factory;
+	
+	public GeneticProgramFrame(EvolutionFactory factory) {
 		cycleListeners = new ArrayList<EvolutionCycleListener>();
+		this.factory = factory;
 	}
 	
 	/**
@@ -173,8 +175,9 @@ public class GeneticProgramFrame extends GPProblem {
 	 */
 	@Override
 	public GPGenotype create() throws InvalidConfigurationException {
-		GPConfiguration conf = getGPConfiguration();
-		
+		GPConfiguration conf = new GPConfiguration();
+		setGPConfiguration(conf);
+		initConfig(conf);
 		Class<?>[] types;
 		Class<?>[][] argTypes;
 		
@@ -190,8 +193,8 @@ public class GeneticProgramFrame extends GPProblem {
 		CommandGene[] commands = {
 				new Consume(conf, CommandGene.DoubleClass),
 				// new MoveForward(conf, CommandGene.DoubleClass),
-				new TurnLeft(conf, CommandGene.DoubleClass),
-				new TurnRight(conf, CommandGene.DoubleClass),
+				// new TurnLeft(conf, CommandGene.DoubleClass),
+				// new TurnRight(conf, CommandGene.DoubleClass),
 				new Add(conf, CommandGene.DoubleClass),
 				new Subtract(conf, CommandGene.DoubleClass),
 				new Multiply(conf, CommandGene.DoubleClass),
@@ -207,7 +210,7 @@ public class GeneticProgramFrame extends GPProblem {
 				new Terminal(conf, CommandGene.DoubleClass, 5, 5),
 				new FoodAhead(conf, CommandGene.DoubleClass),
 				new WallAhead(conf, CommandGene.DoubleClass),
-				// new Orientation(conf, CommandGene.DoubleClass),
+				new Orientation(conf, CommandGene.DoubleClass),
 				// new MoveTowards(conf, CommandGene.DoubleClass),
 				new Equals(conf, CommandGene.DoubleClass),
 				new SmellResource(conf, CommandGene.DoubleClass),
@@ -240,52 +243,21 @@ public class GeneticProgramFrame extends GPProblem {
 		
 	}
 	
-	//
-	// Transpose matrix
-	// ----------------
-	public static Double[][] transposeMatrix(Double[][] m) {
-		int r = m.length;
-		int c = m[0].length;
-		Double[][] t = new Double[c][r];
-		for (int i = 0; i < r; ++i) {
-			for (int j = 0; j < c; ++j) {
-				t[j][i] = m[i][j];
-			}
-		}
-		return t;
-	} // end transposeMatrix
-	
 	/*
 	 * makeCommands: makes the CommandGene array given the function listed in
 	 * the configurations file
 	 * ------------------------------------------------------------
 	 */
 
-	public void runner() throws InvalidConfigurationException {
-		// Use the log4j configuration
-		// Log to stdout instead of file
-		// -----------------------------
-		// org.apache.log4j.PropertyConfigurator.configure("log4j.properties");
-		LOGGER.addAppender(new ConsoleAppender(new SimpleLayout(), "System.out"));
-		//
-		// Read a configuration file, or not...
+	public void initConfig(GPConfiguration config)
+			throws InvalidConfigurationException {
 		
-		BasicLifeFactory factory = new BasicLifeFactory();
-		
-		presentation = "TC ALife";
-		
-		// Present the problem
-		// -------------------
-		System.out.println("Presentation: " + presentation);
-		
-		// Setup the algorithm's parameters.
-		// ---------------------------------
-		GPConfiguration config = new GPConfiguration();
 		// We use a delta fitness evaluator because we compute a defect rate,
 		// not
 		// a point score!
 		// ----------------------------------------------------------------------
 		config.setGPFitnessEvaluator(new DeltaGPFitnessEvaluator());
+		config.setFitnessFunction(factory.getGPFitnessFunction());
 		config.setMaxInitDepth(maxInitDepth);
 		config.setPopulationSize(populationSize);
 		// Default selectionMethod is is TournamentSelector(3)
@@ -299,7 +271,6 @@ public class GeneticProgramFrame extends GPProblem {
 		 */
 		config.setMaxCrossoverDepth(maxCrossoverDepth);
 		
-		config.setFitnessFunction(factory.getGPFitnessFunction());
 		/**
 		 * @param a_strict
 		 *            true: throw an error during evolution in case a situation
@@ -346,12 +317,67 @@ public class GeneticProgramFrame extends GPProblem {
 		 * construct a valid program.
 		 */
 		config.setProgramCreationMaxTries(programCreationMaxTries);
-		GPProblem problem = new GeneticProgramFrame(config);
+	}
+	
+	public static void main(String args[]) {
+		
+		EvolutionFactory factory = new BasicLifeFactory();
+		
+		GeneticProgramFrame gpf = new GeneticProgramFrame(factory);
+		
+		final StatsPackage stats = new StatsPackage();
+		
+		gpf.addEvolutionCycleListener(new EvolutionCycleListener() {
+			
+			@Override
+			public void startCycle(EvolutionCycleEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void endCycle(EvolutionCycleEvent e) {
+				stats.add(e.getGPPopulation(), e.getGenerationNum());
+				
+			}
+		});
+		
+		stats.startFitnessGraph();
+		
+		gpf.run();
+	}
+	
+	public void run() {
+		GPGenotype gp = null;
+		try {
+			// Use the log4j configuration
+			// Log to stdout instead of file
+			// -----------------------------
+			// org.apache.log4j.PropertyConfigurator.configure("log4j.properties");
+			
+			LOGGER.addAppender(new ConsoleAppender(new SimpleLayout(),
+					"System.out"));
+			//
+			
+			gp = create();
+			
+		} catch (InvalidConfigurationException e) {
+			e.printStackTrace();
+		}
+		presentation = "TC ALife";
+		
+		// Present the problem
+		// -------------------
+		System.out.println("Presentation: " + presentation);
+		
+		// Setup the algorithm's parameters.
+		// ---------------------------------
+		
 		// Create the genotype of the problem, i.e., define the GP commands and
 		// terminals that can be used, and constrain the structure of the GP
 		// program.
 		// --------------------------------------------------------------------
-		GPGenotype gp = problem.create();
+		
 		// gp.setVerboseOutput(true);
 		gp.setVerboseOutput(false);
 		startTime = System.currentTimeMillis();
@@ -369,7 +395,7 @@ public class GeneticProgramFrame extends GPProblem {
 				+ SystemKit.niceMemory(SystemKit.getTotalMemoryMB()) + " MB");
 		fittest = null;
 		
-		new GPVisual((GeneticProgramFrame) problem, factory);
+		new GPVisual(this, factory);
 		double bestFit = -1.0d;
 		String bestProgram = "";
 		int bestGen = 0;
@@ -439,7 +465,7 @@ public class GeneticProgramFrame extends GPProblem {
 					similiar.clear(); // = new HashMap<String,Integer>();
 				}
 				plateau = 0;
-				config.setMutationProb(0.1f);
+				getGPConfiguration().setMutationProb(0.1f);
 				mutationProb = 0.1f;
 				// Ensure that the best solution is in the population.
 				// gp.addFittestProgram(thisFittest);
@@ -451,10 +477,15 @@ public class GeneticProgramFrame extends GPProblem {
 			if (plateau > 15 && gen > 30 && mutationProb < 0.3) {
 				System.out.println("Increase Mutation Rate");
 				mutationProb *= 1.2;
-				config.setMutationProb(mutationProb);
+				getGPConfiguration().setMutationProb(mutationProb);
 				
 				plateau = 0;
 			}
+			
+			for (EvolutionCycleListener e : cycleListeners) {
+				e.endCycle(new EvolutionCycleEvent(pop, gen));
+			}
+			
 		}
 		
 		// Print the best solution so far to the console.
