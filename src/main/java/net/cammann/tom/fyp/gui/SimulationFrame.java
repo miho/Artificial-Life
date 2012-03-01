@@ -77,7 +77,12 @@ public class SimulationFrame extends JFrame {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-					sc.pause();
+					if (sc.isStopped()) {
+						sc.start();
+					} else {
+						sc.pause();
+					}
+					
 				}
 				if (e.getKeyCode() == KeyEvent.VK_F) {
 					sc.moveOnce();

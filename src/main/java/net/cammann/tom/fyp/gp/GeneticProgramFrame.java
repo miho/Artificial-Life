@@ -17,10 +17,10 @@ import net.cammann.tom.fyp.core.EnvironmentMap;
 import net.cammann.tom.fyp.core.SimulationContext;
 import net.cammann.tom.fyp.gp.commands.Consume;
 import net.cammann.tom.fyp.gp.commands.FoodAhead;
-import net.cammann.tom.fyp.gp.commands.MoveTowards;
 import net.cammann.tom.fyp.gp.commands.OnResource;
-import net.cammann.tom.fyp.gp.commands.Orientation;
 import net.cammann.tom.fyp.gp.commands.SmellResource;
+import net.cammann.tom.fyp.gp.commands.TurnLeft;
+import net.cammann.tom.fyp.gp.commands.TurnRight;
 import net.cammann.tom.fyp.gp.commands.WallAhead;
 import net.cammann.tom.fyp.gui.SimulationFrame;
 
@@ -78,11 +78,11 @@ public class GeneticProgramFrame extends GPProblem {
 	// standard GP parameters
 	public static int minInitDepth = 2;
 	
-	public static int maxInitDepth = 30;
+	public static int maxInitDepth = 10;
 	
-	public static int populationSize = 200;
+	public static int populationSize = 1000;
 	
-	public static int maxCrossoverDepth = 40;
+	public static int maxCrossoverDepth = 10;
 	
 	public static int programCreationMaxTries = 5;
 	
@@ -160,13 +160,7 @@ public class GeneticProgramFrame extends GPProblem {
 	@Override
 	public GPGenotype create() throws InvalidConfigurationException {
 		GPConfiguration conf = getGPConfiguration();
-		// At first, we define the return type of the GP program.
-		// ------------------------------------------------------
-		// Then, we define the arguments of the GP parts. Normally, only for
-		// ADF's
-		// there is a specification here, otherwise it is empty as in first
-		// case.
-		// -----------------------------------------------------------------------
+		
 		Class<?>[] types;
 		Class<?>[][] argTypes;
 		
@@ -182,8 +176,8 @@ public class GeneticProgramFrame extends GPProblem {
 		CommandGene[] commands = {
 				new Consume(conf, CommandGene.DoubleClass),
 				// new MoveForward(conf, CommandGene.DoubleClass),
-				// new TurnLeft(conf, CommandGene.DoubleClass),
-				// new TurnRight(conf, CommandGene.DoubleClass),
+				new TurnLeft(conf, CommandGene.DoubleClass),
+				new TurnRight(conf, CommandGene.DoubleClass),
 				new Add(conf, CommandGene.DoubleClass),
 				new Subtract(conf, CommandGene.DoubleClass),
 				new Multiply(conf, CommandGene.DoubleClass),
@@ -192,7 +186,6 @@ public class GeneticProgramFrame extends GPProblem {
 				new IfElse(conf, CommandGene.DoubleClass),
 				new LesserThan(conf, CommandGene.DoubleClass),
 				new GreaterThan(conf, CommandGene.DoubleClass),
-				new Consume(conf, CommandGene.DoubleClass),
 				new Terminal(conf, CommandGene.DoubleClass, 3, 3),
 				new Terminal(conf, CommandGene.DoubleClass, 1, 1),
 				new Terminal(conf, CommandGene.DoubleClass, 0, 0),
@@ -200,8 +193,8 @@ public class GeneticProgramFrame extends GPProblem {
 				new Terminal(conf, CommandGene.DoubleClass, 5, 5),
 				new FoodAhead(conf, CommandGene.DoubleClass),
 				new WallAhead(conf, CommandGene.DoubleClass),
-				new Orientation(conf, CommandGene.DoubleClass),
-				new MoveTowards(conf, CommandGene.DoubleClass),
+				// new Orientation(conf, CommandGene.DoubleClass),
+				// new MoveTowards(conf, CommandGene.DoubleClass),
 				new Equals(conf, CommandGene.DoubleClass),
 				new SmellResource(conf, CommandGene.DoubleClass),
 				// new SubProgram(conf, 5, CommandGene.DoubleClass),
@@ -230,10 +223,6 @@ public class GeneticProgramFrame extends GPProblem {
 		// ----------------------------------------------------------
 		return GPGenotype.randomInitialGenotype(conf, types, argTypes,
 				nodeSets, maxNodes, verboseOutput);
-		// this is experimental
-		// return GPGenotype.randomInitialGenotype(conf, types, argTypes,
-		// nodeSets,
-		// minDepths,maxDepths, maxNodes, fullModeAllowed,verboseOutput);
 		
 	}
 	
@@ -377,7 +366,7 @@ public class GeneticProgramFrame extends GPProblem {
 		int plateau = 0;
 		for (int gen = 1; gen <= numEvolutions; gen++) {
 			gp.evolve(); // evolve one generation
-			if (gen % 100 == 0) {
+			if (gen % 20 == 0) {
 				System.out.println("Generation: " + gen);
 			}
 			gp.calcFitness();

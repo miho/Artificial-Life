@@ -52,8 +52,8 @@ public class ALifeGP extends ABug {
 	@Override
 	public boolean consume() {
 		// TODO FIXXXX
-		MOVE_COUNT++;
-		energy -= 5;
+		// MOVE_COUNT++;
+		// energy -= 5;
 		try {
 			consumeResource(map.getResource(getPosition()));
 			return true;
@@ -72,14 +72,10 @@ public class ALifeGP extends ABug {
 				Object[] o = { getThis() };
 				double x = gp.execute_double(0, o);
 				
-				if (x == 0) {
+				if (x >= 0) {
 					moveForward();
-				} else if (x > 0 && x < 5) {
-					turnLeft();
-				} else if (x > 5 && x < 10) {
-					turnRight();
+					// consume();
 				}
-				
 				MOVE_COUNT++;
 				energy -= 5;
 				return 1;

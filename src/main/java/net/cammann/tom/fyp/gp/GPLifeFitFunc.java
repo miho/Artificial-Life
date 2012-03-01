@@ -33,10 +33,14 @@ public class GPLifeFitFunc extends GPFitnessFunction {
 		
 		sc.initSimulation();
 		sc.setVerbosity(0);
-		sc.limitedRun(factory.getLenOfFitFuncRun());
+		sc.limitedRun(100);
 		
 		for (ALife life : sc.getLife()) {
-			fitness += computeRawFitness(life);
+			
+			double f = computeRawFitness(life);
+			
+			fitness += f;
+			
 		}
 		
 		return fitness / sc.getLife().size();

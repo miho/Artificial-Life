@@ -37,7 +37,8 @@ public class GPVisual extends JFrame {
 					
 					final SimulationContext sc = new SimulationContext(map);
 					
-					sc.addLife(new ALifeGP(GeneticProgramFrame.fittest, map));
+					sc.addLife(factory.createLife(GeneticProgramFrame.fittest,
+							map));
 					
 					sc.initSimulation();
 					sc.setVerbosity(0);

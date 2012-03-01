@@ -231,9 +231,9 @@ public class SimulationContext {
 				if (life.getEnergy() < 0) {
 					// log.trace("Life is dead");
 				}
-				if (life.MOVE_COUNT > numRuns) {
-					break;
-				}
+				// if (life.MOVE_COUNT > numRuns) {
+				// break;
+				// }
 				life.doMove();
 				
 			}
@@ -294,5 +294,13 @@ public class SimulationContext {
 		}
 		map = _map;
 		
+	}
+	
+	public boolean isStopped() {
+		return !timer.isRunning();
+	}
+	
+	public boolean isRunning() {
+		return timer.isRunning();
 	}
 }
