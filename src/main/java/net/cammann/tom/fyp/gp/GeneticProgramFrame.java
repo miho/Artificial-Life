@@ -11,9 +11,12 @@ package net.cammann.tom.fyp.gp;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import net.cammann.tom.fyp.basicLife.BasicLifeFactory;
 import net.cammann.tom.fyp.core.EnvironmentMap;
+import net.cammann.tom.fyp.core.EvolutionCycleEvent;
+import net.cammann.tom.fyp.core.EvolutionCycleListener;
 import net.cammann.tom.fyp.core.SimulationContext;
 import net.cammann.tom.fyp.gp.commands.Consume;
 import net.cammann.tom.fyp.gp.commands.FoodAhead;
@@ -144,10 +147,21 @@ public class GeneticProgramFrame extends GPProblem {
 	public static boolean showPopulation = false;
 	
 	public static boolean showSimiliar = false;
+	private final List<EvolutionCycleListener> cycleListeners;
+	
+	public void addEvolutionCycleListener(EvolutionCycleListener ecl) {
+		cycleListeners.add(ecl);
+		
+	}
+	
+	public void removeEvolutionCycleListener(EvolutionCycleListener ecl) {
+		cycleListeners.remove(ecl);
+	}
 	
 	public GeneticProgramFrame(GPConfiguration a_conf)
 			throws InvalidConfigurationException {
 		super(a_conf);
+		cycleListeners = new ArrayList<EvolutionCycleListener>();
 	}
 	
 	/**
@@ -247,7 +261,7 @@ public class GeneticProgramFrame extends GPProblem {
 	 * ------------------------------------------------------------
 	 */
 
-	public static void main(String[] args) throws Exception {
+	public void runner() throws InvalidConfigurationException {
 		// Use the log4j configuration
 		// Log to stdout instead of file
 		// -----------------------------
@@ -365,12 +379,17 @@ public class GeneticProgramFrame extends GPProblem {
 		}
 		int plateau = 0;
 		for (int gen = 1; gen <= numEvolutions; gen++) {
+			GPPopulation pop = gp.getGPPopulation();
+			for (EvolutionCycleListener e : cycleListeners) {
+				e.startCycle(new EvolutionCycleEvent(pop, gen));
+			}
+			
 			gp.evolve(); // evolve one generation
 			if (gen % 20 == 0) {
 				System.out.println("Generation: " + gen);
 			}
 			gp.calcFitness();
-			GPPopulation pop = gp.getGPPopulation();
+			pop = gp.getGPPopulation();
 			IGPProgram thisFittest = pop.determineFittestProgram();
 			// TODO: Here I would like to have the correlation coefficient etc
 			thisFittest.setApplicationData(("gen" + gen));

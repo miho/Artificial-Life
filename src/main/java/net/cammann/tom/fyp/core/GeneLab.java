@@ -23,6 +23,7 @@ public class GeneLab {
 	
 	private int popSize;
 	private int evolutions;
+	private int genNum;
 	
 	private final EvolutionFactory factory;
 	private Configuration conf;
@@ -31,9 +32,9 @@ public class GeneLab {
 	
 	public GeneLab(EvolutionFactory factory) {
 		this.factory = factory;
-		popSize = 10;
+		popSize = 100;
 		
-		evolutions = 2;
+		evolutions = 60;
 		
 		cycleListeners = new ArrayList<EvolutionCycleListener>();
 		initConfig();
@@ -135,18 +136,18 @@ public class GeneLab {
 	}
 	
 	public void start() {
-		
+		genNum = 0;
 		for (int i = 0; i < evolutions; i++) {
 			for (EvolutionCycleListener e : cycleListeners) {
 				e.startCycle(new EvolutionCycleEvent(
-						population.getPopulation(), evolutions));
+						population.getPopulation(), genNum));
 			}
 			
 			population.evolve();
-			
+			genNum++;
 			for (EvolutionCycleListener e : cycleListeners) {
 				e.endCycle(new EvolutionCycleEvent(population.getPopulation(),
-						evolutions));
+						genNum));
 			}
 		}
 		

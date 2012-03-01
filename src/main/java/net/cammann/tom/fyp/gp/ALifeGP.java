@@ -74,7 +74,7 @@ public class ALifeGP extends ABug {
 				
 				if (x >= 0) {
 					moveForward();
-					// consume();
+					consume();
 				}
 				MOVE_COUNT++;
 				energy -= 5;

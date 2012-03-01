@@ -2,8 +2,6 @@ package net.cammann.tom.fyp.stats;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -14,6 +12,9 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
 import net.cammann.tom.fyp.utils.BucketList;
+import net.cammann.tom.fyp.utils.ListChangeEvent;
+import net.cammann.tom.fyp.utils.ListChangeListener;
+import net.cammann.tom.fyp.utils.WatchableList;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
@@ -23,21 +24,31 @@ import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jgap.Population;
+import org.jgap.gp.impl.GPPopulation;
 
 public class StatsPackage {
 	
-	private final List<GenerationInformation> stats;
+	private final WatchableList<GenerationInformation> stats;
 	
 	public StatsPackage() {
-		stats = new ArrayList<GenerationInformation>();
+		stats = new WatchableList<GenerationInformation>();
 	}
 	
-	public void add(Population pop, String id) {
-		stats.add(new GenerationInformation(pop, id));
+	public void add(Population pop, String id, int genNum) {
+		stats.add(new GenerationInformation(pop, id, genNum));
+	}
+	
+	public void add(GPPopulation pop, String id, int genNum) {
+		stats.add(new GenerationInformation(pop, id, genNum));
 	}
 	
 	public void add(Population pop, int id) {
-		stats.add(new GenerationInformation(pop, String.valueOf(id)));
+		stats.add(new GenerationInformation(pop, String.valueOf(id), id));
+		
+	}
+	
+	public void add(GPPopulation pop, int id) {
+		stats.add(new GenerationInformation(pop, String.valueOf(id), id));
 	}
 	
 	public void textStats(int num) {
@@ -130,12 +141,61 @@ public class StatsPackage {
 		
 	}
 	
+	public void startFitnessGraph() {
+		String title = "Fitness across generations";
+		XYSeriesCollection data = new XYSeriesCollection();
+		final XYSeries avgFit = new XYSeries("Average Fitness");
+		final XYSeries minFit = new XYSeries("Minimum Fitness");
+		final XYSeries maxFit = new XYSeries("Maximum Fitness");
+		
+		data.addSeries(minFit);
+		data.addSeries(avgFit);
+		data.addSeries(maxFit);
+		
+		stats.addListChangeListener(new ListChangeListener() {
+			
+			@Override
+			public void dataRemoved(ListChangeEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void dataChanged(ListChangeEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void dataAdded(ListChangeEvent e) {
+				GenerationInformation info = (GenerationInformation) e
+						.getElement();
+				
+				avgFit.add(info.getGenNum(), info.getAvgFitness());
+				minFit.add(info.getGenNum(), info.getMinFitness());
+				maxFit.add(info.getGenNum(), info.getMaxFitness());
+			}
+		});
+		
+		final JFreeChart chart = ChartFactory.createXYLineChart(title,
+				"Generation", "Fitness Value", data, PlotOrientation.VERTICAL,
+				true, true, false);
+		
+		XYPlot plot = chart.getXYPlot();
+		
+		plot.setRangeGridlinePaint(Color.red);
+		ChartFrame chartFrame = new ChartFrame(title, chart);
+		chartFrame.setVisible(true);
+		chartFrame.setSize(600, 450);
+		
+	}
+	
 	public void showFitnessGraph() {
 		String title = "Fitness across generations";
 		XYSeriesCollection data = new XYSeriesCollection();
-		XYSeries avgFit = new XYSeries("Average Fitness");
-		XYSeries minFit = new XYSeries("Minimum Fitness");
-		XYSeries maxFit = new XYSeries("Maximum Fitness");
+		final XYSeries avgFit = new XYSeries("Average Fitness");
+		final XYSeries minFit = new XYSeries("Minimum Fitness");
+		final XYSeries maxFit = new XYSeries("Maximum Fitness");
 		int count = 0;
 		for (GenerationInformation pop : stats) {
 			avgFit.add(count, pop.getAvgFitness());

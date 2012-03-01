@@ -44,6 +44,7 @@ public class SimulationContext {
 		EvolutionFactory lf = new BasicLifeFactory();
 		
 		GeneLab g = new GeneLab(lf);
+		stats.startFitnessGraph();
 		g.addEvolutionCycleListener(new EvolutionCycleListener() {
 			
 			@Override
@@ -60,12 +61,13 @@ public class SimulationContext {
 				System.out.println("Finished Generation: "
 						+ e.getGenerationNum());
 				stats.add(e.getPopulation(), e.getGenerationNum());
+				
 			}
 		});
 		
 		g.start();
 		// stats.showFreqFitnessGraph();
-		stats.showFitnessGraph();
+		
 		stats.showGenerationGeneTable();
 		
 		System.out.println("Finished gene lab");
