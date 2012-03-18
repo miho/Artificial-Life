@@ -7,28 +7,32 @@ import net.cammann.tom.fyp.core.Resource.ResourceType;
 import net.cammann.tom.fyp.symbotes.SymbResource;
 
 public class ResourceFactory {
-	int x, y;
 	int max_cals, min_cals;
+	private final EnvironmentMap map;
 	
-	public ResourceFactory(int x, int y) {
-		this.x = x;
-		this.y = y;
+	public ResourceFactory(EnvironmentMap map) {
+		this.map = map;
 	}
 	
 	public Resource createResource(ResourceType rt) {
-		
+		Random r = new Random();
 		switch (rt) {
 			case APPLE:
-				Random r = new Random();
-				return new Apple(r.nextInt(x / 10) * 10, r.nextInt(y / 10) * 10);
+
+				return new Apple(map, r.nextInt((map.getWidth()) / 10) * 10,
+						r.nextInt(map.getHeight() / 10) * 10);
 			case CARROT:
 				throw new IllegalArgumentException("Carrot not created yet");
 				
 			case S1:
-				return new SymbResource(x, y, ResourceType.S1);
+				return new SymbResource(map,
+						r.nextInt((map.getWidth()) / 10) * 10, r.nextInt(map
+								.getHeight() / 10) * 10, rt);
 				
 			case S2:
-				return new SymbResource(x, y, ResourceType.S2);
+				return new SymbResource(map,
+						r.nextInt((map.getWidth()) / 10) * 10, r.nextInt(map
+								.getHeight() / 10) * 10, rt);
 			default:
 				throw new IllegalArgumentException("Bad resource type given");
 				

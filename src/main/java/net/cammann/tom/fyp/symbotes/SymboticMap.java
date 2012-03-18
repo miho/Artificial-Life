@@ -25,7 +25,7 @@ public class SymboticMap extends SimpleMap {
 	}
 	
 	@Override
-	public void initLife(ALife life) {
+	public void placeLife(ALife life) {
 		life.setX(new Random().nextInt((life.getMap().getWidth() + 1) / 10) * 10);
 		life.setY(new Random().nextInt((life.getMap().getHeight() + 1) / 10) * 10);
 		

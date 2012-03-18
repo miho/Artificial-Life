@@ -6,6 +6,7 @@ import net.cammann.tom.fyp.core.ALife;
 
 public class Ant extends ABug {
 	
+	@Override
 	public LifeCommand[] getCommandList() {
 		// TODO Auto-generated method stub
 		return null;
@@ -23,9 +24,16 @@ public class Ant extends ABug {
 		return null;
 	}
 	
+	@Override
 	public boolean consume() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	@Override
+	public void reset() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

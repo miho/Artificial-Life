@@ -1,5 +1,7 @@
 package net.cammann.tom.fyp.symbotes;
 
+import java.awt.Graphics2D;
+
 import net.cammann.tom.fyp.commands.ConsumeCommand;
 import net.cammann.tom.fyp.commands.DropResourceCommand;
 import net.cammann.tom.fyp.commands.ForwardCommand;
@@ -57,7 +59,7 @@ public class Symbote extends ABug {
 		if (getMap().hasResource(getPosition())) {
 			return false;
 		}
-		getMap().addResource(new SymbResource(getPosition(), droppable));
+		getMap().addResource(new SymbResource(map, getPosition(), droppable));
 		decrementEnegery(70);
 		return true;
 	}
@@ -151,6 +153,17 @@ public class Symbote extends ABug {
 	@Override
 	public boolean consume() {
 		return consumeResource(map.getResource(getPosition()));
+	}
+	
+	@Override
+	public void draw(Graphics2D g2) {
+		g2.drawImage(getImage(), getX(), getY(), null);
+	}
+	
+	@Override
+	public void reset() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

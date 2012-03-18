@@ -61,13 +61,14 @@ public class MapPanel extends JPanel {
 		
 		g2.setColor(Color.GREEN);
 		for (Resource i : sc.getMap().getResourceList()) {
-			g2.drawImage(i.getImage(), i.getX(), i.getY(), getParent());
+			i.draw(g2);
 		}
 		
 		for (int i = 0; i < sc.getLife().size(); i++) {
 			ALife life = sc.getLife().get(i);
+			life.draw(g2);
 			g2.setColor(Color.BLACK);
-			g2.drawImage(life.getImage(), life.getX(), life.getY(), getParent());
+			
 			g2.drawString(i + "", life.getX(), life.getY());
 			
 			g2.drawString("Life Form: " + (i + 1) + " - ",

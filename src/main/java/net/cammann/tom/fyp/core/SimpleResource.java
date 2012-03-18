@@ -19,7 +19,7 @@ import net.cammann.tom.fyp.utils.Logger;
  * @since 31/01/2012
  * 
  */
-public class SimpleResource implements Resource {
+public class SimpleResource extends Resource {
 	
 	protected int x;
 	protected int y;
@@ -27,25 +27,28 @@ public class SimpleResource implements Resource {
 	protected Image img = null;
 	protected final int foodChainValue = 0;
 	protected final boolean isCarried;
+	private final EnvironmentMap map;
 	
 	public int MAX_CALORIES = 200;
 	public int MIN_CALORIES = 100;
 	protected ResourceType type;
 	public static Logger log = new Logger("Apple");
 	
-	public SimpleResource(Point p) {
-		this(p.x, p.y);
+	public SimpleResource(EnvironmentMap map, Point p) {
+		this(map, p.x, p.y);
 	}
 	
-	public SimpleResource(int x, int y) {
+	public SimpleResource(EnvironmentMap map, int x, int y) {
 		this.x = x;
 		this.y = y;
 		calories = new Random().nextInt(MAX_CALORIES - MIN_CALORIES)
 				+ MIN_CALORIES;
 		isCarried = false;
+		this.map = map;
 	}
 	
-	public SimpleResource(int x, int y, int min_cals, int max_cals) {
+	public SimpleResource(EnvironmentMap map, int x, int y, int min_cals,
+			int max_cals) {
 		this.x = x;
 		this.y = y;
 		this.MAX_CALORIES = max_cals;
@@ -53,6 +56,7 @@ public class SimpleResource implements Resource {
 		calories = new Random().nextInt(MAX_CALORIES - MIN_CALORIES)
 				+ MIN_CALORIES;
 		isCarried = false;
+		this.map = map;
 	}
 	
 	@Override
@@ -103,8 +107,7 @@ public class SimpleResource implements Resource {
 		return y;
 	}
 	
-	@Override
-	public Image getImage() {
+	private Image getImage() {
 		
 		return getResourceImage();
 	}
@@ -159,5 +162,17 @@ public class SimpleResource implements Resource {
 	@Override
 	public boolean isCarried() {
 		return isCarried;
+	}
+	
+	@Override
+	public void draw(Graphics2D g2) {
+		g2.drawImage(getImage(), getX(), getY(), null);
+		
+	}
+	
+	@Override
+	public void consume() {
+		map.removeResource(this);
+		
 	}
 }

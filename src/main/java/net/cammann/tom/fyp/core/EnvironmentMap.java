@@ -14,7 +14,7 @@ public interface EnvironmentMap {
 	
 	public int getWidth();
 	
-	public void initLife(ALife life);
+	public void placeLife(ALife life);
 	
 	public Dimension getDimension();
 	
@@ -22,7 +22,7 @@ public interface EnvironmentMap {
 	
 	public void setWidth(int width);
 	
-	public void addResource(Resource r);
+	// public void addResource(Consumable r);
 	
 	public HashedResourceMap getResourceList();
 	
@@ -38,9 +38,13 @@ public interface EnvironmentMap {
 	
 	public boolean removeResource(Point p);
 	
-	public boolean removeResource(Resource r);
+	// public boolean removeResource(Consumable r);
 	
 	public void resetMap();
 	
 	public void initResources();
+	
+	void addResource(Resource r);
+	
+	boolean removeResource(Resource r);
 }

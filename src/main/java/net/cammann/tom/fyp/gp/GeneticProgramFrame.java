@@ -51,7 +51,6 @@ import org.jgap.gp.impl.GPPopulation;
 import org.jgap.gp.impl.ProgramChromosome;
 import org.jgap.gp.impl.TournamentSelector;
 import org.jgap.gp.terminal.Terminal;
-import org.jgap.gp.terminal.Variable;
 import org.jgap.util.NumberKit;
 import org.jgap.util.SystemKit;
 
@@ -64,90 +63,51 @@ public class GeneticProgramFrame extends GPProblem {
 	 */
 	public static IGPProgram fittest;
 	// number of variables to use (output variable is excluded)
-	public static int numInputVariables;
-	
-	// the variables to use (of size numInputVariables)
-	public static Variable[] variables;
-	
-	// index of the output variable
-	
-	public static int[] ignoreVariables; // TODO
-	
-	// constants
-	public static ArrayList<Double> constants = new ArrayList<Double>();
-	
-	// If we have found a perfect solution.
-	public static boolean foundPerfect = false;
+	private int numInputVariables;
 	
 	// standard GP parameters
-	public static int minInitDepth = 2;
+	private final int minInitDepth = 2;
 	
-	public static int maxInitDepth = 10;
+	private final int maxInitDepth = 10;
 	
-	public static int populationSize = 1000;
+	private final int populationSize = 1000;
 	
-	public static int maxCrossoverDepth = 10;
+	private final int maxCrossoverDepth = 10;
 	
-	public static int programCreationMaxTries = 5;
+	private final int programCreationMaxTries = 5;
 	
-	public static int numEvolutions = 500;
+	private final int numEvolutions = 500;
 	
-	public static boolean verboseOutput = true;
+	private final boolean verboseOutput = true;
 	
-	public static int maxNodes = 3000;
+	private final int maxNodes = 3000;
 	
-	public static double functionProb = 0.8d;
+	private final double functionProb = 0.8d;
 	
-	public static float reproductionProb = 0.1f; // float
+	private final float reproductionProb = 0.1f; // float
 	
-	public static float mutationProb = 0.06f; // float
+	private float mutationProb = 0.06f; // float
 	
-	public static double crossoverProb = 0.9d;
+	private final double crossoverProb = 0.9d;
 	
-	public static float dynamizeArityProb = 0.08f; // float
+	private final float dynamizeArityProb = 0.08f; // float
 	
-	public static double newChromsPercent = 0.1d;
+	private final double newChromsPercent = 0.1d;
 	
-	public static int tournamentSelectorSize = 0;
-	
-	// lower/upper ranges for the Terminal
-	
-	// Should the terminal be a wholenumber or not?
-	public static boolean terminalWholeNumbers = true;
-	
-	public static String returnType = "DoubleClass"; // not used yet
-	
-	public static String presentation = "";
-	// Should we punish length of solutions?
-	// Note: Very simplistic version.
-	// public static boolean punishLength = false;
-	
-	// if the values are too small we may want to scale
-	// the error
-	public static double scaleError = -1.0d;
-	
-	// "bumping" is when we found a "perfect solution" and
-	// want to see more "perfect solutions"
-	public static boolean bumpPerfect = false;
-	
-	// the limit for which we should show all (different) solutions
-	public static Double bumpValue = 0.0000;
-	
-	// checks for already shown solution when bumping
-	private static HashMap<String, Integer> foundSolutions = new HashMap<String, Integer>();
+	private final int tournamentSelectorSize = 0;
 	
 	// timing
-	public static long startTime;
+	private long startTime;
 	
-	public static long endTime;
+	private long endTime;
 	
 	// if > 0.0d -> stop if the fitness is below or equal
 	// this value. TODO!
-	public static double stopCriteria = -1.0d;
+	private final double stopCriteria = -1.0d;
 	
-	public static boolean showPopulation = false;
+	private final boolean showPopulation = false;
 	
-	public static boolean showSimiliar = false;
+	private final boolean showSimiliar = false;
 	private final List<EvolutionCycleListener> cycleListeners;
 	
 	public void addEvolutionCycleListener(EvolutionCycleListener ecl) {
@@ -364,11 +324,6 @@ public class GeneticProgramFrame extends GPProblem {
 		} catch (InvalidConfigurationException e) {
 			e.printStackTrace();
 		}
-		presentation = "TC ALife";
-		
-		// Present the problem
-		// -------------------
-		System.out.println("Presentation: " + presentation);
 		
 		// Setup the algorithm's parameters.
 		// ---------------------------------
@@ -553,7 +508,7 @@ public class GeneticProgramFrame extends GPProblem {
 	 * 
 	 * @author Hakan Kjellerstrand (originally by Klaus Meffert)
 	 */
-	public static void myOutputSolution(IGPProgram a_best, int gen) {
+	public void myOutputSolution(IGPProgram a_best, int gen) {
 		String freeMB = SystemKit.niceMemory(SystemKit.getFreeMemoryMB());
 		System.out.println("Evolving generation " + (gen) + "/" + numEvolutions
 				+ ", memory free: " + freeMB + " MB");

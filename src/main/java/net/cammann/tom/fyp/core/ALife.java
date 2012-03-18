@@ -1,6 +1,5 @@
 package net.cammann.tom.fyp.core;
 
-import java.awt.Image;
 import java.awt.Point;
 import java.util.List;
 
@@ -10,7 +9,8 @@ import java.util.List;
  * @since 31/01/2012
  * 
  */
-public abstract class ALife implements Cloneable, Commandable {
+public abstract class ALife implements Cloneable, Commandable, Paintable,
+		Plottable, Consumer {
 	public int MOVE_COUNT = 0;
 	protected int x, y;
 	protected int energy;
@@ -21,13 +21,6 @@ public abstract class ALife implements Cloneable, Commandable {
 	protected Resource holding;
 	
 	protected ORIENTATION orientation;
-	
-	/**
-	 * Gets image representing the life form
-	 * 
-	 * @return The image/icon to display for the life form
-	 */
-	public abstract Image getImage();
 	
 	/**
 	 * Tells logger in implementation what level to log at.
@@ -45,10 +38,6 @@ public abstract class ALife implements Cloneable, Commandable {
 	 * 
 	 */
 	public abstract void doMove();
-	
-	public abstract boolean canConsumeResource(Resource r);
-	
-	public abstract boolean consumeResource(Resource r);
 	
 	public abstract boolean isHoldingResource();
 	
@@ -120,9 +109,16 @@ public abstract class ALife implements Cloneable, Commandable {
 		return new Point(x, y);
 	}
 	
+	@Override
+	public void setPosition(Point p) {
+		this.x = p.x;
+		this.y = p.x;
+	}
+	
 	/**
 	 * @param x
 	 */
+	@Override
 	public void setX(int x) {
 		this.x = x;
 	}
@@ -130,6 +126,7 @@ public abstract class ALife implements Cloneable, Commandable {
 	/**
 	 * @param y
 	 */
+	@Override
 	public void setY(int y) {
 		
 		this.y = y;
@@ -154,6 +151,14 @@ public abstract class ALife implements Cloneable, Commandable {
 	 */
 	public void setOrientation(ORIENTATION orientation) {
 		this.orientation = orientation;
+	}
+	
+	public void setOrientation(int o) {
+		if (o < 0 || o > 3) {
+			throw new IllegalArgumentException("Cannot set orientation to: "
+					+ o);
+		}
+		this.orientation = ORIENTATION.values()[o];
 	}
 	
 	/**
@@ -184,9 +189,6 @@ public abstract class ALife implements Cloneable, Commandable {
 	@Override
 	public abstract void turnRight();
 	
-	@Override
-	public abstract ALife clone();
-	
 	/**
 	 * Moves the life form forward.
 	 * 
@@ -204,4 +206,8 @@ public abstract class ALife implements Cloneable, Commandable {
 		return map;
 	}
 	
+	public abstract void reset();
+	
+	@Override
+	public abstract ALife clone();
 }

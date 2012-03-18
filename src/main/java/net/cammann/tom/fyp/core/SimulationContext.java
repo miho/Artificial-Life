@@ -1,7 +1,6 @@
 package net.cammann.tom.fyp.core;
 
 import java.awt.Dimension;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -12,7 +11,6 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import net.cammann.tom.fyp.basicLife.BasicLifeFactory;
-import net.cammann.tom.fyp.core.Commandable.ORIENTATION;
 import net.cammann.tom.fyp.gui.SimulationFrame;
 import net.cammann.tom.fyp.stats.StatsPackage;
 import net.cammann.tom.fyp.utils.Logger;
@@ -72,11 +70,12 @@ public class SimulationContext {
 		
 		System.out.println("Finished gene lab");
 		
-		runFromFactory(lf, g.getBestSolutionSoFar());
+		createAndShowFromFactory(lf, g.getBestSolutionSoFar());
 		
 	}
 	
-	public static void runFromFactory(EvolutionFactory lf, IChromosome chromo) {
+	public static void createAndShowFromFactory(EvolutionFactory lf,
+			IChromosome chromo) {
 		
 		EnvironmentMap map = lf.createMap();
 		
@@ -134,15 +133,18 @@ public class SimulationContext {
 		return map;
 	}
 	
+	// TODO
+	// DO WE NEED INIT SIM? Setup stuff in constructor. setup life using
+	// resetLife()?
 	public void initSimulation() {
 		
 		for (ALife life : bugs) {
+			// TODO
 			
-			map.initLife(life);
-			life.setEnergy(1000);
-			life.setOrientation(ORIENTATION.UP);
-			life.setMoveMemory(new ArrayList<Point>());
-			
+			// What are these calls doing, should be somewhere else, out of the
+			// view
+			map.placeLife(life);
+			life.reset();
 			counter = 0;
 			log.debug("Starting energy: " + life.getEnergy());
 		}

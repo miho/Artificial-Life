@@ -25,7 +25,7 @@ public class StaticMap extends SimpleMap {
 	public void initResources() {
 		if (RESOURCE_LIST == null) {
 			RESOURCE_LIST = new ArrayList<Resource>();
-			ResourceFactory r = new ResourceFactory(getWidth(), getHeight());
+			ResourceFactory r = new ResourceFactory(this);
 			for (int i = 0; i < 50; i++) {
 				RESOURCE_LIST.add(r.createResource(ResourceType.APPLE));
 			}
@@ -44,7 +44,7 @@ public class StaticMap extends SimpleMap {
 	}
 	
 	@Override
-	public void initLife(ALife life) {
+	public void placeLife(ALife life) {
 		if (x == -1) {
 			x = new Random().nextInt((life.getMap().getWidth() + 1) / 10) * 10;
 			y = new Random().nextInt((life.getMap().getHeight() + 1) / 10) * 10;

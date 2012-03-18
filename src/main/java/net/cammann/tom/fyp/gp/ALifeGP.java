@@ -2,6 +2,7 @@ package net.cammann.tom.fyp.gp;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Random;
 
 import net.cammann.tom.fyp.commands.LifeCommand;
 import net.cammann.tom.fyp.core.ABug;
@@ -89,6 +90,13 @@ public class ALifeGP extends ABug {
 	@Override
 	public ALife clone() {
 		return new ALifeGP(gp, getMap());
+	}
+	
+	@Override
+	public void reset() {
+		setEnergy(1000);
+		setOrientation(new Random().nextInt(4));
+		setMoveMemory(new ArrayList<Point>());
 	}
 	
 }

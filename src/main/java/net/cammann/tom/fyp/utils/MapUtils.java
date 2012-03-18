@@ -42,54 +42,54 @@ public class MapUtils {
 	
 	public static EnvironmentMap LoadMap(File file) {
 		SimpleMap map = null;
+		final List<Resource> rList = new ArrayList<Resource>();
+		class QuickMap extends SimpleMap {
+			
+			public QuickMap(int width, int height) {
+				super(width, height);
+			}
+			
+			@Override
+			public void resetMap() {
+				resourceList.clear();
+				initResources();
+			}
+			
+			@Override
+			public void initResources() {
+				for (Resource r : rList) {
+					addResource(r);
+				}
+				
+			}
+			
+			@Override
+			public void placeLife(ALife life) {
+				life.setX(new Random()
+						.nextInt((life.getMap().getWidth() + 1) / 10) * 10);
+				life.setY(new Random()
+						.nextInt((life.getMap().getHeight() + 1) / 10) * 10);
+			}
+			
+		}
+		
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(file));
 			
 			int width = Integer.valueOf(br.readLine());
 			int height = Integer.valueOf(br.readLine());
-			final List<Resource> rList = new ArrayList<Resource>();
 			
+			map = new QuickMap(width, height);
 			String line = "";
 			while ((line = br.readLine()) != null) {
 				String[] split = line.split(" ");
-				Resource r = new SimpleResource(Integer.valueOf(split[0]),
+				Resource r = new SimpleResource(map, Integer.valueOf(split[0]),
 						Integer.valueOf(split[1]));
 				r.setCalories(Integer.valueOf(split[2]));
 				rList.add(r);
 			}
 			
 			br.close();
-			class QuickMap extends SimpleMap {
-				
-				public QuickMap(int width, int height) {
-					super(width, height);
-				}
-				
-				@Override
-				public void resetMap() {
-					resourceList.clear();
-					initResources();
-				}
-				
-				@Override
-				public void initResources() {
-					for (Resource r : rList) {
-						addResource(r);
-					}
-					
-				}
-				
-				@Override
-				public void initLife(ALife life) {
-					life.setX(new Random()
-							.nextInt((life.getMap().getWidth() + 1) / 10) * 10);
-					life.setY(new Random()
-							.nextInt((life.getMap().getHeight() + 1) / 10) * 10);
-				}
-				
-			}
-			
-			map = new QuickMap(width, height);
 			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block

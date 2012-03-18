@@ -272,48 +272,26 @@ public class BasicBrain extends Brain {
 		
 	}
 	
+	// TODO FIX THIS HORRIBLE METHOD!!!!
 	private boolean canSeeConsumableResource() {
 		
 		int x = life.getX();
 		int y = life.getY();
-		
-		if (life.getOrientation() == ORIENTATION.UP) {
-			for (int i = 1; i < life.getGene(GENE_TYPE.SEE_FOOD_RANGE); i++) {
-				if (life.getMap().hasResource(x, y - i * STEP)) {
-					Resource r = life.getMap().getResource(x, y - i * STEP);
-					if (r != null && life.canConsumeResource(r)) {
-						return true;
-					}
-				}
-			}
-		} else if (life.getOrientation() == ORIENTATION.RIGHT) {
-			for (int i = 1; i < life.getGene(GENE_TYPE.SEE_FOOD_RANGE); i++) {
-				if (life.getMap().hasResource(new Point(x + i * STEP, y))) {
-					Resource r = life.getMap().getResource(
-							new Point(x + i * STEP, y));
-					if (r != null && life.canConsumeResource(r)) {
-						return true;
-					}
-				}
+		for (int i = 1; i < life.getGene(GENE_TYPE.SEE_FOOD_RANGE); i++) {
+			if (life.getOrientation() == ORIENTATION.UP) {
+				y = life.getY() - i * STEP;
+			} else if (life.getOrientation() == ORIENTATION.RIGHT) {
+				x = life.getX() + i * STEP;
+			} else if (life.getOrientation() == ORIENTATION.DOWN) {
+				y = life.getY() + i * STEP;
+			} else {
+				x = life.getX() - i * STEP;
 			}
 			
-		} else if (life.getOrientation() == ORIENTATION.DOWN) {
-			for (int i = 1; i < life.getGene(GENE_TYPE.SEE_FOOD_RANGE); i++) {
-				if (life.getMap().hasResource(new Point(x, y + i * STEP))) {
-					Resource r = life.getMap().getResource(x, y + i * STEP);
-					if (r != null && life.canConsumeResource(r)) {
-						return true;
-					}
-				}
-			}
-			
-		} else {
-			for (int i = 1; i < life.getGene(GENE_TYPE.SEE_FOOD_RANGE); i++) {
-				if (life.getMap().hasResource(new Point(x - i * STEP, y))) {
-					Resource r = life.getMap().getResource(x - i * STEP, y);
-					if (r != null && life.canConsumeResource(r)) {
-						return true;
-					}
+			if (life.getMap().hasResource(x, y)) {
+				Resource r = life.getMap().getResource(x, y);
+				if (r != null && life.canConsumeResource(r)) {
+					return true;
 				}
 			}
 			

@@ -18,7 +18,7 @@ public class HeavyAndFewMap extends SimpleMap {
 	
 	@Override
 	public void initResources() {
-		ResourceFactory r = new ResourceFactory(getWidth(), getHeight());
+		ResourceFactory r = new ResourceFactory(this);
 		r.setMaxCal(2000);
 		r.setMinCal(2000);
 		
@@ -30,7 +30,7 @@ public class HeavyAndFewMap extends SimpleMap {
 	}
 	
 	@Override
-	public void initLife(ALife life) {
+	public void placeLife(ALife life) {
 		life.setX(new Random().nextInt((life.getMap().getWidth() + 1) / 10) * 10);
 		life.setY(new Random().nextInt((life.getMap().getHeight() + 1) / 10) * 10);
 		

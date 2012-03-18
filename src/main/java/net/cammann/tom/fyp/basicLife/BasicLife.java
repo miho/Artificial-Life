@@ -1,5 +1,10 @@
 package net.cammann.tom.fyp.basicLife;
 
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Random;
+
 import net.cammann.tom.fyp.commands.ConsumeCommand;
 import net.cammann.tom.fyp.commands.ForwardCommand;
 import net.cammann.tom.fyp.commands.LifeCommand;
@@ -31,6 +36,7 @@ public class BasicLife extends ABug {
 	
 	public BasicLife() {
 		// null instance
+		//
 	}
 	
 	@Override
@@ -93,8 +99,21 @@ public class BasicLife extends ABug {
 	}
 	
 	@Override
+	public void draw(Graphics2D g2) {
+		g2.drawImage(getImage(), getX(), getY(), null);
+	}
+	
+	@Override
+	public void reset() {
+		setEnergy(1000);
+		setOrientation(new Random().nextInt(4));
+		setMoveMemory(new ArrayList<Point>());
+	}
+	
+	@Override
 	public boolean consume() {
-		return consumeResource(map.getResource(getPosition()));
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 }

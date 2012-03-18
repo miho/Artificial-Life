@@ -32,6 +32,27 @@ public abstract class ABug extends ALife {
 	public int uniqueMoveCount = 0;
 	
 	/**
+	 * Copy constructor
+	 * 
+	 * @param bug
+	 */
+	public ABug(ALife bug) {
+		this.map = bug.map;
+		initBrain();
+		
+		orientation = ORIENTATION.UP;
+		
+		genes = new int[bug.getGenes().length];
+		
+		energy = getGene(0);
+		
+		this.moveMemory = new ArrayList<Point>();
+		this.log = new Logger("ABug");
+		log.setVerbosity(0);
+		
+	}
+	
+	/**
 	 * Constructor using JGAP chromosome.
 	 * 
 	 * Converts parameter into a list of integers. Also setups logger and some
@@ -170,10 +191,6 @@ public abstract class ABug extends ALife {
 		addMoveToMemory(getPosition());
 	}
 	
-	public void consumePosition(int x, int y) {
-		consumePosition(new Point(x, y));
-	}
-	
 	public boolean consumePosition(Point p) {
 		if (map.hasResource(p)) {
 			Resource r = map.getResource(p);
@@ -204,7 +221,7 @@ public abstract class ABug extends ALife {
 		}
 		if (canConsumeResource(r)) {
 			energy += r.getCalories();
-			map.removeResource(r);
+			r.consume();
 			return true;
 		}
 		return false;
@@ -223,8 +240,7 @@ public abstract class ABug extends ALife {
 		return moveMemory;
 	}
 	
-	@Override
-	public Image getImage() {
+	protected Image getImage() {
 		BufferedImage bi = new BufferedImage(15, 15,
 				BufferedImage.TYPE_INT_ARGB);
 		
@@ -324,6 +340,11 @@ public abstract class ABug extends ALife {
 	@Override
 	public boolean isHoldingResource() {
 		return false;
+	}
+	
+	@Override
+	public void draw(Graphics2D g2) {
+		g2.drawImage(getImage(), getX(), getY(), null);
 	}
 	
 }
