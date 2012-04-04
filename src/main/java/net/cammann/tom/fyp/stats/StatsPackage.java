@@ -19,6 +19,8 @@ import net.cammann.tom.fyp.utils.WatchableList;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.NumberTickUnit;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.xy.XYSeries;
@@ -151,6 +153,12 @@ public class StatsPackage {
 		// data.addSeries(minFit);
 		data.addSeries(avgFit);
 		data.addSeries(maxFit);
+		// TODO Normalise data, (25000 - x is not good)
+		for (GenerationInformation info : stats) {
+			avgFit.add(info.getGenNum(), 25000 - info.getAvgFitness());
+			// minFit.add(info.getGenNum(), info.getMinFitness());
+			maxFit.add(info.getGenNum(), 25000 - info.getMaxFitness());
+		}
 		
 		stats.addListChangeListener(new ListChangeListener() {
 			
@@ -182,7 +190,10 @@ public class StatsPackage {
 				true, true, false);
 		
 		XYPlot plot = chart.getXYPlot();
-		
+		NumberAxis axis = new NumberAxis();
+		// axis.setRange(0, 20);
+		axis.setTickUnit(new NumberTickUnit(1));
+		plot.setDomainAxis(axis);
 		plot.setRangeGridlinePaint(Color.red);
 		ChartFrame chartFrame = new ChartFrame(title, chart);
 		chartFrame.setVisible(true);
@@ -212,7 +223,10 @@ public class StatsPackage {
 				false);
 		
 		XYPlot plot = chart.getXYPlot();
-		
+		NumberAxis axis = new NumberAxis();
+		// axis.setRange(0, 20);
+		axis.setTickUnit(new NumberTickUnit(1));
+		plot.setDomainAxis(axis);
 		plot.setRangeGridlinePaint(Color.red);
 		ChartFrame chartFrame = new ChartFrame(title, chart);
 		chartFrame.setVisible(true);

@@ -4,7 +4,6 @@ import java.awt.Point;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Set;
 
 /**
@@ -35,23 +34,6 @@ public class HashedResourceMap implements Iterable<Resource> {
 	// could use boolean to signify already something there
 	public void addResource(Resource r) {
 		hashMap.put(r.getPosition(), r);
-	}
-	
-	// could extract position and use that as key??
-	public boolean _removeResource(Resource r) {
-		Point key = null;
-		for (Entry<Point, Resource> i : hashMap.entrySet()) {
-			if (i.getValue().equals(r)) {
-				key = i.getKey();
-				break;
-			}
-		}
-		
-		if (key != null) {
-			hashMap.remove(key);
-			return true;
-		}
-		return false;
 	}
 	
 	public boolean removeResource(Resource r) {

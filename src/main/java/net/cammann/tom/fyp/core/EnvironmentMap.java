@@ -24,6 +24,10 @@ public interface EnvironmentMap {
 	
 	// public void addResource(Consumable r);
 	
+	public boolean validPosition(Point p);
+	
+	public boolean validPosition(double x, double y);
+	
 	public HashedResourceMap getResourceList();
 	
 	public boolean hasResource(int x, int y);
