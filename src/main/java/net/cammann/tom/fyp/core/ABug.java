@@ -31,6 +31,8 @@ public abstract class ABug extends ALife {
 	 */
 	public int uniqueMoveCount = 0;
 	
+	private final double radius = 5;
+	
 	/**
 	 * Copy constructor
 	 * 
@@ -103,6 +105,11 @@ public abstract class ABug extends ALife {
 	
 	protected ABug() {
 		
+	}
+	
+	@Override
+	public double getRadius() {
+		return radius;
 	}
 	
 	@Override
@@ -191,17 +198,42 @@ public abstract class ABug extends ALife {
 		addMoveToMemory(getPosition());
 	}
 	
-	public boolean consumePosition(Point p) {
-		if (map.hasResource(p)) {
-			Resource r = map.getResource(p);
-			if (consumeResource(r)) {
-				map.removeResource(p);
-				return true;
-			}
-			
+	@Override
+	public Point getPositionAhead() {
+		if (getOrientation() == ORIENTATION.UP) {
+			return new Point(x, y - Brain.STEP);
+		} else if (getOrientation() == ORIENTATION.RIGHT) {
+			return new Point(x + Brain.STEP, y);
+		} else if (getOrientation() == ORIENTATION.DOWN) {
+			return new Point(x, y + Brain.STEP);
+		} else {
+			return new Point(x - Brain.STEP, y);
 		}
-		return false;
 	}
+	
+	public Point getPositionAhead(int steps) {
+		if (getOrientation() == ORIENTATION.UP) {
+			return new Point(x, y - Brain.STEP * steps);
+		} else if (getOrientation() == ORIENTATION.RIGHT) {
+			return new Point(x + Brain.STEP * steps, y);
+		} else if (getOrientation() == ORIENTATION.DOWN) {
+			return new Point(x, y + Brain.STEP * steps);
+		} else {
+			return new Point(x - Brain.STEP * steps, y);
+		}
+	}
+	
+	// public boolean consumePosition(Point p) {
+	// if (map.hasResource(p)) {
+	// Resource r = map.getResource(p);
+	// if (consumeResource(r)) {
+	// map.removeResource(p);
+	// return true;
+	// }
+	//
+	// }
+	// return false;
+	// }
 	
 	@Override
 	public void doMove() {
@@ -213,6 +245,7 @@ public abstract class ABug extends ALife {
 		
 	}
 	
+	// TODO fix up this
 	@Override
 	public boolean consumeResource(Resource r) {
 		if (r == null) {
@@ -220,8 +253,9 @@ public abstract class ABug extends ALife {
 			return false;
 		}
 		if (canConsumeResource(r)) {
-			energy += r.getCalories();
-			r.consume();
+			
+			// energy += r.getCalories();
+			map.consumeResource(this);
 			return true;
 		}
 		return false;

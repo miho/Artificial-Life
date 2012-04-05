@@ -10,7 +10,7 @@ import java.util.List;
  * 
  */
 public abstract class ALife implements Cloneable, Commandable, Paintable,
-		Plottable, Consumer {
+		MapObject, Consumer {
 	public int MOVE_COUNT = 0;
 	protected int x, y;
 	protected int energy;
@@ -48,6 +48,10 @@ public abstract class ALife implements Cloneable, Commandable, Paintable,
 	public abstract List<Point> getMoveMemory();
 	
 	public abstract void addMoveToMemory(Point p);
+	
+	public abstract Point getPositionAhead();
+	
+	public abstract Point getPositionAhead(int steps);
 	
 	public void setBrain(Brain brain) {
 		this.brain = brain;

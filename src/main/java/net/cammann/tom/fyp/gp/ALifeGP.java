@@ -53,14 +53,14 @@ public class ALifeGP extends ABug {
 	@Override
 	public boolean consume() {
 		// TODO FIXXXX
-		// MOVE_COUNT++;
-		// energy -= 5;
-		try {
-			consumeResource(map.getResource(getPosition()));
-			return true;
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
+		// // MOVE_COUNT++;
+		// // energy -= 5;
+		// try {
+		// consumeResource(map.getResource(getPosition()));
+		// return true;
+		// } catch (Exception e) {
+		// // TODO: handle exception
+		// }
 		return false;
 	}
 	

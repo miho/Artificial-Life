@@ -1,9 +1,11 @@
 package net.cammann.tom.fyp.gp;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.cammann.tom.fyp.core.ALife;
 import net.cammann.tom.fyp.core.EnvironmentMap;
 import net.cammann.tom.fyp.core.EvolutionFactory;
-import net.cammann.tom.fyp.core.SimulationContext;
 
 import org.jgap.gp.GPFitnessFunction;
 import org.jgap.gp.IGPProgram;
@@ -17,7 +19,6 @@ public class GPLifeFitFunc extends GPFitnessFunction {
 	}
 	
 	public double run(IGPProgram gp) {
-		SimulationContext sc = null;
 		double fitness = 0;
 		
 		int num_clones = factory.getNumClones();
@@ -25,17 +26,20 @@ public class GPLifeFitFunc extends GPFitnessFunction {
 		// TODO add checks on num_runs and clones
 		
 		EnvironmentMap map = factory.createMap();
-		sc = new SimulationContext(map);
+		List<ALife> lifeList = new ArrayList<ALife>();
 		
 		for (int j = 0; j < num_clones; j++) {
-			sc.addLife(factory.createLife(gp, map));
+			
+			ALife life = factory.createLife(gp, map);
+			lifeList.add(life);
+			map.addLife(life);
 		}
 		
-		sc.initSimulation();
-		sc.setVerbosity(0);
-		sc.limitedRun(100);
+		for (int i = 0; i < factory.getLenOfFitFuncRun(); i++) {
+			map.incrementTimeFrame();
+		}
 		
-		for (ALife life : sc.getLife()) {
+		for (ALife life : lifeList) {
 			
 			double f = computeRawFitness(life);
 			
@@ -43,7 +47,7 @@ public class GPLifeFitFunc extends GPFitnessFunction {
 			
 		}
 		
-		return fitness / sc.getLife().size();
+		return fitness / lifeList.size();
 		
 	}
 	

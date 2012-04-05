@@ -11,8 +11,10 @@ import java.awt.geom.Line2D;
 import javax.swing.JPanel;
 
 import net.cammann.tom.fyp.core.ALife;
+import net.cammann.tom.fyp.core.EnvironmentMap;
+import net.cammann.tom.fyp.core.MapObject;
+import net.cammann.tom.fyp.core.Obstacle;
 import net.cammann.tom.fyp.core.Resource;
-import net.cammann.tom.fyp.core.SimulationContext;
 
 /**
  * @author TC
@@ -22,10 +24,10 @@ import net.cammann.tom.fyp.core.SimulationContext;
  */
 public class MapPanel extends JPanel {
 	
-	SimulationContext sc;
+	EnvironmentMap map;
 	
-	public MapPanel(SimulationContext sc) {
-		this.sc = sc;
+	public MapPanel(EnvironmentMap map) {
+		this.map = map;
 	}
 	
 	@Override
@@ -37,8 +39,9 @@ public class MapPanel extends JPanel {
 		g2.setColor(Color.PINK);
 		
 		g2.setStroke(new BasicStroke(5));
-		for (ALife life : sc.getLife()) {
+		for (MapObject i : map.getLifeList()) {
 			Line2D lp = null;
+			ALife life = (ALife) i;
 			for (Point p : life.getMoveMemory()) {
 				Line2D l2 = null;
 				if (lp != null) {
@@ -59,31 +62,38 @@ public class MapPanel extends JPanel {
 		
 		g2.setStroke(new BasicStroke(1));
 		
-		g2.setColor(Color.GREEN);
-		for (Resource i : sc.getMap().getResourceList()) {
-			i.draw(g2);
+		// g2.setColor(Color.GREEN);
+		for (MapObject i : map.getResourceList()) {
+			((Resource) i).draw(g2);
 		}
 		
-		for (int i = 0; i < sc.getLife().size(); i++) {
-			ALife life = sc.getLife().get(i);
+		// g2.setColor(Color.BLACK);
+		for (MapObject i : map.getResourceList()) {
+			((Obstacle) i).draw(g2);
+		}
+		
+		int count = 0;
+		for (MapObject mo : map.getLifeList()) {
+			ALife life = (ALife) mo;
 			life.draw(g2);
 			g2.setColor(Color.BLACK);
 			
-			g2.drawString(i + "", life.getX(), life.getY());
+			g2.drawString(count + "", life.getX(), life.getY());
 			
-			g2.drawString("Life Form: " + (i + 1) + " - ",
-					sc.getMapWidth() + 30, 60 + i * 50 - 20);
+			g2.drawString("Life Form: " + (count + 1) + " - ",
+					map.getWidth() + 30, 60 + count * 50 - 20);
 			
 			g2.drawString("Current Engery: " + life.getEnergy(),
-					sc.getMapWidth() + 30, 75 + i * 50 - 20);
+					map.getWidth() + 30, 75 + count * 50 - 20);
 			g2.drawString("Move Count: " + life.MOVE_COUNT,
-					sc.getMapWidth() + 30, 90 + i * 50 - 20);
+					map.getWidth() + 30, 90 + count * 50 - 20);
+			count++;
 		}
 		g2.setColor(Color.BLACK);
 		
-		g2.drawString("Time: " + sc.getMoveCount(), sc.getMapWidth() + 30, 20);
+		g2.drawString("Time: " + map.getTimeFrame(), map.getWidth() + 30, 20);
 		
-		g2.drawRect(0, 0, sc.getMapWidth() + 10, sc.getMapHeight() + 10);
+		g2.drawRect(0, 0, map.getWidth() + 10, map.getHeight() + 10);
 		
 	}
 }

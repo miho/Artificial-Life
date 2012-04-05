@@ -2,6 +2,7 @@ package net.cammann.tom.fyp.core;
 
 import java.awt.Dimension;
 import java.awt.Point;
+import java.util.List;
 
 /**
  * @author TC
@@ -28,27 +29,51 @@ public interface EnvironmentMap {
 	
 	public boolean validPosition(double x, double y);
 	
-	public HashedResourceMap getResourceList();
+	public MapObjectMap getResourceList();
+	
+	public MapObjectMap getLifeList();
+	
+	public MapObjectMap getObstacleList();
 	
 	public boolean hasResource(int x, int y);
 	
 	public boolean hasResource(Point p);
 	
-	public Resource getResource(int x, int y);
+	public boolean addLife(ALife life);
 	
-	public Resource getResource(Point p);
+	public boolean removeLife(ALife life);
+	
+	public boolean removeLife(Point p);
+	
+	public boolean hasLife(Point p);
+	
+	public boolean addObstacle(Obstacle o);
+	
+	public boolean removeObstacle(Obstacle o);
+	
+	public boolean removeObstacle(Point p);
+	
+	public boolean addResource(Resource r);
+	
+	public void consumeResource(ALife life);
 	
 	public boolean removeResource(int x, int y);
 	
 	public boolean removeResource(Point p);
 	
-	// public boolean removeResource(Consumable r);
+	public boolean removeResource(Resource r);
 	
 	public void resetMap();
 	
 	public void initResources();
 	
-	void addResource(Resource r);
+	public int getTimeFrame();
 	
-	boolean removeResource(Resource r);
+	public void incrementTimeFrame();
+	
+	public List<Paintable> getLifePaintables();
+	
+	public List<Paintable> getObstaclePaintables();
+	
+	public List<Paintable> getResourcePaintables();
 }

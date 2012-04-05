@@ -27,28 +27,26 @@ public class SimpleResource extends Resource {
 	protected Image img = null;
 	protected final int foodChainValue = 0;
 	protected final boolean isCarried;
-	private final EnvironmentMap map;
 	
 	public int MAX_CALORIES = 200;
 	public int MIN_CALORIES = 100;
 	protected ResourceType type;
+	private final double radius = 5;
 	public static Logger log = new Logger("Apple");
 	
-	public SimpleResource(EnvironmentMap map, Point p) {
-		this(map, p.x, p.y);
+	public SimpleResource(Point p) {
+		this(p.x, p.y);
 	}
 	
-	public SimpleResource(EnvironmentMap map, int x, int y) {
+	public SimpleResource(int x, int y) {
 		this.x = x;
 		this.y = y;
 		calories = new Random().nextInt(MAX_CALORIES - MIN_CALORIES)
 				+ MIN_CALORIES;
 		isCarried = false;
-		this.map = map;
 	}
 	
-	public SimpleResource(EnvironmentMap map, int x, int y, int min_cals,
-			int max_cals) {
+	public SimpleResource(int x, int y, int min_cals, int max_cals) {
 		this.x = x;
 		this.y = y;
 		this.MAX_CALORIES = max_cals;
@@ -56,7 +54,6 @@ public class SimpleResource extends Resource {
 		calories = new Random().nextInt(MAX_CALORIES - MIN_CALORIES)
 				+ MIN_CALORIES;
 		isCarried = false;
-		this.map = map;
 	}
 	
 	@Override
@@ -70,7 +67,7 @@ public class SimpleResource extends Resource {
 	}
 	
 	@Override
-	public int getCalories() {
+	public double getCalories() {
 		return calories;
 	}
 	
@@ -145,11 +142,6 @@ public class SimpleResource extends Resource {
 	}
 	
 	@Override
-	public boolean isConsumable() {
-		return true;
-	}
-	
-	@Override
 	public int foodChainValue() {
 		return foodChainValue;
 	}
@@ -171,8 +163,7 @@ public class SimpleResource extends Resource {
 	}
 	
 	@Override
-	public void consume() {
-		map.removeResource(this);
-		
+	public double getRadius() {
+		return radius;
 	}
 }

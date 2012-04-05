@@ -112,8 +112,7 @@ public class BasicLife extends ABug {
 	
 	@Override
 	public boolean consume() {
-		// TODO Auto-generated method stub
-		return false;
+		
 	}
 	
 }

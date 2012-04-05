@@ -6,8 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import net.cammann.tom.fyp.core.Commandable.ORIENTATION;
-
 /**
  * @author TC
  * @version 0.8
@@ -21,149 +19,80 @@ public class BasicBrain extends Brain {
 		// commands = life
 	}
 	
-	private boolean checkNewPosition(int x, int y) {
-		if (x > life.getMap().getWidth() || x < 0) {
-			return false;
-		} else if (y > life.getMap().getHeight() || y < 0) {
-			return false;
-		}
-		return true;
-	}
-	
-	private List<Resource> resourcesInRange(int range) {
+	private List<Point> resourcesInRange(int range) {
 		
 		int x = life.getX();
 		int y = life.getY();
-		List<Resource> rList = new ArrayList<Resource>();
+		List<Point> rList = new ArrayList<Point>();
+		
 		for (int i = -(range / 2); i < (range / 2); i++) {
 			for (int j = -(range / 2); j < (range / 2); j++) {
 				
-				Resource r = life.getMap().getResourceList()
-						.getResource(new Point(x + i * STEP, y + i * STEP));
-				if (r != null) {
-					rList.add(r);
+				if (life.getMap().hasResource(x + i * STEP, y + i * STEP)) {
+					rList.add(new Point(x + i * STEP, y + i * STEP));
 				}
+				
 			}
 		}
 		return rList;
 	}
 	
-	private List<Resource> consumableResourcesInRange(int range) {
-		
-		int x = life.getX();
-		int y = life.getY();
-		List<Resource> rList = new ArrayList<Resource>();
-		for (int i = -(range / 2); i < (range / 2); i++) {
-			for (int j = -(range / 2); j < (range / 2); j++) {
-				
-				Resource r = life.getMap().getResourceList()
-						.getResource(new Point(x + i * STEP, y + i * STEP));
-				
-				if (r != null && life.canConsumeResource(r)) {
-					rList.add(r);
-				}
-			}
-		}
-		return rList;
-	}
+	// private List<Point> consumableResourcesInRange(int range) {
+	//
+	// int x = life.getX();
+	// int y = life.getY();
+	// List<Point> rList = new ArrayList<Point>();
+	// for (int i = -(range / 2); i < (range / 2); i++) {
+	// for (int j = -(range / 2); j < (range / 2); j++) {
+	//
+	// if (life.getMap().hasResource(x + i * STEP, y + i * STEP)) {
+	// rList.add(new Point(x + i * STEP, y + i * STEP));
+	// }
+	// }
+	// }
+	// return rList;
+	// }
 	
 	private boolean canSeeLife() {
-		int x = life.getX();
-		int y = life.getY();
 		
-		if (life.getOrientation() == ORIENTATION.UP) {
-			for (int i = 1; i < life.getGene(GENE_TYPE.SEE_LIFE_RANGE); i++) {
-				if (life.getMap().hasResource(x, y - i * STEP)) {
-					return true;
-				}
+		int lifeRange = life.getGene(GENE_TYPE.SEE_LIFE_RANGE);
+		
+		for (int i = 1; i < lifeRange; i++) {
+			Point p = life.getPositionAhead(i);
+			if (!life.getMap().hasLife(p)) {
+				return true;
 			}
-		} else if (life.getOrientation() == ORIENTATION.RIGHT) {
-			for (int i = 1; i < life.getGene(GENE_TYPE.SEE_LIFE_RANGE); i++) {
-				if (life.getMap().hasResource(new Point(x + i * STEP, y))) {
-					return true;
-				}
-			}
-			
-		} else if (life.getOrientation() == ORIENTATION.DOWN) {
-			for (int i = 1; i < life.getGene(GENE_TYPE.SEE_LIFE_RANGE); i++) {
-				if (life.getMap().hasResource(new Point(x, y + i * STEP))) {
-					return true;
-				}
-			}
-			
-		} else {
-			for (int i = 1; i < life.getGene(GENE_TYPE.SEE_LIFE_RANGE); i++) {
-				if (life.getMap().hasResource(new Point(x - i * STEP, y))) {
-					return true;
-				}
-			}
-			
 		}
 		return false;
 	}
 	
-	public boolean canSeeWall() {
-		int x = life.getX();
-		int y = life.getY();
+	public boolean canSeeObstacle() {
 		
-		if (life.getOrientation() == ORIENTATION.UP) {
-			if (checkNewPosition(x,
-					y - STEP * life.getGene(GENE_TYPE.SEE_WALL_RANGE))) {
-				return false;
-			}
-		} else if (life.getOrientation() == ORIENTATION.RIGHT) {
-			if (checkNewPosition(
-					x + STEP * life.getGene(GENE_TYPE.SEE_WALL_RANGE), y)) {
-				return false;
-			}
-		} else if (life.getOrientation() == ORIENTATION.DOWN) {
-			if (checkNewPosition(x,
-					y + STEP * life.getGene(GENE_TYPE.SEE_WALL_RANGE))) {
-				return false;
-			}
-		} else {
-			if (checkNewPosition(
-					x - STEP * life.getGene(GENE_TYPE.SEE_WALL_RANGE), y)) {
-				return false;
+		int wallRange = life.getGene(GENE_TYPE.SEE_WALL_RANGE);
+		
+		for (int i = 1; i < wallRange; i++) {
+			Point p = life.getPositionAhead(i);
+			if (!life.getMap().validPosition(p)) {
+				return true;
 			}
 		}
+		
 		return true;
 		
 	}
 	
 	private boolean canSeeResource() {
-		int x = life.getX();
-		int y = life.getY();
 		
-		if (life.getOrientation() == ORIENTATION.UP) {
-			for (int i = 1; i < life.getGene(GENE_TYPE.SEE_FOOD_RANGE); i++) {
-				if (life.getMap().hasResource(x, y - i * STEP)) {
-					return true;
-				}
+		int foodRange = life.getGene(GENE_TYPE.SEE_FOOD_RANGE);
+		
+		for (int i = 1; i < foodRange; i++) {
+			Point p = life.getPositionAhead(i);
+			if (!life.getMap().hasResource(p)) {
+				return true;
 			}
-		} else if (life.getOrientation() == ORIENTATION.RIGHT) {
-			for (int i = 1; i < life.getGene(GENE_TYPE.SEE_FOOD_RANGE); i++) {
-				if (life.getMap().hasResource(new Point(x + i * STEP, y))) {
-					return true;
-				}
-			}
-			
-		} else if (life.getOrientation() == ORIENTATION.DOWN) {
-			for (int i = 1; i < life.getGene(GENE_TYPE.SEE_FOOD_RANGE); i++) {
-				if (life.getMap().hasResource(new Point(x, y + i * STEP))) {
-					return true;
-				}
-			}
-			
-		} else {
-			for (int i = 1; i < life.getGene(GENE_TYPE.SEE_FOOD_RANGE); i++) {
-				if (life.getMap().hasResource(new Point(x - i * STEP, y))) {
-					return true;
-				}
-			}
-			
 		}
 		return false;
+		
 	}
 	
 	// public List<LifeCommand> getCommandList() {
@@ -176,22 +105,20 @@ public class BasicBrain extends Brain {
 	@Override
 	public int think() {
 		
-		Resource rTmp = life.getMap().getResource(life.getPosition());
-		
-		if (rTmp != null && life.canConsumeResource(rTmp)) {
+		if (life.getMap().hasResource(life.getPosition())) {
 			
 			return moveByNum(life.getGene(GENE_TYPE.ON_FOOD_ACTION));
 			
-		} else if (canSeeConsumableResource()) {
+		} else if (canSeeResource()) {
 			
 			return moveByNum(life.getGene(GENE_TYPE.SEE_FOOD_ACTION));
 			
-		} else if (consumableResourcesInRange(
-				life.getGene(GENE_TYPE.FOOD_NEARBY_RANGE)).size() > 0) {
+		} else if (resourcesInRange(life.getGene(GENE_TYPE.FOOD_NEARBY_RANGE))
+				.size() > 0) {
 			
 			return moveByNum(life.getGene(GENE_TYPE.FOOD_NEARBY_ACTION));
 			
-		} else if (canSeeWall()) {
+		} else if (canSeeObstacle()) {
 			
 			return moveByNum(life.getGene(GENE_TYPE.SEE_WALL_ACTION));
 			
@@ -272,33 +199,6 @@ public class BasicBrain extends Brain {
 		
 	}
 	
-	// TODO FIX THIS HORRIBLE METHOD!!!!
-	private boolean canSeeConsumableResource() {
-		
-		int x = life.getX();
-		int y = life.getY();
-		for (int i = 1; i < life.getGene(GENE_TYPE.SEE_FOOD_RANGE); i++) {
-			if (life.getOrientation() == ORIENTATION.UP) {
-				y = life.getY() - i * STEP;
-			} else if (life.getOrientation() == ORIENTATION.RIGHT) {
-				x = life.getX() + i * STEP;
-			} else if (life.getOrientation() == ORIENTATION.DOWN) {
-				y = life.getY() + i * STEP;
-			} else {
-				x = life.getX() - i * STEP;
-			}
-			
-			if (life.getMap().hasResource(x, y)) {
-				Resource r = life.getMap().getResource(x, y);
-				if (r != null && life.canConsumeResource(r)) {
-					return true;
-				}
-			}
-			
-		}
-		return false;
-	}
-	
 	@SuppressWarnings("unused")
 	private boolean moveInMemory(int x, int y) {
 		return moveInMemory(new Point(x, y));
@@ -347,16 +247,16 @@ public class BasicBrain extends Brain {
 		int x = life.getX();
 		int y = life.getY();
 		
-		if (checkNewPosition(x, y - STEP)) {
+		if (life.getMap().validPosition(x, y - STEP)) {
 			iList.add(0);
 		}
-		if (checkNewPosition(x + STEP, y)) {
+		if (life.getMap().validPosition(x + STEP, y)) {
 			iList.add(1);
 		}
-		if (checkNewPosition(x, y + STEP)) {
+		if (life.getMap().validPosition(x, y + STEP)) {
 			iList.add(2);
 		}
-		if (checkNewPosition(x - STEP, y)) {
+		if (life.getMap().validPosition(x - STEP, y)) {
 			iList.add(3);
 		}
 		return iList;

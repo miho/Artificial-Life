@@ -51,7 +51,7 @@ public class SimulationFrame extends JFrame {
 			e1.printStackTrace();
 		}
 		
-		JPanel panel = new MapPanel(sc);
+		JPanel panel = new MapPanel(sc.getMap());
 		sc.RegisterFrame(this, panel);
 		this.setJMenuBar(createJMenuBar());
 		this.setContentPane(panel);

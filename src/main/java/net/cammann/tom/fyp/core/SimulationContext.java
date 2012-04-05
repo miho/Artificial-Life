@@ -3,8 +3,6 @@ package net.cammann.tom.fyp.core;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -24,7 +22,6 @@ import org.jgap.IChromosome;
  * 
  */
 public class SimulationContext {
-	private final List<ALife> bugs;
 	private EnvironmentMap map;
 	private Timer timer;
 	private boolean isVisual = false;
@@ -107,26 +104,21 @@ public class SimulationContext {
 	}
 	
 	public SimulationContext(ALife lifeForm, EnvironmentMap map) {
-		
-		bugs = new ArrayList<ALife>();
-		bugs.add(lifeForm);
 		this.map = map;
+		map.addLife(lifeForm);
+		
 		log = new Logger("SimContxt");
 		// initSimulation();
 	}
 	
 	public SimulationContext(EnvironmentMap map) {
-		bugs = new ArrayList<ALife>();
+		
 		this.map = map;
 		log = new Logger("SimContxt");
 	}
 	
 	public void addLife(ALife life) {
-		bugs.add(life);
-	}
-	
-	public List<ALife> getLife() {
-		return bugs;
+		map.addLife(life);
 	}
 	
 	public EnvironmentMap getMap() {
@@ -138,16 +130,15 @@ public class SimulationContext {
 	// resetLife()?
 	public void initSimulation() {
 		
-		for (ALife life : bugs) {
-			// TODO
-			
-			// What are these calls doing, should be somewhere else, out of the
-			// view
-			map.placeLife(life);
-			life.reset();
-			counter = 0;
-			log.debug("Starting energy: " + life.getEnergy());
-		}
+		// for (ALife life : bugs) {
+		// // TODO
+		//
+		// // What are these calls doing, should be somewhere else, out of the
+		// // view
+		//
+		// counter = 0;
+		// log.debug("Starting energy: " + life.getEnergy());
+		// }
 		map.resetMap();
 	}
 	
@@ -171,9 +162,7 @@ public class SimulationContext {
 	}
 	
 	public void moveOnce() {
-		for (ALife life : bugs) {
-			life.doMove();
-		}
+		map.incrementTimeFrame();
 	}
 	
 	public void setTimerListener() {
@@ -185,15 +174,16 @@ public class SimulationContext {
 				log.trace("tick.");
 				
 				counter++;
-				for (ALife life : bugs) {
-					life.doMove();
-					if (life.getEnergy() < 0) {
-						log.trace("Life is dead");
-					}
-					
-					log.trace("Life X: " + life.getX());
-					log.trace("Life Y: " + life.getY());
-				}
+				map.incrementTimeFrame();
+				// for (ALife life : bugs) {
+				// life.doMove();
+				// if (life.getEnergy() < 0) {
+				// log.trace("Life is dead");
+				// }
+				//
+				// log.trace("Life X: " + life.getX());
+				// log.trace("Life Y: " + life.getY());
+				// }
 				
 				if (isVisual) {
 					// panel.repaint();
@@ -228,43 +218,17 @@ public class SimulationContext {
 		start();
 	}
 	
-	public void limitedRun(final int numRuns) {
-		counter = 0;
-		while (!(counter > numRuns)) {
-			for (ALife life : bugs) {
-				if (life.getEnergy() < 0) {
-					// log.trace("Life is dead");
-				}
-				if (life.MOVE_COUNT > 600) {
-					break;
-				}
-				life.doMove();
-				
-			}
-			counter++;
-			if (isVisual) {
-				// panel.repaint();
-				frame.repaint();
-				// System.out.println("Repainting...");
-			}
-			// System.out.println("Life X: " + life.getX());
-			// System.out.println("Life Y: " + life.getY());
-			
-		}
-		
-	}
-	
 	public int getMoveCount() {
 		return counter;
 	}
 	
 	public void setVerbosity(int level) {
 		log.setVerbosity(level);
-		for (ALife life : bugs) {
-			if (life != null) {
-				life.setVerbosity(level);
-			}
-		}
+		// for (ALife life : bugs) {
+		// if (life != null) {
+		// life.setVerbosity(level);
+		// }
+		// }
 	}
 	
 	public void setSimulationRate(int rate) {

@@ -19,10 +19,10 @@ public class ResourceFactory {
 		switch (rt) {
 			case APPLE:
 
-				return new Apple(map, r.nextInt((map.getWidth()) / 10) * 10,
+				return new Apple(r.nextInt((map.getWidth()) / 10) * 10,
 						r.nextInt(map.getHeight() / 10) * 10);
 			case CARROT:
-				throw new IllegalArgumentException("Carrot not created yet");
+				throw new IllegalArgumentException("Carrot not implemented yet");
 				
 			case S1:
 				return new SymbResource(map,

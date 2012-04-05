@@ -1,41 +1,47 @@
 package net.cammann.tom.fyp.core;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.jgap.FitnessFunction;
 import org.jgap.IChromosome;
 
 public abstract class SimpleFitnessFunction extends FitnessFunction {
 	
-	private final EvolutionFactory fact;
+	private final EvolutionFactory factory;
 	
 	public SimpleFitnessFunction(EvolutionFactory fact) {
-		this.fact = fact;
+		this.factory = fact;
 		
 	}
 	
 	protected double run(IChromosome chromo) {
-		SimulationContext sc = null;
+		
 		double fitness = 0;
 		
-		int num_clones = fact.getNumClones();
+		int num_clones = factory.getNumClones();
 		
 		// TODO add checks on num_runs and clones
 		
-		EnvironmentMap map = fact.createMap();
-		sc = new SimulationContext(map);
+		EnvironmentMap map = factory.createMap();
+		List<ALife> lifeList = new ArrayList<ALife>();
 		
 		for (int j = 0; j < num_clones; j++) {
-			sc.addLife(fact.createLife(chromo, map));
+			// sc.addLife(fact.createLife(chromo, map));
+			ALife life = factory.createLife(chromo, map);
+			lifeList.add(life);
+			map.addLife(life);
 		}
 		
-		sc.initSimulation();
-		sc.setVerbosity(0);
-		sc.limitedRun(fact.getLenOfFitFuncRun());
+		for (int i = 0; i < factory.getLenOfFitFuncRun(); i++) {
+			map.incrementTimeFrame();
+		}
 		
-		for (ALife life : sc.getLife()) {
+		for (ALife life : lifeList) {
 			fitness += computeRawFitness(life);
 		}
 		
-		return fitness / sc.getLife().size();
+		return fitness / lifeList.size();
 		
 	}
 	
@@ -44,7 +50,7 @@ public abstract class SimpleFitnessFunction extends FitnessFunction {
 		
 		double fitness = 0;
 		
-		int num_runs = fact.getFitnessFunctionRuns();
+		int num_runs = factory.getFitnessFunctionRuns();
 		for (int i = 0; i < num_runs; i++) {
 			fitness += run(chromo);
 		}
