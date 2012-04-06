@@ -165,9 +165,16 @@ public abstract class SimpleMap implements EnvironmentMap {
 	}
 	
 	@Override
-	public void consumeResource(ALife life) {
-		// TODO Auto-generated method stub
-		
+	public boolean consumeResource(ALife life) {
+		Point p = life.getPosition();
+		if (hasResource(p)) {
+			Resource r = (Resource) resourceList.getObject(p);
+			resourceList.removeObject(r);
+			life.energy += r.getCalories();
+			return true;
+		}
+		life.energy -= 5;
+		return false;
 	}
 	
 	@Override
@@ -221,6 +228,7 @@ public abstract class SimpleMap implements EnvironmentMap {
 	public void incrementTimeFrame() {
 		timeFrameNo++;
 		for (MapObject mo : lifeList) {
+			((ALife) mo).doMove();
 			
 		}
 	}

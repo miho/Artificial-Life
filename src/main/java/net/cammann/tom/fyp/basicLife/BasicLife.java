@@ -55,11 +55,11 @@ public class BasicLife extends ABug {
 		};
 		
 		LifeCommand commands[] = {
-				doNothing,
 				new ConsumeCommand(),
 				new ForwardCommand(),
 				new TurnLeftCommand(),
 				new TurnRightCommand(),
+				
 				new MoveTowardsUp(),
 				new MoveTowardsRight(),
 				new MoveTowardsDown(),
@@ -105,14 +105,9 @@ public class BasicLife extends ABug {
 	
 	@Override
 	public void reset() {
-		setEnergy(1000);
+		setEnergy(getGene(0));
 		setOrientation(new Random().nextInt(4));
 		setMoveMemory(new ArrayList<Point>());
-	}
-	
-	@Override
-	public boolean consume() {
-		
 	}
 	
 }

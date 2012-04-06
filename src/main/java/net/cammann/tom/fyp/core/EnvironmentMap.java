@@ -55,7 +55,7 @@ public interface EnvironmentMap {
 	
 	public boolean addResource(Resource r);
 	
-	public void consumeResource(ALife life);
+	public boolean consumeResource(ALife life);
 	
 	public boolean removeResource(int x, int y);
 	
@@ -76,4 +76,5 @@ public interface EnvironmentMap {
 	public List<Paintable> getObstaclePaintables();
 	
 	public List<Paintable> getResourcePaintables();
+	
 }

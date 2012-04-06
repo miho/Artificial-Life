@@ -22,7 +22,7 @@ import org.jgap.IChromosome;
  * 
  */
 public class SimulationContext {
-	private EnvironmentMap map;
+	private final EnvironmentMap map;
 	private Timer timer;
 	private boolean isVisual = false;
 	// private JPanel panel;
@@ -39,7 +39,11 @@ public class SimulationContext {
 		EvolutionFactory lf = new BasicLifeFactory();
 		
 		GeneLab g = new GeneLab(lf);
+		g.setEvolutions(100);
+		// g.setPopulationSize(100);
+		
 		stats.startFitnessGraph();
+		// stats.startFreqFitnessGraph();
 		g.addEvolutionCycleListener(new EvolutionCycleListener() {
 			
 			@Override
@@ -247,22 +251,22 @@ public class SimulationContext {
 		return simulationRate;
 	}
 	
-	public void removeLife(ALife i) {
-		bugs.remove(i);
-	}
-	
-	public void removeLife(int i) {
-		bugs.remove(i);
-	}
-	
-	public void setMap(EnvironmentMap _map) {
-		stop();
-		for (ALife life : getLife()) {
-			life.setMap(_map);
-		}
-		map = _map;
-		
-	}
+	// public void removeLife(ALife i) {
+	// bugs.remove(i);
+	// }
+	//
+	// public void removeLife(int i) {
+	// bugs.remove(i);
+	// }
+	//
+	// public void setMap(EnvironmentMap _map) {
+	// stop();
+	// for (ALife life : getLife()) {
+	// life.setMap(_map);
+	// }
+	// map = _map;
+	//
+	// }
 	
 	public boolean isStopped() {
 		return !timer.isRunning();

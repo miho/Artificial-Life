@@ -83,11 +83,14 @@ public class BasicBrain extends Brain {
 	
 	private boolean canSeeResource() {
 		
-		int foodRange = life.getGene(GENE_TYPE.SEE_FOOD_RANGE);
-		
+		// int foodRange = life.getGene(GENE_TYPE.SEE_FOOD_RANGE);
+		int foodRange = 5;
+		log.trace("Checking for resources");
 		for (int i = 1; i < foodRange; i++) {
 			Point p = life.getPositionAhead(i);
-			if (!life.getMap().hasResource(p)) {
+			
+			if (life.getMap().hasResource(p)) {
+				log.trace("Resource at: " + p);
 				return true;
 			}
 		}
@@ -99,6 +102,7 @@ public class BasicBrain extends Brain {
 	
 	private int moveByNum(int n) {
 		life.getCommandList()[n].execute(life);
+		log.trace("Move: " + n);
 		return 0;
 	}
 	
@@ -106,25 +110,31 @@ public class BasicBrain extends Brain {
 	public int think() {
 		
 		if (life.getMap().hasResource(life.getPosition())) {
-			
+			log.trace("Move - on food");
 			return moveByNum(life.getGene(GENE_TYPE.ON_FOOD_ACTION));
+			// life.consume();
 			
 		} else if (canSeeResource()) {
-			
+			log.trace("Move - can see food");
 			return moveByNum(life.getGene(GENE_TYPE.SEE_FOOD_ACTION));
+			// life.moveForward();
 			
 		} else if (resourcesInRange(life.getGene(GENE_TYPE.FOOD_NEARBY_RANGE))
 				.size() > 0) {
-			
+			log.trace("Move - food nearby");
 			return moveByNum(life.getGene(GENE_TYPE.FOOD_NEARBY_ACTION));
+			// life.turnLeft();
 			
 		} else if (canSeeObstacle()) {
+			log.trace("Move - can see obstacle");
 			
 			return moveByNum(life.getGene(GENE_TYPE.SEE_WALL_ACTION));
 			
 		} else if (canSeeLife()) {
+			log.trace("Move - can see life");
 			return moveByNum(life.getGene(GENE_TYPE.SEE_LIFE_ACTION));
 		} else {
+			log.trace("Move - other");
 			// SEE NOTHING
 			// if move in memory?
 			// //

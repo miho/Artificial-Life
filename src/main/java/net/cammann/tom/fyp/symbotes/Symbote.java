@@ -59,7 +59,7 @@ public class Symbote extends ABug {
 		if (getMap().hasResource(getPosition())) {
 			return false;
 		}
-		getMap().addResource(new SymbResource(map, getPosition(), droppable));
+		getMap().addResource(new SymbResource(getPosition(), droppable));
 		decrementEnegery(70);
 		return true;
 	}
@@ -150,10 +150,11 @@ public class Symbote extends ABug {
 		return commands;
 	}
 	
-	@Override
-	public boolean consume() {
-		return consumeResource(map.getResource(getPosition()));
-	}
+	// @Override
+	// public boolean consume() {
+	// return consumeResource(map.getResource(getPosition()));
+	// }
+	//
 	
 	@Override
 	public void draw(Graphics2D g2) {

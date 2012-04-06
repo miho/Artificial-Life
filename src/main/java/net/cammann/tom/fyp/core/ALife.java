@@ -100,6 +100,7 @@ public abstract class ALife implements Cloneable, Commandable, Paintable,
 	/**
 	 * @return Energy level
 	 */
+	@Override
 	public int getEnergy() {
 		return energy;
 	}
@@ -122,7 +123,7 @@ public abstract class ALife implements Cloneable, Commandable, Paintable,
 	/**
 	 * @param x
 	 */
-	@Override
+	
 	public void setX(int x) {
 		this.x = x;
 	}
@@ -130,7 +131,7 @@ public abstract class ALife implements Cloneable, Commandable, Paintable,
 	/**
 	 * @param y
 	 */
-	@Override
+	
 	public void setY(int y) {
 		
 		this.y = y;
@@ -214,4 +215,9 @@ public abstract class ALife implements Cloneable, Commandable, Paintable,
 	
 	@Override
 	public abstract ALife clone();
+	
+	@Override
+	public boolean consume() {
+		return map.consumeResource(this);
+	}
 }

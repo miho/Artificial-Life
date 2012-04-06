@@ -23,37 +23,37 @@ public class Logger {
 		this.verbosity = verbosity;
 	}
 	
-	public void servere(String string) {
+	public void servere(Object string) {
 		if (verbosity > -1) {
 			out("SEVERE: " + string);
 		}
 	}
 	
-	public void error(String string) {
+	public void error(Object string) {
 		if (verbosity > 0) {
 			out("ERROR: " + string);
 		}
 	}
 	
-	public void warn(String string) {
+	public void warn(Object string) {
 		if (verbosity > 1) {
 			out("Warning: " + string);
 		}
 	}
 	
-	public void info(String string) {
+	public void info(Object string) {
 		if (verbosity > 2) {
 			out("Info: " + string);
 		}
 	}
 	
-	public void debug(String string) {
+	public void debug(Object string) {
 		if (verbosity > 3) {
 			out("Debug: " + string);
 		}
 	}
 	
-	public void trace(String string) {
+	public void trace(Object string) {
 		if (verbosity > 4) {
 			out("Trace: " + string);
 		}

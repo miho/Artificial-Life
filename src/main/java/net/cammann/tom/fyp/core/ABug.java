@@ -99,7 +99,7 @@ public abstract class ABug extends ALife {
 		this.moveMemory = new ArrayList<Point>();
 		this.log = new Logger("ABug");
 		log.setVerbosity(0);
-		energy = getGene(0);
+		energy = 200;
 		
 	}
 	
@@ -146,49 +146,17 @@ public abstract class ABug extends ALife {
 		
 		log.trace("Move forward");
 		log.trace("Orientation: " + orientation.toString());
-		int STEP = 10;
-		boolean failMove = false;
-		switch (getOrientation()) {
-			case UP:
-				if ((getY() - STEP) >= 0) {
-					setY(getY() - STEP);
-				} else {
-					failMove = true;
-					// throw new IllegalStateException();
-				}
-				break;
-			case RIGHT:
-				if ((getX() + STEP) <= map.getWidth()) {
-					setX(getX() + STEP);
-				} else {
-					failMove = true;
-					// throw new IllegalStateException();
-				}
-				break;
-			case DOWN:
-				if ((getY() + STEP) <= map.getHeight()) {
-					setY(getY() + STEP);
-				} else {
-					failMove = true;
-					// throw new IllegalStateException();
-				}
-				break;
+		
+		Point p = getPositionAhead();
+		boolean moveValid = map.validPosition(p);
+		log.trace("Valid Move = " + moveValid);
+		if (moveValid) {
+			log.trace(p);
+			log.trace(getPosition());
+			setX(p.x);
+			setY(p.y);
+			energy -= 5;
 			
-			case LEFT:
-				if ((getX() - STEP) >= 0) {
-					setX(getX() - STEP);
-				} else {
-					failMove = true;
-					// throw new IllegalStateException();
-				}
-				break;
-			default:
-				failMove = true;
-				throw new IllegalStateException("Illegeal orientation");
-				
-		}
-		if (!failMove) {
-			decrementEnegery(10);
 		} else {
 			log.trace("Fail Move Forward");
 			log.trace("Position: " + getPosition());
@@ -211,6 +179,7 @@ public abstract class ABug extends ALife {
 		}
 	}
 	
+	@Override
 	public Point getPositionAhead(int steps) {
 		if (getOrientation() == ORIENTATION.UP) {
 			return new Point(x, y - Brain.STEP * steps);
@@ -237,10 +206,14 @@ public abstract class ABug extends ALife {
 	
 	@Override
 	public void doMove() {
-		brain.think();
-		if (!hasMoveInMemory(getPosition())) {
-			addMoveToMemory(getPosition());
-			uniqueMoveCount++;
+		if (energy > 0) {
+			brain.think();
+			log.trace("Energy After move: " + energy);
+			log.trace("Positon: " + getPosition());
+			if (!hasMoveInMemory(getPosition())) {
+				addMoveToMemory(getPosition());
+				uniqueMoveCount++;
+			}
 		}
 		
 	}

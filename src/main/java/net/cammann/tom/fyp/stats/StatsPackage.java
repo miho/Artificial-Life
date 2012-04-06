@@ -147,17 +147,17 @@ public class StatsPackage {
 		String title = "Fitness across generations";
 		XYSeriesCollection data = new XYSeriesCollection();
 		final XYSeries avgFit = new XYSeries("Average Fitness");
-		// final XYSeries minFit = new XYSeries("Minimum Fitness");
+		final XYSeries minFit = new XYSeries("Minimum Fitness");
 		final XYSeries maxFit = new XYSeries("Maximum Fitness");
 		
-		// data.addSeries(minFit);
+		data.addSeries(minFit);
 		data.addSeries(avgFit);
 		data.addSeries(maxFit);
 		// TODO Normalise data, (25000 - x is not good)
 		for (GenerationInformation info : stats) {
-			avgFit.add(info.getGenNum(), 25000 - info.getAvgFitness());
-			// minFit.add(info.getGenNum(), info.getMinFitness());
-			maxFit.add(info.getGenNum(), 25000 - info.getMaxFitness());
+			avgFit.add(info.getGenNum(), info.getAvgFitness());
+			minFit.add(info.getGenNum(), info.getMinFitness());
+			maxFit.add(info.getGenNum(), info.getMaxFitness());
 		}
 		
 		stats.addListChangeListener(new ListChangeListener() {
@@ -179,9 +179,9 @@ public class StatsPackage {
 				GenerationInformation info = (GenerationInformation) e
 						.getElement();
 				
-				avgFit.add(info.getGenNum(), 25000 - info.getAvgFitness());
-				// minFit.add(info.getGenNum(), info.getMinFitness());
-				maxFit.add(info.getGenNum(), 25000 - info.getMaxFitness());
+				avgFit.add(info.getGenNum(), info.getAvgFitness());
+				minFit.add(info.getGenNum(), info.getMinFitness());
+				maxFit.add(info.getGenNum(), info.getMaxFitness());
 			}
 		});
 		
@@ -192,7 +192,7 @@ public class StatsPackage {
 		XYPlot plot = chart.getXYPlot();
 		NumberAxis axis = new NumberAxis();
 		// axis.setRange(0, 20);
-		axis.setTickUnit(new NumberTickUnit(1));
+		axis.setTickUnit(new NumberTickUnit(4));
 		plot.setDomainAxis(axis);
 		plot.setRangeGridlinePaint(Color.red);
 		ChartFrame chartFrame = new ChartFrame(title, chart);
@@ -225,12 +225,65 @@ public class StatsPackage {
 		XYPlot plot = chart.getXYPlot();
 		NumberAxis axis = new NumberAxis();
 		// axis.setRange(0, 20);
-		axis.setTickUnit(new NumberTickUnit(1));
+		axis.setTickUnit(new NumberTickUnit(4));
 		plot.setDomainAxis(axis);
 		plot.setRangeGridlinePaint(Color.red);
 		ChartFrame chartFrame = new ChartFrame(title, chart);
 		chartFrame.setVisible(true);
 		chartFrame.setSize(600, 450);
+		
+	}
+	
+	public void startFreqFitnessGraph() {
+		String title = "Frequency of fitness across generations";
+		final XYSeriesCollection dataset = new XYSeriesCollection();
+		
+		for (GenerationInformation pop : stats) {
+			
+			XYSeries series1 = new XYSeries("Generation " + pop.getId());
+			for (Double i : pop.getFitnessBucket()) {
+				series1.add(i,
+						Double.valueOf(pop.getFitnessBucket().getCount(i)));
+			}
+			dataset.addSeries(series1);
+		}
+		stats.addListChangeListener(new ListChangeListener() {
+			
+			@Override
+			public void dataRemoved(ListChangeEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void dataChanged(ListChangeEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void dataAdded(ListChangeEvent e) {
+				GenerationInformation pop = (GenerationInformation) e
+						.getElement();
+				
+				XYSeries series1 = new XYSeries("Generation " + pop.getId());
+				for (Double i : pop.getFitnessBucket()) {
+					series1.add(i,
+							Double.valueOf(pop.getFitnessBucket().getCount(i)));
+				}
+				dataset.addSeries(series1);
+			}
+		});
+		JFreeChart chart = ChartFactory.createXYBarChart(title,
+				"Fitness Value", false, "Frequency in Pop", dataset,
+				PlotOrientation.VERTICAL, true, true, false);
+		
+		XYPlot plot = chart.getXYPlot();
+		
+		plot.setRangeGridlinePaint(Color.red);
+		ChartFrame chartFrame = new ChartFrame(title, chart);
+		chartFrame.setVisible(true);
+		chartFrame.setSize(400, 350);
 		
 	}
 	

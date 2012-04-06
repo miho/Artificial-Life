@@ -32,7 +32,7 @@ public class GeneLab {
 	
 	public GeneLab(EvolutionFactory factory) {
 		this.factory = factory;
-		popSize = 100;
+		popSize = 1000;
 		
 		evolutions = 60;
 		

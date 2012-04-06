@@ -18,21 +18,25 @@ public class ResourceFactory {
 		Random r = new Random();
 		switch (rt) {
 			case APPLE:
-
-				return new Apple(r.nextInt((map.getWidth()) / 10) * 10,
-						r.nextInt(map.getHeight() / 10) * 10);
+				int x = r.nextInt((map.getWidth()) / 10) * 10;
+				int y = r.nextInt(map.getHeight() / 10) * 10;
+				if (x > map.getWidth() || x < 0 || y > map.getHeight() || y < 0) {
+					throw new IllegalStateException("Bad resource position X: "
+							+ x + "Y: " + y);
+					// System.exit(0);
+				}
+				
+				return new Apple(x, y);
 			case CARROT:
 				throw new IllegalArgumentException("Carrot not implemented yet");
 				
 			case S1:
-				return new SymbResource(map,
-						r.nextInt((map.getWidth()) / 10) * 10, r.nextInt(map
-								.getHeight() / 10) * 10, rt);
+				return new SymbResource(r.nextInt((map.getWidth()) / 10) * 10,
+						r.nextInt(map.getHeight() / 10) * 10, rt);
 				
 			case S2:
-				return new SymbResource(map,
-						r.nextInt((map.getWidth()) / 10) * 10, r.nextInt(map
-								.getHeight() / 10) * 10, rt);
+				return new SymbResource(r.nextInt((map.getWidth()) / 10) * 10,
+						r.nextInt(map.getHeight() / 10) * 10, rt);
 			default:
 				throw new IllegalArgumentException("Bad resource type given");
 				

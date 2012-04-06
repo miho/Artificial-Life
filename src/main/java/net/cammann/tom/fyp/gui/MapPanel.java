@@ -68,7 +68,7 @@ public class MapPanel extends JPanel {
 		}
 		
 		// g2.setColor(Color.BLACK);
-		for (MapObject i : map.getResourceList()) {
+		for (MapObject i : map.getObstacleList()) {
 			((Obstacle) i).draw(g2);
 		}
 		

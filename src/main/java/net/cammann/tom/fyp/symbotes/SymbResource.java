@@ -7,21 +7,20 @@ import java.awt.Point;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 
-import net.cammann.tom.fyp.core.EnvironmentMap;
 import net.cammann.tom.fyp.core.SimpleResource;
 
 public class SymbResource extends SimpleResource {
 	
-	public SymbResource(EnvironmentMap map, int x, int y, ResourceType r) {
-		super(map, x, y);
+	public SymbResource(int x, int y, ResourceType r) {
+		super(x, y);
 		type = r;
 		setCalories(90);
 		img = null;
 		// TODO Auto-generated constructor stub
 	}
 	
-	public SymbResource(EnvironmentMap map, Point p, ResourceType r) {
-		super(map, p);
+	public SymbResource(Point p, ResourceType r) {
+		super(p);
 		type = r;
 		setCalories(80);
 	}

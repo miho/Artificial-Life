@@ -15,22 +15,22 @@ import net.cammann.tom.fyp.core.ALife;
 import net.cammann.tom.fyp.core.EnvironmentMap;
 import net.cammann.tom.fyp.core.Resource;
 import net.cammann.tom.fyp.core.SimpleMap;
-import net.cammann.tom.fyp.core.SimpleResource;
 
 public class MapUtils {
 	public static void SaveMap(File file, EnvironmentMap map) {
 		try {
+			// TODO fix
 			BufferedWriter br = new BufferedWriter(new FileWriter(file));
 			
 			br.write("" + map.getWidth());
 			br.write("\n");
 			br.write("" + map.getHeight());
 			br.write("\n");
-			
-			for (Resource r : map.getResourceList()) {
-				br.write(r.getX() + " " + r.getY() + " " + r.getCalories());
-				br.write("\n");
-			}
+			//
+			// for (Resource r : map.getResourceList()) {
+			// br.write(r.getX() + " " + r.getY() + " " + r.getCalories());
+			// br.write("\n");
+			// }
 			
 			br.flush();
 			br.close();
@@ -83,10 +83,12 @@ public class MapUtils {
 			String line = "";
 			while ((line = br.readLine()) != null) {
 				String[] split = line.split(" ");
-				Resource r = new SimpleResource(map, Integer.valueOf(split[0]),
-						Integer.valueOf(split[1]));
-				r.setCalories(Integer.valueOf(split[2]));
-				rList.add(r);
+				// TODO fix
+				// Resource r = new SimpleResource(map,
+				// Integer.valueOf(split[0]),
+				// Integer.valueOf(split[1]));
+				// r.setCalories(Integer.valueOf(split[2]));
+				// rList.add(r);
 			}
 			
 			br.close();

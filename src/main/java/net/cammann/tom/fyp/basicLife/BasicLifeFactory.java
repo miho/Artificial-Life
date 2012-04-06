@@ -13,7 +13,7 @@ import org.jgap.gp.IGPProgram;
 
 public class BasicLifeFactory implements EvolutionFactory {
 	
-	private final int NUM_FIT_FUNC_CYCLES = 2;
+	private final int NUM_FIT_FUNC_CYCLES = 1;
 	private final int NUM_CLONES = 1;
 	private final int RUN_LEN = 400;
 	

@@ -267,9 +267,10 @@ public class SimulationFrame extends JFrame {
 		});
 		menu.add(addLifeItem);
 		
-		for (final ALife i : sc.getLife()) {
-			addLifeToMenu(i);
-		}
+		// TODO add back in
+		// for (final ALife i : sc.getLife()) {
+		// addLifeToMenu(i);
+		// }
 		
 		menu.add(cloneLife);
 		menu.add(removeLife);
@@ -304,7 +305,8 @@ public class SimulationFrame extends JFrame {
 				int r = jfc.showOpenDialog(getThis());
 				if (r == JFileChooser.APPROVE_OPTION) {
 					File file = jfc.getSelectedFile();
-					sc.setMap(MapUtils.LoadMap(file));
+					// TODO add back in
+					// sc.setMap(MapUtils.LoadMap(file));
 				}
 			}
 		});
@@ -350,7 +352,8 @@ public class SimulationFrame extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				sc.removeLife(life);
+				// TODO add this back in
+				// sc.removeLife(life);
 				cloneLife.remove(clone_item);
 				removeLife.remove(remove_item);
 				

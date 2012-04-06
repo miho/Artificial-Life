@@ -20,13 +20,14 @@ public class BugFitnessFunction extends SimpleFitnessFunction {
 	public double computeRawFitness(ALife life) {
 		double fitness = 0;
 		if (life.getEnergy() > 0) {
-			fitness += ((ABug) life).uniqueMoveCount / 2 + (life.getEnergy());
+			fitness += ((ABug) life).getEnergy();
 		} else {
-			fitness += ((ABug) life).uniqueMoveCount;
-			
+			// fitness += ((ABug) life).getEnergy();
+			fitness += 0;
 		}
+		log.trace("Moves: " + life.MOVE_COUNT);
+		log.trace("Raw fit: " + fitness);
 		return fitness;
 		
 	}
-	
 }
