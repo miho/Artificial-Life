@@ -8,8 +8,6 @@ public interface MapObject {
 	
 	public int getY();
 	
-	public void setPosition(Point p);
-	
 	public Point getPosition();
 	
 	public double getRadius();

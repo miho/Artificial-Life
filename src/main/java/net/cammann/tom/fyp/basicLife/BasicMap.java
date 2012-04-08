@@ -1,7 +1,5 @@
 package net.cammann.tom.fyp.basicLife;
 
-import java.util.Random;
-
 import net.cammann.tom.fyp.core.ALife;
 import net.cammann.tom.fyp.core.MapObject;
 import net.cammann.tom.fyp.core.Obstacle;
@@ -17,11 +15,15 @@ public class BasicMap extends SimpleMap {
 		super();
 	}
 	
+	public BasicMap(int width, int height) {
+		super(width, height);
+	}
+	
 	@Override
 	public void initResources() {
 		ResourceFactory r = new ResourceFactory(this);
 		for (int i = 0; i < 200; i++) {
-			Resource res = r.createResource(ResourceType.APPLE);
+			Resource res = r.createResource(ResourceType.SIMPLE);
 			if (res.getX() > getWidth() || res.getX() < 0
 					|| res.getY() > getHeight() || res.getY() < 0) {
 				throw new IllegalStateException("Bad positon");
@@ -50,13 +52,6 @@ public class BasicMap extends SimpleMap {
 		}
 		timeFrameNo = 0;
 		
-	}
-	
-	@Override
-	public void placeLife(ALife life) {
-		life.setX(new Random().nextInt((life.getMap().getWidth() + 1) / 10) * 10);
-		life.setY(new Random().nextInt((life.getMap().getHeight() + 1) / 10) * 10);
-		life.reset();
 	}
 	
 }

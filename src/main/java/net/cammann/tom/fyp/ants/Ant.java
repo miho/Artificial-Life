@@ -36,4 +36,10 @@ public class Ant extends ABug {
 		
 	}
 	
+	@Override
+	public int getMemoryLength() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
 }

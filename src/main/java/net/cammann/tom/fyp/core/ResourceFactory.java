@@ -17,7 +17,7 @@ public class ResourceFactory {
 	public Resource createResource(ResourceType rt) {
 		Random r = new Random();
 		switch (rt) {
-			case APPLE:
+			case SIMPLE:
 				int x = r.nextInt((map.getWidth()) / 10) * 10;
 				int y = r.nextInt(map.getHeight() / 10) * 10;
 				if (x > map.getWidth() || x < 0 || y > map.getHeight() || y < 0) {

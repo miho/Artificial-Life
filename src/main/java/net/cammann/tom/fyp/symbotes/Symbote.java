@@ -167,4 +167,9 @@ public class Symbote extends ABug {
 		
 	}
 	
+	@Override
+	public int getMemoryLength() {
+		return getGene(net.cammann.tom.fyp.core.GENE_TYPE.MEMORY_LENGTH);
+	}
+	
 }

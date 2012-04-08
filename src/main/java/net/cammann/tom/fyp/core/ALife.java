@@ -53,6 +53,8 @@ public abstract class ALife implements Cloneable, Commandable, Paintable,
 		return brain;
 	}
 	
+	public abstract int getMemoryLength();
+	
 	/**
 	 * 
 	 * @param gene
@@ -106,10 +108,10 @@ public abstract class ALife implements Cloneable, Commandable, Paintable,
 		return new Point(x, y);
 	}
 	
-	@Override
+	// TODO remove?
 	public void setPosition(Point p) {
 		this.x = p.x;
-		this.y = p.x;
+		this.y = p.y;
 	}
 	
 	/**
@@ -211,5 +213,10 @@ public abstract class ALife implements Cloneable, Commandable, Paintable,
 	@Override
 	public boolean consume() {
 		return map.consumeResource(this);
+	}
+	
+	public void incrementEnergy(int i) {
+		energy += i;
+		
 	}
 }

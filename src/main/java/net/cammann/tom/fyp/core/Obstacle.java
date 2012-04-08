@@ -43,7 +43,7 @@ public class Obstacle implements MapObject {
 		p.setLocation(p.x, y);
 	}
 	
-	@Override
+	// TODO remove?
 	public void setPosition(Point p) {
 		this.p = p;
 		

@@ -27,7 +27,7 @@ public class StaticMap extends SimpleMap {
 			RESOURCE_LIST = new ArrayList<Resource>();
 			ResourceFactory r = new ResourceFactory(this);
 			for (int i = 0; i < 50; i++) {
-				RESOURCE_LIST.add(r.createResource(ResourceType.APPLE));
+				RESOURCE_LIST.add(r.createResource(ResourceType.SIMPLE));
 			}
 		}
 		for (Resource r : RESOURCE_LIST) {

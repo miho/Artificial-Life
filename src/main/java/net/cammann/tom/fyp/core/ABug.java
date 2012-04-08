@@ -51,6 +51,15 @@ public abstract class ABug extends ALife {
 		
 	}
 	
+	public ABug(EnvironmentMap map) {
+		this.setMap(map);
+		initBrain();
+		
+		orientation = ORIENTATION.UP;
+		
+		moveMemory = new ArrayList<Point>();
+	}
+	
 	/**
 	 * Constructor using JGAP chromosome.
 	 * 
@@ -114,10 +123,11 @@ public abstract class ABug extends ALife {
 	@Override
 	public void addMoveToMemory(Point p) {
 		
-		if (moveMemory.size() > getGene(GENE_TYPE.MEMORY_LENGTH)) {
+		if (moveMemory.size() > getMemoryLength()) {
 			moveMemory.remove(0);
 		}
 		moveMemory.add(p);
+		
 	}
 	
 	@Override

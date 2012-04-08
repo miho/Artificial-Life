@@ -20,6 +20,7 @@ import net.cammann.tom.fyp.core.ALife;
 import net.cammann.tom.fyp.core.BasicBrain;
 import net.cammann.tom.fyp.core.Commandable;
 import net.cammann.tom.fyp.core.EnvironmentMap;
+import net.cammann.tom.fyp.core.GENE_TYPE;
 
 import org.jgap.IChromosome;
 
@@ -110,4 +111,8 @@ public class BasicLife extends ABug {
 		setMoveMemory(new ArrayList<Point>());
 	}
 	
+	@Override
+	public int getMemoryLength() {
+		return getGene(GENE_TYPE.MEMORY_LENGTH);
+	}
 }

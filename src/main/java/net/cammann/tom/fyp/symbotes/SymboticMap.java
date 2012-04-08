@@ -30,4 +30,5 @@ public class SymboticMap extends SimpleMap {
 		life.setY(new Random().nextInt((life.getMap().getHeight() + 1) / 10) * 10);
 		
 	}
+	
 }

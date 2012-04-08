@@ -5,6 +5,9 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
+
+import org.apache.log4j.Logger;
 
 /**
  * @author TC
@@ -14,11 +17,12 @@ import java.util.List;
  */
 public abstract class SimpleMap implements EnvironmentMap {
 	
+	static Logger logger = Logger.getLogger(SimpleMap.class);
 	protected int height;
 	protected int width;
 	protected final MapObjectMap resourceList;
 	protected final MapObjectMap obstacleList;
-	protected final MapObjectMap lifeList;
+	protected final List<ALife> lifeList;
 	protected static final int DEFAULT_WIDTH = 300;
 	protected static final int DEFAULT_HEIGHT = 300;
 	protected int timeFrameNo = 0;
@@ -32,14 +36,17 @@ public abstract class SimpleMap implements EnvironmentMap {
 		this.width = width;
 		resourceList = new MapObjectMap();
 		obstacleList = new MapObjectMap();
-		lifeList = new MapObjectMap();
+		lifeList = new ArrayList<ALife>();
 		initResources();
 		
 	}
 	
-	// TODO WHY IS THIS ABSTRACT
 	@Override
-	public abstract void placeLife(ALife life);
+	public void placeLife(ALife life) {
+		life.setX(new Random().nextInt((getWidth() + 1) / 10) * 10);
+		life.setY(new Random().nextInt((getHeight() + 1) / 10) * 10);
+		life.reset();
+	}
 	
 	@Override
 	public int getHeight() {
@@ -104,7 +111,19 @@ public abstract class SimpleMap implements EnvironmentMap {
 	
 	@Override
 	public boolean addResource(Resource r) {
+		if (obstacleList.hasObject(r.getPosition())) {
+			logger.trace("Obstacle occupies obstacle position");
+			return false;
+		}
 		if (resourceList.hasObject(r.getPosition())) {
+			logger.trace("duplicated resource");
+			return false;
+		}
+		// Check in bounds
+		if (r.getX() > getWidth() || r.getX() < 0 || r.getY() > getHeight()
+				|| r.getY() < 0) {
+			// logger.trace("Invalid position");
+			logger.trace("obstacle out of map");
 			return false;
 		}
 		resourceList.addObject(r);
@@ -112,8 +131,8 @@ public abstract class SimpleMap implements EnvironmentMap {
 	}
 	
 	@Override
-	public MapObjectMap getResourceList() {
-		return resourceList;
+	public Iterator<MapObject> getResourceIterator() {
+		return resourceList.hashMap.values().iterator();
 	}
 	
 	@Override
@@ -147,6 +166,18 @@ public abstract class SimpleMap implements EnvironmentMap {
 	@Override
 	public boolean addObstacle(Obstacle o) {
 		if (obstacleList.hasObject(o.getPosition())) {
+			logger.trace("duplicated obstacle");
+			return false;
+		}
+		if (resourceList.hasObject(o.getPosition())) {
+			logger.trace("Resource occupies obstacle position");
+			return false;
+		}
+		// Check in bounds
+		if (o.getX() > getWidth() || o.getX() < 0 || o.getY() > getHeight()
+				|| o.getY() < 0) {
+			// logger.trace("Invalid position");
+			logger.trace("obstacle out of map");
 			return false;
 		}
 		obstacleList.addObject(o);
@@ -179,44 +210,69 @@ public abstract class SimpleMap implements EnvironmentMap {
 	
 	@Override
 	public boolean hasLife(Point p) {
-		if (lifeList.hasObject(p)) {
-			return true;
+		for (ALife i : lifeList) {
+			if (i.getPosition().equals(p)) {
+				return true;
+			}
 		}
 		return false;
 	}
 	
 	@Override
 	public boolean addLife(ALife life) {
-		if (lifeList.hasObject(life.getPosition())) {
+		if (obstacleList.hasObject(life.getPosition())) {
+			logger.trace("obstacle occupies life position");
 			return false;
 		}
-		lifeList.addObject(life);
+		if (resourceList.hasObject(life.getPosition())) {
+			logger.trace("resource occupies life positon");
+			// Could accept this, and return true..
+			return false;
+		}
+		// Check in bounds
+		if (life.getX() > getWidth() || life.getX() < 0
+				|| life.getY() > getHeight() || life.getY() < 0) {
+			
+			logger.trace("life out of map");
+			return false;
+		}
+		if (hasLife(life.getPosition())) {
+			logger.trace("life exist here already");
+			return false;
+		}
+		lifeList.add(life);
 		placeLife(life);
 		return true;
 	}
 	
 	@Override
 	public boolean removeLife(ALife life) {
-		return lifeList.removeObject(life);
+		return lifeList.remove(life);
 	}
 	
 	@Override
 	public boolean removeLife(Point p) {
-		return lifeList.removeObject(p);
+		ALife tmp = null;
+		for (ALife i : lifeList) {
+			if (i.getPosition().equals(p)) {
+				tmp = i;
+			}
+		}
+		if (tmp == null) {
+			return false;
+		} else {
+			return lifeList.remove(tmp);
+		}
 	}
 	
-	public Iterator<MapObject> lifeIterator() {
+	@Override
+	public Iterator<ALife> getLifeIterator() {
 		return lifeList.iterator();
 	}
 	
 	@Override
-	public MapObjectMap getLifeList() {
-		return lifeList;
-	}
-	
-	@Override
-	public MapObjectMap getObstacleList() {
-		return obstacleList;
+	public Iterator<MapObject> getObstacleIterator() {
+		return obstacleList.hashMap.values().iterator();
 	}
 	
 	@Override
@@ -236,21 +292,21 @@ public abstract class SimpleMap implements EnvironmentMap {
 	@Override
 	public List<Paintable> getLifePaintables() {
 		List<Paintable> paints = new ArrayList<Paintable>();
-		
+		// TODO finish
 		return paints;
 	}
 	
 	@Override
 	public List<Paintable> getObstaclePaintables() {
 		List<Paintable> paints = new ArrayList<Paintable>();
-		
+		// TODO finish
 		return paints;
 	}
 	
 	@Override
 	public List<Paintable> getResourcePaintables() {
 		List<Paintable> paints = new ArrayList<Paintable>();
-		
+		// TODO finish
 		return paints;
 	}
 }

@@ -73,7 +73,6 @@ public class SimpleResource extends Resource {
 		return calories;
 	}
 	
-	@Override
 	public void setPosition(Point p) {
 		this.y = p.y;
 		this.x = p.x;
@@ -82,7 +81,7 @@ public class SimpleResource extends Resource {
 	
 	@Override
 	public ResourceType getResourceType() {
-		return ResourceType.APPLE;
+		return ResourceType.SIMPLE;
 	}
 	
 	@Override

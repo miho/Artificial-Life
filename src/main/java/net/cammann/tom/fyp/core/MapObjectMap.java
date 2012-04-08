@@ -43,7 +43,7 @@ public class MapObjectMap implements Iterable<MapObject> {
 	}
 	
 	public boolean removeObject(Point p) {
-		return hashMap.remove(p) == null ? true : false;
+		return hashMap.remove(p) == null ? false : true;
 	}
 	
 	public int size() {

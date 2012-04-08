@@ -7,13 +7,13 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.geom.Line2D;
+import java.util.Iterator;
 
 import javax.swing.JPanel;
 
 import net.cammann.tom.fyp.core.ALife;
 import net.cammann.tom.fyp.core.EnvironmentMap;
 import net.cammann.tom.fyp.core.MapObject;
-import net.cammann.tom.fyp.core.Obstacle;
 import net.cammann.tom.fyp.core.Resource;
 
 /**
@@ -39,9 +39,10 @@ public class MapPanel extends JPanel {
 		g2.setColor(Color.PINK);
 		
 		g2.setStroke(new BasicStroke(5));
-		for (MapObject i : map.getLifeList()) {
+		Iterator<ALife> it = map.getLifeIterator();
+		while (it.hasNext()) {
 			Line2D lp = null;
-			ALife life = (ALife) i;
+			ALife life = it.next();
 			for (Point p : life.getMoveMemory()) {
 				Line2D l2 = null;
 				if (lp != null) {
@@ -62,19 +63,20 @@ public class MapPanel extends JPanel {
 		
 		g2.setStroke(new BasicStroke(1));
 		
-		// g2.setColor(Color.GREEN);
-		for (MapObject i : map.getResourceList()) {
+		Iterator<MapObject> iMap = map.getResourceIterator();
+		for (MapObject i = null; iMap.hasNext(); i = iMap.next()) {
 			((Resource) i).draw(g2);
 		}
 		
-		// g2.setColor(Color.BLACK);
-		for (MapObject i : map.getObstacleList()) {
-			((Obstacle) i).draw(g2);
+		iMap = map.getObstacleIterator();
+		for (MapObject i = null; iMap.hasNext(); i = iMap.next()) {
+			((Resource) i).draw(g2);
 		}
 		
 		int count = 0;
-		for (MapObject mo : map.getLifeList()) {
-			ALife life = (ALife) mo;
+		it = map.getLifeIterator();
+		while (it.hasNext()) {
+			ALife life = it.next();
 			life.draw(g2);
 			g2.setColor(Color.BLACK);
 			

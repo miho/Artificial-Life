@@ -37,6 +37,7 @@ public class ALifeGP extends ABug {
 	
 	@Override
 	public void addMoveToMemory(Point p) {
+		
 		moveMemory.add(p);
 	}
 	
@@ -93,6 +94,12 @@ public class ALifeGP extends ABug {
 		setEnergy(1000);
 		setOrientation(new Random().nextInt(4));
 		setMoveMemory(new ArrayList<Point>());
+	}
+	
+	@Override
+	public int getMemoryLength() {
+		// TODO add limit in genes?
+		return 10;
 	}
 	
 }

@@ -2,6 +2,7 @@ package net.cammann.tom.fyp.core;
 
 import java.awt.Dimension;
 import java.awt.Point;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -29,11 +30,11 @@ public interface EnvironmentMap {
 	
 	public boolean validPosition(double x, double y);
 	
-	public MapObjectMap getResourceList();
+	public Iterator<MapObject> getResourceIterator();
 	
-	public MapObjectMap getLifeList();
+	public Iterator<MapObject> getObstacleIterator();
 	
-	public MapObjectMap getObstacleList();
+	public Iterator<ALife> getLifeIterator();
 	
 	public boolean hasResource(int x, int y);
 	

@@ -23,7 +23,7 @@ public class HeavyAndFewMap extends SimpleMap {
 		r.setMinCal(2000);
 		
 		for (int i = 0; i < 200; i++) {
-			addResource(r.createResource(ResourceType.APPLE));
+			addResource(r.createResource(ResourceType.SIMPLE));
 			
 		}
 		
