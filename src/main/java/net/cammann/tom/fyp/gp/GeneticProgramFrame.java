@@ -14,10 +14,12 @@ import java.util.HashMap;
 import java.util.List;
 
 import net.cammann.tom.fyp.basicLife.BasicLifeFactory;
+import net.cammann.tom.fyp.core.ALife;
 import net.cammann.tom.fyp.core.EnvironmentMap;
 import net.cammann.tom.fyp.core.EvolutionCycleEvent;
 import net.cammann.tom.fyp.core.EvolutionCycleListener;
 import net.cammann.tom.fyp.core.EvolutionFactory;
+import net.cammann.tom.fyp.core.EvolutionModule;
 import net.cammann.tom.fyp.core.SimulationContext;
 import net.cammann.tom.fyp.gp.commands.Consume;
 import net.cammann.tom.fyp.gp.commands.FoodAhead;
@@ -54,14 +56,14 @@ import org.jgap.gp.terminal.Terminal;
 import org.jgap.util.NumberKit;
 import org.jgap.util.SystemKit;
 
-public class GeneticProgramFrame extends GPProblem {
+public class GeneticProgramFrame extends GPProblem implements EvolutionModule {
 	private transient static Logger LOGGER = Logger
 			.getLogger(GeneticProgramFrame.class);
 	
 	/*
 	 * public variables which may be changed by configuration file
 	 */
-	public static IGPProgram fittest;
+	private IGPProgram fittest;
 	// number of variables to use (output variable is excluded)
 	private int numInputVariables;
 	
@@ -124,6 +126,37 @@ public class GeneticProgramFrame extends GPProblem {
 	public GeneticProgramFrame(EvolutionFactory factory) {
 		cycleListeners = new ArrayList<EvolutionCycleListener>();
 		this.factory = factory;
+	}
+	
+	public static void main(String args[]) {
+		
+		EvolutionFactory factory = new BasicLifeFactory();
+		
+		GeneticProgramFrame gpf = new GeneticProgramFrame(factory);
+		
+		BestLifeLauncher launcherFrame = new BestLifeLauncher(gpf, factory);
+		launcherFrame.createAndShowGui();
+		
+		final StatsPackage stats = new StatsPackage();
+		
+		gpf.addEvolutionCycleListener(new EvolutionCycleListener() {
+			
+			@Override
+			public void startCycle(EvolutionCycleEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void endCycle(EvolutionCycleEvent e) {
+				stats.add(e.getGPPopulation(), e.getGenerationNum());
+				
+			}
+		});
+		
+		stats.startFitnessGraph();
+		
+		gpf.run();
 	}
 	
 	/**
@@ -208,7 +241,11 @@ public class GeneticProgramFrame extends GPProblem {
 	 * the configurations file
 	 * ------------------------------------------------------------
 	 */
-
+	
+	public IGPProgram getFittest() {
+		return fittest;
+	}
+	
 	public void initConfig(GPConfiguration config)
 			throws InvalidConfigurationException {
 		
@@ -279,34 +316,6 @@ public class GeneticProgramFrame extends GPProblem {
 		config.setProgramCreationMaxTries(programCreationMaxTries);
 	}
 	
-	public static void main(String args[]) {
-		
-		EvolutionFactory factory = new BasicLifeFactory();
-		
-		GeneticProgramFrame gpf = new GeneticProgramFrame(factory);
-		
-		final StatsPackage stats = new StatsPackage();
-		
-		gpf.addEvolutionCycleListener(new EvolutionCycleListener() {
-			
-			@Override
-			public void startCycle(EvolutionCycleEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void endCycle(EvolutionCycleEvent e) {
-				stats.add(e.getGPPopulation(), e.getGenerationNum());
-				
-			}
-		});
-		
-		stats.startFitnessGraph();
-		
-		gpf.run();
-	}
-	
 	public void run() {
 		GPGenotype gp = null;
 		try {
@@ -350,7 +359,6 @@ public class GeneticProgramFrame extends GPProblem {
 				+ SystemKit.niceMemory(SystemKit.getTotalMemoryMB()) + " MB");
 		fittest = null;
 		
-		new GPVisual(this, factory);
 		double bestFit = -1.0d;
 		String bestProgram = "";
 		int bestGen = 0;
@@ -377,30 +385,30 @@ public class GeneticProgramFrame extends GPProblem {
 			ProgramChromosome chrom = thisFittest.getChromosome(0);
 			String program = chrom.toStringNorm(0);
 			double fitness = thisFittest.getFitnessValue();
-			if (showSimiliar || showPopulation) {
-				if (showPopulation) {
-					System.out.println("Generation " + gen
-							+ " (show whole population, sorted)");
-				}
-				pop.sortByFitness();
-				for (IGPProgram p : pop.getGPPrograms()) {
-					double fit = p.getFitnessValue();
-					if (showSimiliar && fit <= bestFit) {
-						String prog = p.toStringNorm(0);
-						if (!similiar.containsKey(prog)) {
-							similiar.put(prog, 1);
-						} else {
-							similiar.put(prog, similiar.get(prog) + 1);
-						}
-					}
-					if (showPopulation) {
-						String prg = p.toStringNorm(0);
-						int sz = p.size();
-						System.out.println("\tprogram: " + prg + " fitness: "
-								+ fit);
-					}
-				}
-			}
+			// if (showSimiliar || showPopulation) {
+			// if (showPopulation) {
+			// System.out.println("Generation " + gen
+			// + " (show whole population, sorted)");
+			// }
+			// pop.sortByFitness();
+			// for (IGPProgram p : pop.getGPPrograms()) {
+			// double fit = p.getFitnessValue();
+			// if (showSimiliar && fit <= bestFit) {
+			// String prog = p.toStringNorm(0);
+			// if (!similiar.containsKey(prog)) {
+			// similiar.put(prog, 1);
+			// } else {
+			// similiar.put(prog, similiar.get(prog) + 1);
+			// }
+			// }
+			// if (showPopulation) {
+			// String prg = p.toStringNorm(0);
+			// int sz = p.size();
+			// System.out.println("\tprogram: " + prg + " fitness: "
+			// + fit);
+			// }
+			// }
+			// }
 			//
 			// Yes, I have to think more about this....
 			// Right now a program is printed if it has
@@ -536,6 +544,15 @@ public class GeneticProgramFrame extends GPProblem {
 			System.out.println("Depth of chrom: " + depths);
 		} else {
 			System.out.println("Depths of chroms: " + depths);
+		}
+	}
+	
+	@Override
+	public ALife getFittestLife() {
+		if (getFittest() == null) {
+			return null;
+		} else {
+			return new ALifeGP(getFittest(), null);
 		}
 	}
 }

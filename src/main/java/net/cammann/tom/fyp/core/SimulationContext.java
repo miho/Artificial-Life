@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import net.cammann.tom.fyp.basicLife.BasicLifeFactory;
+import net.cammann.tom.fyp.gp.BestLifeLauncher;
 import net.cammann.tom.fyp.gui.SimulationFrame;
 import net.cammann.tom.fyp.stats.StatsPackage;
 import net.cammann.tom.fyp.utils.Logger;
@@ -41,7 +42,8 @@ public class SimulationContext {
 		GeneLab g = new GeneLab(lf);
 		g.setEvolutions(100);
 		// g.setPopulationSize(100);
-		
+		BestLifeLauncher bll = new BestLifeLauncher(g, lf);
+		bll.createAndShowGui();
 		stats.startFitnessGraph();
 		// stats.startFreqFitnessGraph();
 		g.addEvolutionCycleListener(new EvolutionCycleListener() {
@@ -213,6 +215,7 @@ public class SimulationContext {
 		timer.stop();
 		setTimerListener();
 		initSimulation();
+		frame.repaint();
 		setVerbosity(log.getVerbosity());
 	}
 	

@@ -13,7 +13,7 @@ import org.jgap.gp.IGPProgram;
 
 public class BasicLifeFactory implements EvolutionFactory {
 	
-	private final int NUM_FIT_FUNC_CYCLES = 1;
+	private final int NUM_FIT_FUNC_CYCLES = 3;
 	private final int NUM_CLONES = 1;
 	private final int RUN_LEN = 400;
 	
@@ -65,5 +65,13 @@ public class BasicLifeFactory implements EvolutionFactory {
 	@Override
 	public int getLenOfFitFuncRun() {
 		return RUN_LEN;
+	}
+	
+	@Override
+	public ALife createLife(ALife life, EnvironmentMap map) {
+		ALife second_life = life.clone();
+		second_life.reset();
+		second_life.setMap(map);
+		return second_life;
 	}
 }

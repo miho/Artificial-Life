@@ -19,7 +19,7 @@ public abstract class SimpleMap implements EnvironmentMap {
 	protected final MapObjectMap resourceList;
 	protected final MapObjectMap obstacleList;
 	protected final MapObjectMap lifeList;
-	protected static final int DEFAULT_WIDTH = 800;
+	protected static final int DEFAULT_WIDTH = 300;
 	protected static final int DEFAULT_HEIGHT = 300;
 	protected int timeFrameNo = 0;
 	

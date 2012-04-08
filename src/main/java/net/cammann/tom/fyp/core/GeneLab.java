@@ -3,6 +3,8 @@ package net.cammann.tom.fyp.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.cammann.tom.fyp.basicLife.BasicLife;
+
 import org.jgap.Chromosome;
 import org.jgap.Configuration;
 import org.jgap.FitnessFunction;
@@ -19,7 +21,7 @@ import org.jgap.impl.IntegerGene;
  * @since 31/01/2012
  * 
  */
-public class GeneLab {
+public class GeneLab implements EvolutionModule {
 	
 	private int popSize;
 	private int evolutions;
@@ -32,7 +34,7 @@ public class GeneLab {
 	
 	public GeneLab(EvolutionFactory factory) {
 		this.factory = factory;
-		popSize = 1000;
+		popSize = 100;
 		
 		evolutions = 60;
 		
@@ -151,6 +153,15 @@ public class GeneLab {
 			}
 		}
 		
+	}
+	
+	@Override
+	public ALife getFittestLife() {
+		if (getBestSolutionSoFar() == null) {
+			return null;
+		} else {
+			return new BasicLife(getBestSolutionSoFar(), null);
+		}
 	}
 	
 }

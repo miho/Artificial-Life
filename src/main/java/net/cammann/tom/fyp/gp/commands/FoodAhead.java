@@ -3,7 +3,6 @@ package net.cammann.tom.fyp.gp.commands;
 import java.awt.Point;
 
 import net.cammann.tom.fyp.core.Commandable;
-import net.cammann.tom.fyp.core.Commandable.ORIENTATION;
 
 import org.jgap.InvalidConfigurationException;
 import org.jgap.gp.CommandGene;
@@ -32,39 +31,16 @@ public class FoodAhead extends CommandGene {
 	
 	private int isFoodAhead(Commandable life, double range) {
 		
-		int RANGE = 10;
-		int STEP = 10;
-		int x = life.getX();
-		int y = life.getY();
+		// int foodRange = life.getGene(GENE_TYPE.SEE_FOOD_RANGE);
 		
-		if (life.getOrientation() == ORIENTATION.UP) {
-			for (int i = 1; i < RANGE; i++) {
-				if (life.getMap().hasResource(x, y - i * STEP)) {
-					return i;
-				}
-			}
-		} else if (life.getOrientation() == ORIENTATION.RIGHT) {
-			for (int i = 1; i < RANGE; i++) {
-				if (life.getMap().hasResource(new Point(x + i * STEP, y))) {
-					return i;
-				}
-			}
+		for (int i = 1; i < 10; i++) {
+			Point p = GPCommandUtil.getPositionAhead(life, i);
 			
-		} else if (life.getOrientation() == ORIENTATION.DOWN) {
-			for (int i = 1; i < RANGE; i++) {
-				if (life.getMap().hasResource(new Point(x, y + i * STEP))) {
-					return i;
-				}
+			if (life.getMap().hasResource(p)) {
+				return i;
 			}
-			
-		} else {
-			for (int i = 1; i < RANGE; i++) {
-				if (life.getMap().hasResource(new Point(x - i * STEP, y))) {
-					return i;
-				}
-			}
-			
 		}
+		
 		return 0;
 	}
 	

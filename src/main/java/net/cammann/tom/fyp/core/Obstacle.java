@@ -1,12 +1,16 @@
 package net.cammann.tom.fyp.core;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Point;
+import java.awt.geom.Ellipse2D;
+import java.awt.image.BufferedImage;
 
 public class Obstacle implements MapObject {
 	
-	private final Point p;
-	
+	private Point p;
+	private static Image img = null;
 	private final double radius;
 	
 	public Obstacle(Point p, double radius) {
@@ -23,47 +27,60 @@ public class Obstacle implements MapObject {
 	
 	@Override
 	public int getX() {
-		// TODO Auto-generated method stub
-		return 0;
+		return p.x;
 	}
 	
 	@Override
 	public int getY() {
-		// TODO Auto-generated method stub
-		return 0;
+		return p.y;
 	}
 	
 	public void setX(int x) {
-		// TODO Auto-generated method stub
-		
+		p.setLocation(x, p.y);
 	}
 	
 	public void setY(int y) {
-		// TODO Auto-generated method stub
-		
+		p.setLocation(p.x, y);
 	}
 	
 	@Override
 	public void setPosition(Point p) {
-		// TODO Auto-generated method stub
+		this.p = p;
 		
 	}
 	
 	@Override
 	public Point getPosition() {
-		// TODO Auto-generated method stub
-		return null;
+		return p;
 	}
 	
 	@Override
 	public double getRadius() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 	
-	public void draw(Graphics2D g2) {
-		// TODO Auto-generated method stub
+	private Image getObstacleImage() {
+		if (img == null) {
+			
+			BufferedImage b2 = new BufferedImage(10, 10,
+					BufferedImage.TYPE_INT_ARGB);
+			
+			Graphics2D g2 = b2.createGraphics();
+			g2.setColor(Color.BLACK);
+			g2.fill(new Ellipse2D.Double(0, 0, 10, 10));
+			
+			img = b2;
+			return img;
+			
+		} else {
+			return img;
+		}
 		
 	}
 	
+	public void draw(Graphics2D g2) {
+		
+		g2.drawImage(getObstacleImage(), getX(), getY(), null);
+		
+	}
 }

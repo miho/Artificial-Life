@@ -9,17 +9,18 @@ import javax.swing.JPanel;
 
 import net.cammann.tom.fyp.core.EnvironmentMap;
 import net.cammann.tom.fyp.core.EvolutionFactory;
+import net.cammann.tom.fyp.core.EvolutionModule;
 import net.cammann.tom.fyp.core.SimulationContext;
 import net.cammann.tom.fyp.gui.SimulationFrame;
 
-public class GPVisual extends JFrame {
+public class BestLifeLauncher extends JFrame {
 	
-	// private final GeneticProgramFrame gpf;
+	private final EvolutionModule evoLab;
+	
 	// private final EvolutionFactory factory;
 	
-	public GPVisual(final GeneticProgramFrame gpf,
-			final EvolutionFactory factory) {
-		// this.gpf = gpf;
+	public BestLifeLauncher(final EvolutionModule evoLab, final EvolutionFactory factory) {
+		this.evoLab = evoLab;
 		// this.factory = factory;
 		
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -32,13 +33,12 @@ public class GPVisual extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if (GeneticProgramFrame.fittest != null) {
+				if (evoLab.getFittestLife() != null) {
 					EnvironmentMap map = factory.createMap();
 					
 					final SimulationContext sc = new SimulationContext(map);
 					
-					sc.addLife(factory.createLife(GeneticProgramFrame.fittest,
-							map));
+					sc.addLife(factory.createLife(evoLab.getFittestLife(), map));
 					
 					sc.initSimulation();
 					sc.setVerbosity(0);
@@ -62,18 +62,17 @@ public class GPVisual extends JFrame {
 		setSize(200, 80);
 		setLocationByPlatform(true);
 		
+	}
+	
+	public void createAndShowGui() {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 				
-				createAndShowGui();
+				setVisible(true);
 			}
 			
 		});
-	}
-	
-	private void createAndShowGui() {
-		setVisible(true);
 		
 	}
 }

@@ -4,6 +4,8 @@ import java.util.Random;
 
 import net.cammann.tom.fyp.core.ALife;
 import net.cammann.tom.fyp.core.MapObject;
+import net.cammann.tom.fyp.core.Obstacle;
+import net.cammann.tom.fyp.core.ObstacleFactory;
 import net.cammann.tom.fyp.core.Resource;
 import net.cammann.tom.fyp.core.Resource.ResourceType;
 import net.cammann.tom.fyp.core.ResourceFactory;
@@ -26,10 +28,15 @@ public class BasicMap extends SimpleMap {
 			}
 			addResource(res);
 		}
-		// ObstacleFactory o = new ObstacleFactory(this);
-		// for (int i = 0; i < 30; i++) {
-		// addObstacle(o.randomObstacle());
-		// }
+		ObstacleFactory of = new ObstacleFactory(this);
+		for (int i = 0; i < 30; i++) {
+			Obstacle o = of.randomObstacle();
+			if (!hasResource(o.getPosition())) {
+				addObstacle(o);
+			} else {
+				i--;
+			}
+		}
 		
 	}
 	
@@ -41,6 +48,7 @@ public class BasicMap extends SimpleMap {
 			ALife life = (ALife) i;
 			placeLife(life);
 		}
+		timeFrameNo = 0;
 		
 	}
 	

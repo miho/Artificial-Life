@@ -83,8 +83,8 @@ public class BasicBrain extends Brain {
 	
 	private boolean canSeeResource() {
 		
-		// int foodRange = life.getGene(GENE_TYPE.SEE_FOOD_RANGE);
-		int foodRange = 5;
+		int foodRange = life.getGene(GENE_TYPE.SEE_FOOD_RANGE);
+		// int foodRange = 5;
 		log.trace("Checking for resources");
 		for (int i = 1; i < foodRange; i++) {
 			Point p = life.getPositionAhead(i);

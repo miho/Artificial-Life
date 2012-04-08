@@ -14,6 +14,8 @@ public interface EvolutionFactory {
 	 */
 	public int getNumClones();
 	
+	public ALife createLife(ALife life, EnvironmentMap map);
+	
 	public ALife createLife(int[] genes, EnvironmentMap map);
 	
 	public ALife createLife(IChromosome chromo, EnvironmentMap map);

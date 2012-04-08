@@ -77,4 +77,11 @@ public class SymboteFactory implements EvolutionFactory {
 		return 400;
 	}
 	
+	@Override
+	public ALife createLife(ALife life, EnvironmentMap map) {
+		ALife second_life = life.clone();
+		// TODO NOT FIXED
+		return null;
+	}
+	
 }
