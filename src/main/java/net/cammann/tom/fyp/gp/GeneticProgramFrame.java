@@ -241,7 +241,7 @@ public class GeneticProgramFrame extends GPProblem implements EvolutionModule {
 	 * the configurations file
 	 * ------------------------------------------------------------
 	 */
-	
+
 	public IGPProgram getFittest() {
 		return fittest;
 	}
@@ -483,7 +483,6 @@ public class GeneticProgramFrame extends GPProblem implements EvolutionModule {
 		sc.addLife(factory.createLife(fittest, map));
 		
 		sc.initSimulation();
-		sc.setVerbosity(0);
 		sc.setTimerListener();
 		
 		final SimulationFrame sf = new SimulationFrame(sc);

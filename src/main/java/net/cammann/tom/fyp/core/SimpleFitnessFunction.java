@@ -3,15 +3,14 @@ package net.cammann.tom.fyp.core;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.cammann.tom.fyp.utils.Logger;
-
+import org.apache.log4j.Logger;
 import org.jgap.FitnessFunction;
 import org.jgap.IChromosome;
 
 public abstract class SimpleFitnessFunction extends FitnessFunction {
 	
 	private final EvolutionFactory factory;
-	protected final Logger log = new Logger(this.getClass().getName());
+	static Logger logger = Logger.getLogger(SimpleFitnessFunction.class);
 	
 	public SimpleFitnessFunction(EvolutionFactory fact) {
 		this.factory = fact;
@@ -34,14 +33,14 @@ public abstract class SimpleFitnessFunction extends FitnessFunction {
 			ALife life = factory.createLife(chromo, map);
 			lifeList.add(life);
 			map.addLife(life);
-			log.trace("Start nrg: " + life.getEnergy());
+			logger.trace("Start nrg: " + life.getEnergy());
 		}
 		
 		for (int i = 0; i < factory.getLenOfFitFuncRun(); i++) {
 			map.incrementTimeFrame();
 		}
 		for (ALife i : lifeList) {
-			log.trace("End nrg: " + i.getEnergy());
+			logger.trace("End nrg: " + i.getEnergy());
 		}
 		
 		for (ALife life : lifeList) {
@@ -61,7 +60,7 @@ public abstract class SimpleFitnessFunction extends FitnessFunction {
 		for (int i = 0; i < num_runs; i++) {
 			fitness += run(chromo);
 		}
-		log.trace("Fitness at end of run: " + fitness);
+		logger.trace("Fitness at end of run: " + fitness);
 		return fitness / num_runs;
 	}
 	

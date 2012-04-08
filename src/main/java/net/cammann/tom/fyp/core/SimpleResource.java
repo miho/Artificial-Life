@@ -11,7 +11,7 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 
-import net.cammann.tom.fyp.utils.Logger;
+import org.apache.log4j.Logger;
 
 /**
  * @author TC
@@ -20,7 +20,7 @@ import net.cammann.tom.fyp.utils.Logger;
  * 
  */
 public class SimpleResource extends Resource {
-	
+	Logger logger = Logger.getLogger(SimpleResource.class);
 	protected int x;
 	protected int y;
 	protected int calories;
@@ -32,13 +32,14 @@ public class SimpleResource extends Resource {
 	public int MIN_CALORIES = 100;
 	protected ResourceType type;
 	private final double radius = 5;
-	public static Logger log = new Logger("Apple");
+	public static Logger log = Logger.getLogger(Resource.class);
 	
 	public SimpleResource(Point p) {
 		this(p.x, p.y);
 	}
 	
 	public SimpleResource(int x, int y) {
+		
 		this.x = x;
 		this.y = y;
 		calories = new Random().nextInt(MAX_CALORIES - MIN_CALORIES)
@@ -47,6 +48,7 @@ public class SimpleResource extends Resource {
 	}
 	
 	public SimpleResource(int x, int y, int min_cals, int max_cals) {
+		
 		this.x = x;
 		this.y = y;
 		this.MAX_CALORIES = max_cals;
@@ -111,7 +113,7 @@ public class SimpleResource extends Resource {
 				return img;
 			} catch (Exception e) {
 				
-				log.servere("Unable to locate Apple Image");
+				logger.error("Unable to locate Apple Image");
 				
 			}
 		} else {
@@ -154,5 +156,6 @@ public class SimpleResource extends Resource {
 	@Override
 	public double getRadius() {
 		return radius;
+		
 	}
 }

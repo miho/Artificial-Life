@@ -23,14 +23,6 @@ public abstract class ALife implements Cloneable, Commandable, Paintable,
 	protected ORIENTATION orientation;
 	
 	/**
-	 * Tells logger in implementation what level to log at.
-	 * 
-	 * @param level
-	 *            Sets printing verbosity
-	 */
-	public abstract void setVerbosity(int level);
-	
-	/**
 	 * Tells the life to make its move for that turn.
 	 * 
 	 * Interface for the life to have its 'turn', most likely delegated to a

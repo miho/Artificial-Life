@@ -9,8 +9,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.cammann.tom.fyp.utils.Logger;
-
+import org.apache.log4j.Logger;
 import org.jgap.Gene;
 import org.jgap.IChromosome;
 
@@ -22,7 +21,7 @@ import org.jgap.IChromosome;
  */
 public abstract class ABug extends ALife {
 	
-	protected Logger log;
+	static Logger logger = Logger.getLogger(ABug.class);
 	
 	// TODO make uMC private
 	/**
@@ -49,8 +48,6 @@ public abstract class ABug extends ALife {
 		energy = getGene(0);
 		
 		this.moveMemory = new ArrayList<Point>();
-		this.log = new Logger("ABug");
-		log.setVerbosity(0);
 		
 	}
 	
@@ -78,8 +75,6 @@ public abstract class ABug extends ALife {
 		energy = getGene(0);
 		
 		this.moveMemory = new ArrayList<Point>();
-		this.log = new Logger("ABug");
-		log.setVerbosity(0);
 	}
 	
 	public abstract void initBrain();
@@ -97,9 +92,8 @@ public abstract class ABug extends ALife {
 		this.genes = genes;
 		orientation = ORIENTATION.UP;
 		this.moveMemory = new ArrayList<Point>();
-		this.log = new Logger("ABug");
-		log.setVerbosity(0);
-		energy = 200;
+		// TODO make sure both place sit getGene(0)
+		energy = getGene(0);
 		
 	}
 	
@@ -115,14 +109,6 @@ public abstract class ABug extends ALife {
 	@Override
 	public boolean pickUpResource() {
 		return false;
-	}
-	
-	@Override
-	public void setVerbosity(int level) {
-		log.setVerbosity(level);
-		if (brain != null) {
-			brain.setVerbosity(level);
-		}
 	}
 	
 	@Override
@@ -143,23 +129,22 @@ public abstract class ABug extends ALife {
 	public void moveForward() {
 		
 		MOVE_COUNT++;
-		
-		log.trace("Move forward");
-		log.trace("Orientation: " + orientation.toString());
+		logger.trace("Move forward");
+		logger.trace("Orientation: " + orientation.toString());
 		
 		Point p = getPositionAhead();
 		boolean moveValid = map.validPosition(p);
-		log.trace("Valid Move = " + moveValid);
+		logger.trace("Valid Move = " + moveValid);
 		if (moveValid) {
-			log.trace(p);
-			log.trace(getPosition());
+			logger.trace(p);
+			logger.trace(getPosition());
 			setX(p.x);
 			setY(p.y);
 			energy -= 5;
 			
 		} else {
-			log.trace("Fail Move Forward");
-			log.trace("Position: " + getPosition());
+			logger.trace("Fail Move Forward");
+			logger.trace("Position: " + getPosition());
 			
 			decrementEnegery(15);
 		}
@@ -176,6 +161,7 @@ public abstract class ABug extends ALife {
 			return new Point(x, y + Brain.STEP);
 		} else {
 			return new Point(x - Brain.STEP, y);
+			
 		}
 	}
 	
@@ -208,8 +194,8 @@ public abstract class ABug extends ALife {
 	public void doMove() {
 		if (energy > 0) {
 			brain.think();
-			log.trace("Energy After move: " + energy);
-			log.trace("Positon: " + getPosition());
+			logger.trace("Energy After move: " + energy);
+			logger.trace("Positon: " + getPosition());
 			if (!hasMoveInMemory(getPosition())) {
 				addMoveToMemory(getPosition());
 				uniqueMoveCount++;
@@ -218,11 +204,10 @@ public abstract class ABug extends ALife {
 		
 	}
 	
-	// TODO fix up this
 	@Override
 	public boolean consumeResource(Resource r) {
 		if (r == null) {
-			log.warn("NULLL RESOURCE");
+			logger.warn("NULLL RESOURCE");
 			return false;
 		}
 		if (canConsumeResource(r)) {

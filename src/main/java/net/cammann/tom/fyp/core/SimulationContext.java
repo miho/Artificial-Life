@@ -12,16 +12,11 @@ import net.cammann.tom.fyp.basicLife.BasicLifeFactory;
 import net.cammann.tom.fyp.gp.BestLifeLauncher;
 import net.cammann.tom.fyp.gui.SimulationFrame;
 import net.cammann.tom.fyp.stats.StatsPackage;
-import net.cammann.tom.fyp.utils.Logger;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 import org.jgap.IChromosome;
 
-/**
- * @author TC
- * @version 0.8
- * @since 31/01/2012
- * 
- */
 public class SimulationContext {
 	private final EnvironmentMap map;
 	private Timer timer;
@@ -29,11 +24,14 @@ public class SimulationContext {
 	// private JPanel panel;
 	private JFrame frame;
 	private int counter;
-	private final Logger log;
+	static Logger logger = Logger.getLogger(SimulationContext.class);
 	private int simulationRate = 100;
 	
 	public static void main(String args[]) {
-		System.out.println("Starting gene lab");
+		
+		PropertyConfigurator.configure("src/main/resources/log4j.properties");
+		
+		logger.trace("Starting gene lab");
 		
 		final StatsPackage stats = new StatsPackage();
 		
@@ -50,8 +48,8 @@ public class SimulationContext {
 			
 			@Override
 			public void startCycle(EvolutionCycleEvent e) {
-				System.out.println("Generation: " + e.getGenerationNum());
-				System.out.println("Highest fitness: "
+				logger.trace("Generation: " + e.getGenerationNum());
+				logger.trace("Highest fitness: "
 						+ e.getPopulation().determineFittestChromosome()
 								.getFitnessValue());
 				
@@ -59,8 +57,7 @@ public class SimulationContext {
 			
 			@Override
 			public void endCycle(EvolutionCycleEvent e) {
-				System.out.println("Finished Generation: "
-						+ e.getGenerationNum());
+				logger.trace("Finished Generation: " + e.getGenerationNum());
 				stats.add(e.getPopulation(), e.getGenerationNum());
 				
 			}
@@ -71,7 +68,7 @@ public class SimulationContext {
 		
 		stats.showGenerationGeneTable();
 		
-		System.out.println("Finished gene lab");
+		logger.trace("Finished gene lab");
 		
 		createAndShowFromFactory(lf, g.getBestSolutionSoFar());
 		
@@ -90,7 +87,7 @@ public class SimulationContext {
 		}
 		
 		sc.initSimulation();
-		sc.setVerbosity(5);
+		
 		sc.setTimerListener();
 		
 		final SimulationFrame sf = new SimulationFrame(sc);
@@ -110,21 +107,23 @@ public class SimulationContext {
 	}
 	
 	public SimulationContext(ALife lifeForm, EnvironmentMap map) {
+		
 		this.map = map;
 		map.addLife(lifeForm);
 		
-		log = new Logger("SimContxt");
 		// initSimulation();
 	}
 	
 	public SimulationContext(EnvironmentMap map) {
 		
 		this.map = map;
-		log = new Logger("SimContxt");
+		
 	}
 	
 	public void addLife(ALife life) {
+		
 		map.addLife(life);
+		
 	}
 	
 	public EnvironmentMap getMap() {
@@ -145,6 +144,7 @@ public class SimulationContext {
 		// counter = 0;
 		// log.debug("Starting energy: " + life.getEnergy());
 		// }
+		
 		map.resetMap();
 	}
 	
@@ -177,9 +177,10 @@ public class SimulationContext {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				log.trace("tick.");
+				logger.trace("tick.");
 				
 				counter++;
+				
 				map.incrementTimeFrame();
 				// for (ALife life : bugs) {
 				// life.doMove();
@@ -193,9 +194,9 @@ public class SimulationContext {
 				
 				if (isVisual) {
 					// panel.repaint();
-					log.trace("About to...");
+					logger.trace("About to...");
 					frame.repaint();
-					log.trace("Repaint.");
+					logger.trace("Repaint.");
 				}
 				
 			}
@@ -215,8 +216,9 @@ public class SimulationContext {
 		timer.stop();
 		setTimerListener();
 		initSimulation();
+		
 		frame.repaint();
-		setVerbosity(log.getVerbosity());
+		
 	}
 	
 	public void reset() {
@@ -227,15 +229,6 @@ public class SimulationContext {
 	
 	public int getMoveCount() {
 		return counter;
-	}
-	
-	public void setVerbosity(int level) {
-		log.setVerbosity(level);
-		// for (ALife life : bugs) {
-		// if (life != null) {
-		// life.setVerbosity(level);
-		// }
-		// }
 	}
 	
 	public void setSimulationRate(int rate) {

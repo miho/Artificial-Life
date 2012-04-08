@@ -19,7 +19,8 @@ public class BestLifeLauncher extends JFrame {
 	
 	// private final EvolutionFactory factory;
 	
-	public BestLifeLauncher(final EvolutionModule evoLab, final EvolutionFactory factory) {
+	public BestLifeLauncher(final EvolutionModule evoLab,
+			final EvolutionFactory factory) {
 		this.evoLab = evoLab;
 		// this.factory = factory;
 		
@@ -41,7 +42,7 @@ public class BestLifeLauncher extends JFrame {
 					sc.addLife(factory.createLife(evoLab.getFittestLife(), map));
 					
 					sc.initSimulation();
-					sc.setVerbosity(0);
+					
 					sc.setTimerListener();
 					
 					final SimulationFrame sf = new SimulationFrame(sc);

@@ -5,12 +5,16 @@ import net.cammann.tom.fyp.core.ALife;
 import net.cammann.tom.fyp.core.EvolutionFactory;
 import net.cammann.tom.fyp.core.SimpleFitnessFunction;
 
+import org.apache.log4j.Logger;
+
 /**
  * 
  * @author Tom Cammann
  * 
  */
 public class BugFitnessFunction extends SimpleFitnessFunction {
+	
+	static Logger logger = Logger.getLogger(SimpleFitnessFunction.class);
 	
 	public BugFitnessFunction(EvolutionFactory fact) {
 		super(fact);
@@ -25,8 +29,8 @@ public class BugFitnessFunction extends SimpleFitnessFunction {
 			// fitness += ((ABug) life).getEnergy();
 			fitness += 0;
 		}
-		log.trace("Moves: " + life.MOVE_COUNT);
-		log.trace("Raw fit: " + fitness);
+		logger.trace("Moves: " + life.MOVE_COUNT);
+		logger.trace("Raw fit: " + fitness);
 		return fitness;
 		
 	}

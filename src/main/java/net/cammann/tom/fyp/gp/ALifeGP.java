@@ -9,11 +9,13 @@ import net.cammann.tom.fyp.core.ABug;
 import net.cammann.tom.fyp.core.ALife;
 import net.cammann.tom.fyp.core.Brain;
 import net.cammann.tom.fyp.core.EnvironmentMap;
-import net.cammann.tom.fyp.utils.Logger;
 
+import org.apache.log4j.Logger;
 import org.jgap.gp.IGPProgram;
 
 public class ALifeGP extends ABug {
+	
+	static Logger logger = Logger.getLogger(ALifeGP.class);
 	
 	private final IGPProgram gp;
 	
@@ -24,7 +26,6 @@ public class ALifeGP extends ABug {
 	public ALifeGP(IGPProgram gp, EnvironmentMap map) {
 		this.setMap(map);
 		initBrain();
-		log = new Logger("GP");
 		orientation = ORIENTATION.UP;
 		
 		energy = 1000;
@@ -37,11 +38,6 @@ public class ALifeGP extends ABug {
 	@Override
 	public void addMoveToMemory(Point p) {
 		moveMemory.add(p);
-	}
-	
-	@Override
-	public void setVerbosity(int level) {
-		// TODO
 	}
 	
 	@Override
