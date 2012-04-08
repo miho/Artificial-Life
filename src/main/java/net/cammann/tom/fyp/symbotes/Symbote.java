@@ -31,29 +31,29 @@ import org.jgap.IChromosome;
  * 
  */
 public class Symbote extends ABug {
-	
+
 	private ResourceType consumable, droppable;
-	
+
 	public Symbote() {
-		
+
 	}
-	
+
 	public Symbote(IChromosome chrome, EnvironmentMap map, ResourceType c,
 			ResourceType d) {
 		super(chrome, map);
 		this.consumable = c;
 		this.droppable = d;
-		
+
 	}
-	
+
 	public Symbote(int[] genes, EnvironmentMap map, ResourceType c,
 			ResourceType d) {
 		super(genes, map);
 		this.consumable = c;
 		this.droppable = d;
-		
+
 	}
-	
+
 	@Override
 	public boolean dropResource() {
 		if (getMap().hasResource(getPosition())) {
@@ -63,12 +63,12 @@ public class Symbote extends ABug {
 		decrementEnegery(70);
 		return true;
 	}
-	
+
 	public Symbote(int genes[], EnvironmentMap map) {
 		super(genes, map);
-		
+
 	}
-	
+
 	@Override
 	public boolean canConsumeResource(Resource r) {
 		if (r.getResourceType() == consumable) {
@@ -76,30 +76,30 @@ public class Symbote extends ABug {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public ALife clone() {
 		return new Symbote(genes, map, consumable, droppable);
 	}
-	
+
 	@Override
 	public boolean pickUpResource() {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
+
 	@Override
 	public void initBrain() {
 		setBrain(new BasicBrain(this));
-		
+
 	}
-	
+
 	@Override
 	public LifeCommand[] getCommandList() {
 		LifeCommand doNothing = new LifeCommand("Nothing") {
 			@Override
 			public void execute(Commandable life) {
-				
+
 			}
 		};
 		LifeCommand commands[] = {
@@ -146,24 +146,24 @@ public class Symbote extends ABug {
 						new RandomCommand("Turn Left or Right",
 								new TurnLeftCommand(), new TurnRightCommand(),
 								new ForwardCommand())) };
-		
+
 		return commands;
 	}
-	
+
 	@Override
 	public boolean consume() {
 		return consumeResource(map.getResource(getPosition()));
 	}
-	
+
 	@Override
 	public void draw(Graphics2D g2) {
 		g2.drawImage(getImage(), getX(), getY(), null);
 	}
-	
+
 	@Override
 	public void reset() {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 }
