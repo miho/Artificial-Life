@@ -19,9 +19,9 @@ import org.jgap.IChromosome;
  * @since 31/01/2012
  * 
  */
-public abstract class ABug extends ALife {
+public abstract class AbstactLife extends ALife {
 	
-	static Logger logger = Logger.getLogger(ABug.class);
+	static Logger logger = Logger.getLogger(AbstactLife.class);
 	
 	// TODO make uMC private
 	/**
@@ -37,7 +37,7 @@ public abstract class ABug extends ALife {
 	 * 
 	 * @param bug
 	 */
-	public ABug(ALife bug) {
+	public AbstactLife(ALife bug) {
 		this.map = bug.map;
 		initBrain();
 		
@@ -51,7 +51,7 @@ public abstract class ABug extends ALife {
 		
 	}
 	
-	public ABug(EnvironmentMap map) {
+	public AbstactLife(EnvironmentMap map) {
 		this.setMap(map);
 		initBrain();
 		
@@ -68,7 +68,7 @@ public abstract class ABug extends ALife {
 	 * 
 	 * @param chrome
 	 */
-	public ABug(IChromosome chrome, EnvironmentMap map) {
+	public AbstactLife(IChromosome chrome, EnvironmentMap map) {
 		this.setMap(map);
 		initBrain();
 		
@@ -95,7 +95,7 @@ public abstract class ABug extends ALife {
 	 * 
 	 * @param genes
 	 */
-	public ABug(int[] genes, EnvironmentMap map) {
+	public AbstactLife(int[] genes, EnvironmentMap map) {
 		initBrain();
 		this.map = map;
 		this.genes = genes;
@@ -106,7 +106,7 @@ public abstract class ABug extends ALife {
 		
 	}
 	
-	protected ABug() {
+	protected AbstactLife() {
 		
 	}
 	

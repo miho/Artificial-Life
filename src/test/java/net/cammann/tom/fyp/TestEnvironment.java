@@ -13,7 +13,7 @@ import net.cammann.tom.fyp.core.EnvironmentMap;
 import net.cammann.tom.fyp.core.MapObject;
 import net.cammann.tom.fyp.core.Obstacle;
 import net.cammann.tom.fyp.core.Resource;
-import net.cammann.tom.fyp.core.SimpleMap;
+import net.cammann.tom.fyp.core.AbstactMap;
 import net.cammann.tom.fyp.core.SimpleResource;
 
 import org.apache.log4j.Logger;
@@ -49,19 +49,19 @@ public class TestEnvironment {
 			assertTrue(r.getPosition().equals(new Point(10, 30)));
 			assertTrue(r.getResourceType().equals(Resource.ResourceType.SIMPLE));
 			
-			Method removeResourceR = SimpleMap.class.getDeclaredMethod(
+			Method removeResourceR = AbstactMap.class.getDeclaredMethod(
 					"removeResource", new Class<?>[] { Resource.class });
 			removeResourceR.setAccessible(true);
 			
-			Method removeResourceP = SimpleMap.class.getDeclaredMethod(
+			Method removeResourceP = AbstactMap.class.getDeclaredMethod(
 					"removeResource", new Class<?>[] { Point.class });
 			removeResourceP.setAccessible(true);
 			
-			Method addResource = SimpleMap.class.getDeclaredMethod(
+			Method addResource = AbstactMap.class.getDeclaredMethod(
 					"addResource", new Class<?>[] { Resource.class });
 			addResource.setAccessible(true);
 			
-			Method addObstacle = SimpleMap.class.getDeclaredMethod(
+			Method addObstacle = AbstactMap.class.getDeclaredMethod(
 					"addObstacle", new Class<?>[] { Obstacle.class });
 			addObstacle.setAccessible(true);
 			
@@ -118,10 +118,10 @@ public class TestEnvironment {
 	public void obstacleTest() {
 		try {
 			// TODO remove 'magic numbers'
-			SimpleMap map = (SimpleMap) TestUtils.getInstance().getBlankMap(
+			AbstactMap map = (AbstactMap) TestUtils.getInstance().getBlankMap(
 					100, 200);
 			
-			Method addObstacle = SimpleMap.class.getDeclaredMethod(
+			Method addObstacle = AbstactMap.class.getDeclaredMethod(
 					"addObstacle", new Class<?>[] { Obstacle.class });
 			addObstacle.setAccessible(true);
 			
@@ -142,7 +142,7 @@ public class TestEnvironment {
 			Resource r = new SimpleResource(new Point(80, 40));
 			Obstacle o3 = new Obstacle(new Point(80, 40), 5);
 			
-			Method addResource = SimpleMap.class.getDeclaredMethod(
+			Method addResource = AbstactMap.class.getDeclaredMethod(
 					"addResource", new Class<?>[] { Resource.class });
 			addResource.setAccessible(true);
 			
@@ -152,13 +152,13 @@ public class TestEnvironment {
 			out = addObstacle.invoke(map, o3);
 			assertFalse((Boolean) out);
 			
-			Method removeObstacle1 = SimpleMap.class.getDeclaredMethod(
+			Method removeObstacle1 = AbstactMap.class.getDeclaredMethod(
 					"removeObstacle", new Class<?>[] { Obstacle.class });
 			removeObstacle1.setAccessible(true);
-			Method removeObstacle2 = SimpleMap.class.getDeclaredMethod(
+			Method removeObstacle2 = AbstactMap.class.getDeclaredMethod(
 					"removeObstacle", new Class<?>[] { Point.class });
 			removeObstacle2.setAccessible(true);
-			Method removeResource = SimpleMap.class.getDeclaredMethod(
+			Method removeResource = AbstactMap.class.getDeclaredMethod(
 					"removeResource", new Class<?>[] { Resource.class });
 			removeResource.setAccessible(true);
 			
@@ -245,7 +245,7 @@ public class TestEnvironment {
 		Resource r = new SimpleResource(p);
 		
 		try {
-			Method addResource = SimpleMap.class.getDeclaredMethod(
+			Method addResource = AbstactMap.class.getDeclaredMethod(
 					"addResource", new Class<?>[] { Resource.class });
 			addResource.setAccessible(true);
 			

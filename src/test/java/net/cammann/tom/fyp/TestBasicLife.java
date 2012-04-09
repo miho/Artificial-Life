@@ -26,6 +26,11 @@ public class TestBasicLife {
 		PropertyConfigurator.configure("src/test/resources/log4j.properties");
 	}
 	
+	/**
+	 * Test correctness of basicFactory
+	 * 
+	 * Tests creation of map and Life and its parameters
+	 */
 	@Test
 	public void testBasicFactory() {
 		// TODO remove 'magic numbers'
@@ -48,12 +53,13 @@ public class TestBasicLife {
 		logger.info("resouce count: " + resourceCount);
 		assertTrue(resourceCount == 40);
 		
-		Iterator<MapObject> obstacleIterator = map.getResourceIterator();
+		Iterator<MapObject> obstacleIterator = map.getObstacleIterator();
 		int obstacleCount = 0;
 		while (obstacleIterator.hasNext()) {
 			obstacleIterator.next();
 			obstacleCount++;
 		}
+		logger.info("obstacle count: " + obstacleCount);
 		assertTrue(obstacleCount == 5);
 		
 		assertTrue(map.getWidth() == 200);

@@ -8,9 +8,9 @@ import net.cammann.tom.fyp.core.ALife;
 import net.cammann.tom.fyp.core.Resource;
 import net.cammann.tom.fyp.core.Resource.ResourceType;
 import net.cammann.tom.fyp.core.ResourceFactory;
-import net.cammann.tom.fyp.core.SimpleMap;
+import net.cammann.tom.fyp.core.AbstactMap;
 
-public class StaticMap extends SimpleMap {
+public class StaticMap extends AbstactMap {
 	
 	public static List<Resource> RESOURCE_LIST;
 	
@@ -33,13 +33,6 @@ public class StaticMap extends SimpleMap {
 		for (Resource r : RESOURCE_LIST) {
 			addResource(r);
 		}
-		
-	}
-	
-	@Override
-	public void resetMap() {
-		resourceList.clear();
-		initResources();
 		
 	}
 	

@@ -15,7 +15,7 @@ import net.cammann.tom.fyp.commands.MoveTowardsUp;
 import net.cammann.tom.fyp.commands.RandomCommand;
 import net.cammann.tom.fyp.commands.TurnLeftCommand;
 import net.cammann.tom.fyp.commands.TurnRightCommand;
-import net.cammann.tom.fyp.core.ABug;
+import net.cammann.tom.fyp.core.AbstactLife;
 import net.cammann.tom.fyp.core.ALife;
 import net.cammann.tom.fyp.core.BasicBrain;
 import net.cammann.tom.fyp.core.Commandable;
@@ -24,7 +24,7 @@ import net.cammann.tom.fyp.core.GENE_TYPE;
 
 import org.jgap.IChromosome;
 
-public class BasicLife extends ABug {
+public class BasicLife extends AbstactLife {
 	
 	public BasicLife(IChromosome chrome, EnvironmentMap map) {
 		super(chrome, map);

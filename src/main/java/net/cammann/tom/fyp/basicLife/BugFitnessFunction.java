@@ -1,6 +1,6 @@
 package net.cammann.tom.fyp.basicLife;
 
-import net.cammann.tom.fyp.core.ABug;
+import net.cammann.tom.fyp.core.AbstactLife;
 import net.cammann.tom.fyp.core.ALife;
 import net.cammann.tom.fyp.core.EvolutionFactory;
 import net.cammann.tom.fyp.core.SimpleFitnessFunction;
@@ -24,7 +24,7 @@ public class BugFitnessFunction extends SimpleFitnessFunction {
 	public double computeRawFitness(ALife life) {
 		double fitness = 0;
 		if (life.getEnergy() > 0) {
-			fitness += ((ABug) life).getEnergy();
+			fitness += ((AbstactLife) life).getEnergy();
 		} else {
 			// fitness += ((ABug) life).getEnergy();
 			fitness += 0;

@@ -1,10 +1,10 @@
 package net.cammann.tom.fyp;
 
 import net.cammann.tom.fyp.commands.LifeCommand;
-import net.cammann.tom.fyp.core.ABug;
+import net.cammann.tom.fyp.core.AbstactLife;
 import net.cammann.tom.fyp.core.ALife;
 import net.cammann.tom.fyp.core.EnvironmentMap;
-import net.cammann.tom.fyp.core.SimpleMap;
+import net.cammann.tom.fyp.core.AbstactMap;
 
 public class TestUtils {
 	private static TestUtils utils = new TestUtils();
@@ -28,7 +28,7 @@ public class TestUtils {
 	 * 
 	 * 
 	 */
-	private class BlankMap extends SimpleMap {
+	private class BlankMap extends AbstactMap {
 		
 		private BlankMap(int w, int h) {
 			super(w, h);
@@ -51,7 +51,7 @@ public class TestUtils {
 	 * 
 	 * Does not init any commands.
 	 */
-	private class BlankLife extends ABug {
+	private class BlankLife extends AbstactLife {
 		private BlankLife(EnvironmentMap map) {
 			super(map);
 		}

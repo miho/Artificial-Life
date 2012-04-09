@@ -1,13 +1,5 @@
 package net.cammann.tom.fyp.core;
 
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.Timer;
-
 import net.cammann.tom.fyp.basicLife.BasicLifeFactory;
 import net.cammann.tom.fyp.gp.BestLifeLauncher;
 import net.cammann.tom.fyp.gui.SimulationFrame;
@@ -18,14 +10,8 @@ import org.apache.log4j.PropertyConfigurator;
 import org.jgap.IChromosome;
 
 public class SimulationContext {
-	private final EnvironmentMap map;
-	private Timer timer;
-	private boolean isVisual = false;
-	// private JPanel panel;
-	private JFrame frame;
-	private int counter;
+	
 	static Logger logger = Logger.getLogger(SimulationContext.class);
-	private int simulationRate = 100;
 	
 	public static void main(String args[]) {
 		
@@ -101,146 +87,4 @@ public class SimulationContext {
 		
 	}
 	
-	public static void createAndShowGUI(SimulationFrame sf, SimulationContext sc) {
-		sf.setVisible(true);
-		sf.start();
-	}
-	
-	public SimulationContext(ALife lifeForm, EnvironmentMap map) {
-		
-		this.map = map;
-		// map.addLife(lifeForm);
-		
-		// initSimulation();
-	}
-	
-	public SimulationContext(EnvironmentMap map) {
-		
-		this.map = map;
-		
-	}
-	
-	public void addLife(ALife life) {
-		
-		// map.addLife(life);
-		
-	}
-	
-	public EnvironmentMap getMap() {
-		return map;
-	}
-	
-	public Dimension getSizeOfMap() {
-		return map.getDimension();
-	}
-	
-	public int getMapWidth() {
-		return map.getWidth();
-	}
-	
-	public int getMapHeight() {
-		return map.getHeight();
-	}
-	
-	public void RegisterFrame(JFrame frame, JPanel panel) {
-		this.isVisual = true;
-		// this.panel = panel;
-		this.frame = frame;
-		
-	}
-	
-	public void moveOnce() {
-		map.incrementTimeFrame();
-	}
-	
-	public void setTimerListener() {
-		
-		timer = new Timer(simulationRate, new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				logger.trace("tick.");
-				
-				counter++;
-				
-				map.incrementTimeFrame();
-				
-				if (isVisual) {
-					logger.trace("About to...");
-					frame.repaint();
-					logger.trace("Repaint.");
-				}
-				
-			}
-		});
-		
-	}
-	
-	public void start() {
-		timer.start();
-	}
-	
-	public void pause() {
-		timer.stop();
-	}
-	
-	public void stop() {
-		timer.stop();
-		setTimerListener();
-		// initSimulation();
-		
-		frame.repaint();
-		
-	}
-	
-	public void reset() {
-		stop();
-		
-		start();
-	}
-	
-	public int getMoveCount() {
-		return counter;
-	}
-	
-	public void setSimulationRate(int rate) {
-		this.simulationRate = rate;
-		if (timer.isRunning()) {
-			pause();
-			setTimerListener();
-			start();
-		} else {
-			setTimerListener();
-		}
-		
-	}
-	
-	public int getSimulationRate() {
-		return simulationRate;
-	}
-	
-	// public void removeLife(ALife i) {
-	// bugs.remove(i);
-	// }
-	//
-	// public void removeLife(int i) {
-	// bugs.remove(i);
-	// }
-	//
-	// public void setMap(EnvironmentMap _map) {
-	// stop();
-	// for (ALife life : getLife()) {
-	// life.setMap(_map);
-	// }
-	// map = _map;
-	//
-	// }
-	
-	public boolean isStopped() {
-		return !timer.isRunning();
-	}
-	
-	public boolean isRunning() {
-		return timer.isRunning();
-	}
 }

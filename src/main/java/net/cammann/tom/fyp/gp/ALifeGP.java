@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import net.cammann.tom.fyp.commands.LifeCommand;
-import net.cammann.tom.fyp.core.ABug;
+import net.cammann.tom.fyp.core.AbstactLife;
 import net.cammann.tom.fyp.core.ALife;
 import net.cammann.tom.fyp.core.Brain;
 import net.cammann.tom.fyp.core.EnvironmentMap;
@@ -13,7 +13,7 @@ import net.cammann.tom.fyp.core.EnvironmentMap;
 import org.apache.log4j.Logger;
 import org.jgap.gp.IGPProgram;
 
-public class ALifeGP extends ABug {
+public class ALifeGP extends AbstactLife {
 	
 	static Logger logger = Logger.getLogger(ALifeGP.class);
 	

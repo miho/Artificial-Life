@@ -14,7 +14,7 @@ import java.util.Random;
 import net.cammann.tom.fyp.core.ALife;
 import net.cammann.tom.fyp.core.EnvironmentMap;
 import net.cammann.tom.fyp.core.Resource;
-import net.cammann.tom.fyp.core.SimpleMap;
+import net.cammann.tom.fyp.core.AbstactMap;
 
 public class MapUtils {
 	public static void SaveMap(File file, EnvironmentMap map) {
@@ -41,9 +41,9 @@ public class MapUtils {
 	}
 	
 	public static EnvironmentMap LoadMap(File file) {
-		SimpleMap map = null;
+		AbstactMap map = null;
 		final List<Resource> rList = new ArrayList<Resource>();
-		class QuickMap extends SimpleMap {
+		class QuickMap extends AbstactMap {
 			
 			public QuickMap(int width, int height) {
 				super(width, height);

@@ -1,10 +1,10 @@
 package net.cammann.tom.fyp.ants;
 
 import net.cammann.tom.fyp.commands.LifeCommand;
-import net.cammann.tom.fyp.core.ABug;
+import net.cammann.tom.fyp.core.AbstactLife;
 import net.cammann.tom.fyp.core.ALife;
 
-public class Ant extends ABug {
+public class Ant extends AbstactLife {
 	
 	@Override
 	public LifeCommand[] getCommandList() {

@@ -479,7 +479,7 @@ public class GeneticProgramFrame extends GPProblem implements EvolutionModule {
 		
 		map.addLife(factory.createLife(fittest, map));
 		
-		SimulationFrame sf = new SimulationFrame(map);
+		final SimulationFrame sf = new SimulationFrame(map);
 		// sc.initSimulation();
 		sf.setTimerListener();
 		

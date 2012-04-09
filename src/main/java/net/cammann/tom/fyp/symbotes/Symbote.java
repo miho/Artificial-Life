@@ -1,6 +1,7 @@
 package net.cammann.tom.fyp.symbotes;
 
 import java.awt.Graphics2D;
+import java.lang.reflect.Method;
 
 import net.cammann.tom.fyp.commands.ConsumeCommand;
 import net.cammann.tom.fyp.commands.DropResourceCommand;
@@ -14,14 +15,16 @@ import net.cammann.tom.fyp.commands.RandomCommand;
 import net.cammann.tom.fyp.commands.SubProgram;
 import net.cammann.tom.fyp.commands.TurnLeftCommand;
 import net.cammann.tom.fyp.commands.TurnRightCommand;
-import net.cammann.tom.fyp.core.ABug;
+import net.cammann.tom.fyp.core.AbstactLife;
 import net.cammann.tom.fyp.core.ALife;
 import net.cammann.tom.fyp.core.BasicBrain;
 import net.cammann.tom.fyp.core.Commandable;
 import net.cammann.tom.fyp.core.EnvironmentMap;
 import net.cammann.tom.fyp.core.Resource;
 import net.cammann.tom.fyp.core.Resource.ResourceType;
+import net.cammann.tom.fyp.core.AbstactMap;
 
+import org.apache.log4j.Logger;
 import org.jgap.IChromosome;
 
 /**
@@ -30,8 +33,8 @@ import org.jgap.IChromosome;
  * @author TC
  * 
  */
-public class Symbote extends ABug {
-	
+public class Symbote extends AbstactLife {
+	static Logger logger = Logger.getLogger(Symbote.class);
 	private ResourceType consumable, droppable;
 	
 	public Symbote() {
@@ -59,8 +62,24 @@ public class Symbote extends ABug {
 		if (getMap().hasResource(getPosition())) {
 			return false;
 		}
-		getMap().addResource(new SymbResource(getPosition(), droppable));
-		decrementEnegery(70);
+		try {
+			Method addResource = AbstactMap.class.getDeclaredMethod(
+					"addResource", new Class<?>[] { Resource.class });
+			addResource.setAccessible(true);
+			
+			Resource r = new SymbResource(getPosition(), droppable);
+			
+			Object out = addResource.invoke(map, r);
+			
+			if (!(Boolean) out) {
+				logger.info("failed to drop resource, not sure why..");
+				return false;
+			}
+			
+			decrementEnegery(70);
+		} catch (Exception e) {
+			logger.fatal("Could not use refelection to add resource: ", e);
+		}
 		return true;
 	}
 	
