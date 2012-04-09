@@ -64,12 +64,14 @@ public class MapPanel extends JPanel {
 		g2.setStroke(new BasicStroke(1));
 		
 		Iterator<MapObject> iMap = map.getResourceIterator();
-		for (MapObject i = null; iMap.hasNext(); i = iMap.next()) {
+		MapObject i = iMap.next();
+		for (; iMap.hasNext(); i = iMap.next()) {
 			((Resource) i).draw(g2);
 		}
 		
 		iMap = map.getObstacleIterator();
-		for (MapObject i = null; iMap.hasNext(); i = iMap.next()) {
+		i = iMap.next();
+		for (; iMap.hasNext(); i = iMap.next()) {
 			((Resource) i).draw(g2);
 		}
 		

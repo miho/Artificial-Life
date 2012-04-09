@@ -90,7 +90,7 @@ public class SimulationContext {
 		
 		sc.setTimerListener();
 		
-		final SimulationFrame sf = new SimulationFrame(sc);
+		final SimulationFrame sf = new SimulationFrame(map);
 		
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -182,18 +182,8 @@ public class SimulationContext {
 				counter++;
 				
 				map.incrementTimeFrame();
-				// for (ALife life : bugs) {
-				// life.doMove();
-				// if (life.getEnergy() < 0) {
-				// log.trace("Life is dead");
-				// }
-				//
-				// log.trace("Life X: " + life.getX());
-				// log.trace("Life Y: " + life.getY());
-				// }
 				
 				if (isVisual) {
-					// panel.repaint();
 					logger.trace("About to...");
 					frame.repaint();
 					logger.trace("Repaint.");

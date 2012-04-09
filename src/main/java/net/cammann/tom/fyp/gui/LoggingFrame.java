@@ -14,6 +14,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JToolBar;
 
+import org.apache.log4j.AppenderSkeleton;
+import org.apache.log4j.Logger;
+import org.apache.log4j.spi.LoggingEvent;
+
 public class LoggingFrame extends JFrame {
 	
 	JTextArea textArea;
@@ -44,6 +48,23 @@ public class LoggingFrame extends JFrame {
 			}
 		});
 		
+		Logger.getRootLogger().addAppender(new AppenderSkeleton() {
+			
+			@Override
+			public boolean requiresLayout() {
+				return false;
+			}
+			
+			@Override
+			public void close() {
+				
+			}
+			
+			@Override
+			protected void append(LoggingEvent arg0) {
+				appendLine(arg0.getMessage());
+			}
+		});
 	}
 	
 	private JToolBar createToolBar() {
@@ -67,5 +88,9 @@ public class LoggingFrame extends JFrame {
 		textArea.scrollRectToVisible(new Rectangle(0, textArea.getHeight() - 2,
 				1, 1));
 		
+	}
+	
+	public void appendLine(Object obj) {
+		appendLine(obj.toString());
 	}
 }

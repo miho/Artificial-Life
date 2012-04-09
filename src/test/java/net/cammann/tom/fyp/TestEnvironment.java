@@ -5,15 +5,12 @@ import static org.junit.Assert.assertTrue;
 
 import java.awt.Point;
 
-import net.cammann.tom.fyp.commands.LifeCommand;
-import net.cammann.tom.fyp.core.ABug;
 import net.cammann.tom.fyp.core.ALife;
 import net.cammann.tom.fyp.core.Commandable;
 import net.cammann.tom.fyp.core.EnvironmentMap;
 import net.cammann.tom.fyp.core.MapObject;
 import net.cammann.tom.fyp.core.Obstacle;
 import net.cammann.tom.fyp.core.Resource;
-import net.cammann.tom.fyp.core.SimpleMap;
 import net.cammann.tom.fyp.core.SimpleResource;
 
 import org.apache.log4j.Logger;
@@ -23,74 +20,6 @@ import org.junit.Test;
 
 public class TestEnvironment {
 	static Logger logger = Logger.getLogger(TestEnvironment.class);
-	
-	/**
-	 * Class used for testing.
-	 * 
-	 * Does not init any resources
-	 * 
-	 * 
-	 */
-	class BlankMap extends SimpleMap {
-		
-		private BlankMap(int w, int h) {
-			super(w, h);
-		}
-		
-		@Override
-		public void resetMap() {
-			// TODO Auto-generated method stub
-			
-		}
-		
-		@Override
-		public void initResources() {
-			// TODO Auto-generated method stub
-			
-		}
-		
-	}
-	
-	/**
-	 * Simple class for testing ALife objects
-	 * 
-	 * Does not init any commands.
-	 */
-	private class BlankLife extends ABug {
-		private BlankLife(EnvironmentMap map) {
-			super(map);
-		}
-		
-		@Override
-		public LifeCommand[] getCommandList() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public void reset() {
-			// TODO Auto-generated method stub
-			
-		}
-		
-		@Override
-		public ALife clone() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public void initBrain() {
-			// TODO Auto-generated method stub
-			
-		}
-		
-		@Override
-		public int getMemoryLength() {
-			// TODO Auto-generated method stub
-			return 10;
-		}
-	}
 	
 	/**
 	 * Used to setup logger in test mode
@@ -110,7 +39,7 @@ public class TestEnvironment {
 	@Test
 	public void resourceTest() {
 		// TODO remove 'magic numbers'
-		EnvironmentMap map = new BlankMap(100, 200);
+		EnvironmentMap map = TestUtils.getInstance().getBlankMap(100, 200);
 		Resource r = new SimpleResource(new Point(10, 30));
 		// Check normalcy of resource
 		assertTrue(r.getPosition().equals(new Point(10, 30)));
@@ -152,7 +81,7 @@ public class TestEnvironment {
 	@Test
 	public void obstacleTest() {
 		// TODO remove 'magic numbers'
-		EnvironmentMap map = new BlankMap(100, 200);
+		EnvironmentMap map = TestUtils.getInstance().getBlankMap(100, 200);
 		
 		Obstacle o = new Obstacle(new Point(50, 60), 5);
 		
@@ -188,9 +117,9 @@ public class TestEnvironment {
 	@Test
 	public void lifeTest() {
 		// TODO remove 'magic numbers'
-		EnvironmentMap map = new BlankMap(100, 200);
+		EnvironmentMap map = TestUtils.getInstance().getBlankMap(100, 200);
 		
-		ALife life = new BlankLife(map);
+		ALife life = TestUtils.getInstance().getBlankLife(map);
 		// Check add to map
 		assertTrue(map.addLife(life));
 		assertTrue(map.validPosition(life.getPosition()));

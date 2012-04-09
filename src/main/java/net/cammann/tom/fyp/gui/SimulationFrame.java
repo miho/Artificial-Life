@@ -19,11 +19,14 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.Timer;
 
 import net.cammann.tom.fyp.basicLife.BasicLife;
 import net.cammann.tom.fyp.core.ALife;
-import net.cammann.tom.fyp.core.SimulationContext;
+import net.cammann.tom.fyp.core.EnvironmentMap;
 import net.cammann.tom.fyp.utils.MapUtils;
+
+import org.apache.log4j.Logger;
 
 /**
  * @author TC
@@ -31,18 +34,26 @@ import net.cammann.tom.fyp.utils.MapUtils;
  * @since 31/01/2012
  * 
  */
-public class SimulationFrame extends JFrame {
-	private final SimulationContext sc;
+public class SimulationFrame {
+	private final EnvironmentMap map;
+	
+	static Logger logger = Logger.getLogger(SimulationFrame.class);
 	
 	private final JMenu removeLife = new JMenu("Remove Genotype");
 	private final JMenu cloneLife = new JMenu("Clone Genotype");
 	
 	private JCheckBoxMenuItem showLoggingFrame;
 	
+	private Timer timer = null;
+	
+	private int simulationRate;
+	
+	private int counter;
+	private final JFrame mainFrame;
 	public static LoggingFrame loggingFrame = null;
 	
-	public SimulationFrame(final SimulationContext sc) {
-		this.sc = sc;
+	public SimulationFrame(EnvironmentMap map) {
+		this.map = map;
 		
 		try {
 			// UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -51,16 +62,18 @@ public class SimulationFrame extends JFrame {
 			e1.printStackTrace();
 		}
 		
-		JPanel panel = new MapPanel(sc.getMap());
-		sc.RegisterFrame(this, panel);
-		this.setJMenuBar(createJMenuBar());
-		this.setContentPane(panel);
-		this.setSize(sc.getMapWidth() + 200, sc.getMapHeight() + 100);
-		this.setLocationByPlatform(true);
-		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setTimerListener();
+		
+		JPanel panel = new MapPanel(map);
+		mainFrame = new JFrame();
+		mainFrame.setJMenuBar(createJMenuBar());
+		mainFrame.setContentPane(panel);
+		mainFrame.setSize(map.getWidth() + 200, map.getHeight() + 100);
+		mainFrame.setLocationByPlatform(true);
+		mainFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		loggingFrame = new LoggingFrame(this);
-		addKeyListener(new KeyListener() {
+		mainFrame.addKeyListener(new KeyListener() {
 			
 			@Override
 			public void keyTyped(KeyEvent e) {
@@ -77,24 +90,24 @@ public class SimulationFrame extends JFrame {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-					if (sc.isStopped()) {
-						sc.start();
+					if (isStopped()) {
+						start();
 					} else {
-						sc.pause();
+						pause();
 					}
 					
 				}
 				if (e.getKeyCode() == KeyEvent.VK_F) {
-					sc.moveOnce();
+					moveOnce();
 				}
 				if (e.getKeyCode() == KeyEvent.VK_S) {
-					sc.stop();
+					stop();
 				}
 				if (e.getKeyCode() == KeyEvent.VK_C) {
-					sc.start();
+					start();
 				}
 				if (e.getKeyCode() == KeyEvent.VK_X) {
-					dispose();
+					mainFrame.dispose();
 				}
 				
 			}
@@ -113,7 +126,7 @@ public class SimulationFrame extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				sc.start();
+				start();
 				
 			}
 		});
@@ -124,7 +137,7 @@ public class SimulationFrame extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				sc.pause();
+				pause();
 				
 			}
 		});
@@ -136,7 +149,7 @@ public class SimulationFrame extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				sc.stop();
+				stop();
 				
 			}
 		});
@@ -153,7 +166,7 @@ public class SimulationFrame extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				sc.setSimulationRate(1);
+				setSimulationRate(1);
 			}
 		});
 		
@@ -164,7 +177,7 @@ public class SimulationFrame extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				sc.setSimulationRate(10);
+				setSimulationRate(10);
 			}
 		});
 		
@@ -175,7 +188,7 @@ public class SimulationFrame extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				sc.setSimulationRate(100);
+				setSimulationRate(100);
 			}
 		});
 		item.setSelected(true);
@@ -187,7 +200,7 @@ public class SimulationFrame extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				sc.setSimulationRate(500);
+				setSimulationRate(500);
 			}
 		});
 		
@@ -255,12 +268,10 @@ public class SimulationFrame extends JFrame {
 				int[] genes = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
 						15, 16, 17, 18, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19 };
 				
-				final ALife life = new BasicLife(genes, sc.getMap());
-				life.setX(new Random()
-						.nextInt((sc.getMap().getWidth() + 1) / 10) * 10);
-				life.setY(new Random()
-						.nextInt((sc.getMap().getHeight() + 2) / 10) * 10);
-				sc.addLife(life);
+				final ALife life = new BasicLife(genes, map);
+				life.setX(new Random().nextInt((map.getWidth() + 1) / 10) * 10);
+				life.setY(new Random().nextInt((map.getHeight() + 2) / 10) * 10);
+				map.addLife(life);
 				
 				addLifeToMenu(life);
 			}
@@ -286,10 +297,10 @@ public class SimulationFrame extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				String home = System.getProperty("user.home");
 				JFileChooser jfc = new JFileChooser(home);
-				int r = jfc.showSaveDialog(getThis());
+				int r = jfc.showSaveDialog(mainFrame);
 				if (r == JFileChooser.APPROVE_OPTION) {
 					File file = jfc.getSelectedFile();
-					MapUtils.SaveMap(file, sc.getMap());
+					MapUtils.SaveMap(file, map);
 				}
 			}
 		});
@@ -302,7 +313,7 @@ public class SimulationFrame extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				String home = System.getProperty("user.home");
 				JFileChooser jfc = new JFileChooser(home);
-				int r = jfc.showOpenDialog(getThis());
+				int r = jfc.showOpenDialog(mainFrame);
 				if (r == JFileChooser.APPROVE_OPTION) {
 					File file = jfc.getSelectedFile();
 					// TODO add back in
@@ -319,10 +330,6 @@ public class SimulationFrame extends JFrame {
 		
 	}
 	
-	private JFrame getThis() {
-		return this;
-	}
-	
 	private void addLifeToMenu(final ALife life) {
 		
 		final int numItems = removeLife.getItemCount();
@@ -334,11 +341,9 @@ public class SimulationFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				ALife clone = life.clone();
-				clone.setX(new Random()
-						.nextInt((sc.getMap().getWidth() + 1) / 10) * 10);
-				clone.setY(new Random()
-						.nextInt((sc.getMap().getHeight() + 2) / 10) * 10);
-				sc.addLife(clone);
+				clone.setX(new Random().nextInt((map.getWidth() + 1) / 10) * 10);
+				clone.setY(new Random().nextInt((map.getHeight() + 2) / 10) * 10);
+				map.addLife(clone);
 				addLifeToMenu(clone);
 				if (!removeLife.isEnabled()) {
 					cloneLife.setEnabled(true);
@@ -379,5 +384,77 @@ public class SimulationFrame extends JFrame {
 	public void showLogFrame() {
 		loggingFrame.setVisible(true);
 		showLoggingFrame.setSelected(true);
+	}
+	
+	public void setTimerListener() {
+		
+		timer = new Timer(1000, new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				logger.trace("tick.");
+				
+				counter++;
+				
+				map.incrementTimeFrame();
+				
+				logger.trace("About to...");
+				mainFrame.repaint();
+				logger.trace("Repaint.");
+				
+			}
+		});
+		
+	}
+	
+	public boolean isStopped() {
+		return !timer.isRunning();
+	}
+	
+	public void moveOnce() {
+		map.incrementTimeFrame();
+	}
+	
+	public void start() {
+		timer.start();
+	}
+	
+	public void pause() {
+		timer.stop();
+	}
+	
+	public void stop() {
+		timer.stop();
+		setTimerListener();
+		// initSimulation();
+		
+		mainFrame.repaint();
+		
+	}
+	
+	public void reset() {
+		stop();
+		
+		start();
+	}
+	
+	public int getMoveCount() {
+		return counter;
+	}
+	
+	public void setSimulationRate(int rate) {
+		this.simulationRate = rate;
+		if (timer.isRunning()) {
+			pause();
+			setTimerListener();
+			start();
+		} else {
+			setTimerListener();
+		}
+		
+	}
+	
+	public int getSimulationRate() {
+		return simulationRate;
 	}
 }
