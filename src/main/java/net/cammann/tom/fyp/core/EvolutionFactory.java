@@ -48,4 +48,20 @@ public interface EvolutionFactory {
 	public int getFitnessFunctionRuns();
 	
 	public int getLenOfFitFuncRun();
+	
+	public int getNumOfResources();
+	
+	public void setNumOfResources(int numOfResources);
+	
+	public int getNumOfObstacles();
+	
+	public void setNumOfObstacles(int numOfObstacles);
+	
+	public int getMapWidth();
+	
+	public void setMapWidth(int mapWidth);
+	
+	public int getMapHeight();
+	
+	public void setMapHeight(int mapHeight);
 }

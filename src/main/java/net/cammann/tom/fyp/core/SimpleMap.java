@@ -23,13 +23,8 @@ public abstract class SimpleMap implements EnvironmentMap {
 	protected final MapObjectMap resourceList;
 	protected final MapObjectMap obstacleList;
 	protected final List<ALife> lifeList;
-	protected static final int DEFAULT_WIDTH = 300;
-	protected static final int DEFAULT_HEIGHT = 300;
-	protected int timeFrameNo = 0;
 	
-	public SimpleMap() {
-		this(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-	}
+	private int timeFrameNo = 0;
 	
 	public SimpleMap(int width, int height) {
 		this.height = height;
@@ -37,12 +32,25 @@ public abstract class SimpleMap implements EnvironmentMap {
 		resourceList = new MapObjectMap();
 		obstacleList = new MapObjectMap();
 		lifeList = new ArrayList<ALife>();
-		initResources();
 		
 	}
 	
 	@Override
-	public void placeLife(ALife life) {
+	public void resetMap() {
+		timeFrameNo = 0;
+		logger.trace("timeFrameNo: " + getTimeFrameNo());
+		resourceList.clear();
+		initResources();
+		for (MapObject i : lifeList) {
+			ALife life = (ALife) i;
+			placeLife(life);
+		}
+	}
+	
+	protected abstract void initResources();
+	
+	protected void placeLife(ALife life) {
+		// TODO check not on resource
 		life.setX(new Random().nextInt((getWidth() + 1) / 10) * 10);
 		life.setY(new Random().nextInt((getHeight() + 1) / 10) * 10);
 		life.reset();
@@ -66,16 +74,6 @@ public abstract class SimpleMap implements EnvironmentMap {
 	}
 	
 	@Override
-	public void setHeight(int height) {
-		this.height = height;
-	}
-	
-	@Override
-	public void setWidth(int width) {
-		this.width = width;
-	}
-	
-	@Override
 	public boolean hasResource(int x, int y) {
 		return this.hasResource(new Point(x, y));
 	}
@@ -86,31 +84,18 @@ public abstract class SimpleMap implements EnvironmentMap {
 		return resourceList.hasObject(p) ? true : false;
 	}
 	
-	// @Override
-	// public Resource getResource(Point p) {
-	// return (Resource) resourceList.getObject(p);
-	// }
-	//
-	// @Override
-	// public Resource getResource(int x, int y) {
-	// Point p = new Point(x, y);
-	// return this.getResource(p);
-	// }
-	
-	@Override
-	public boolean removeResource(int x, int y) {
+	protected boolean removeResource(int x, int y) {
 		return this.removeResource(new Point(x, y));
 	}
 	
 	// could change to return resource.
 	// only remove one resource (not stacked)
-	@Override
-	public boolean removeResource(Point p) {
+	
+	protected boolean removeResource(Point p) {
 		return resourceList.removeObject(p);
 	}
 	
-	@Override
-	public boolean addResource(Resource r) {
+	protected boolean addResource(Resource r) {
 		if (obstacleList.hasObject(r.getPosition())) {
 			logger.trace("Obstacle occupies obstacle position");
 			return false;
@@ -135,8 +120,7 @@ public abstract class SimpleMap implements EnvironmentMap {
 		return resourceList.hashMap.values().iterator();
 	}
 	
-	@Override
-	public boolean removeResource(Resource r) {
+	protected boolean removeResource(Resource r) {
 		return resourceList.removeObject(r);
 	}
 	
@@ -163,8 +147,13 @@ public abstract class SimpleMap implements EnvironmentMap {
 		return validPosition(p);
 	}
 	
-	@Override
-	public boolean addObstacle(Obstacle o) {
+	/**
+	 * Adds an obstacle to the current map
+	 * 
+	 * @param o
+	 * @return
+	 */
+	protected boolean addObstacle(Obstacle o) {
 		if (obstacleList.hasObject(o.getPosition())) {
 			logger.trace("duplicated obstacle");
 			return false;
@@ -185,13 +174,11 @@ public abstract class SimpleMap implements EnvironmentMap {
 		
 	}
 	
-	@Override
-	public boolean removeObstacle(Obstacle o) {
+	protected boolean removeObstacle(Obstacle o) {
 		return obstacleList.removeObject(o);
 	}
 	
-	@Override
-	public boolean removeObstacle(Point p) {
+	protected boolean removeObstacle(Point p) {
 		return obstacleList.removeObject(p);
 	}
 	
@@ -276,7 +263,7 @@ public abstract class SimpleMap implements EnvironmentMap {
 	}
 	
 	@Override
-	public int getTimeFrame() {
+	public int getTimeFrameNo() {
 		return timeFrameNo;
 	}
 	

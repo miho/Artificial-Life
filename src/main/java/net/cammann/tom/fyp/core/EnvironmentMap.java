@@ -12,63 +12,150 @@ import java.util.List;
  * 
  */
 public interface EnvironmentMap {
+	/**
+	 * 
+	 * @return map height
+	 */
 	public int getHeight();
 	
+	/**
+	 * 
+	 * @return map width
+	 */
 	public int getWidth();
 	
-	public void placeLife(ALife life);
-	
+	/**
+	 * 
+	 * @return size of map
+	 */
 	public Dimension getDimension();
 	
-	public void setHeight(int height);
-	
-	public void setWidth(int width);
-	
-	// public void addResource(Consumable r);
-	
+	/**
+	 * Check positions validity
+	 * 
+	 * @return true if the position does not contain an obstacle or is off the
+	 *         map. False if on top of a obstacle or off the map.
+	 */
 	public boolean validPosition(Point p);
 	
+	/**
+	 * Check positions validity
+	 * 
+	 * @return true if the position does not contain an obstacle or is off the
+	 *         map. False if on top of a obstacle or off the map.
+	 */
 	public boolean validPosition(double x, double y);
 	
+	/**
+	 * Provides an iterator for listing resources
+	 * 
+	 * Used by map in painting.
+	 * 
+	 * @return
+	 */
 	public Iterator<MapObject> getResourceIterator();
 	
+	/**
+	 * Provides iterator for listing obstacles
+	 * 
+	 * Gives obstacles currently on the map
+	 * 
+	 * @return
+	 */
 	public Iterator<MapObject> getObstacleIterator();
 	
+	/**
+	 * Provides an iterator for listing ALife currently on the map
+	 * 
+	 * @return
+	 */
 	public Iterator<ALife> getLifeIterator();
 	
+	/**
+	 * 
+	 * @param x
+	 * @param y
+	 * @return true if position contains a resource
+	 */
 	public boolean hasResource(int x, int y);
 	
+	/**
+	 * 
+	 * @param p
+	 *            arbitary position on map
+	 * @return true if position contains a resource
+	 */
 	public boolean hasResource(Point p);
 	
-	public boolean addLife(ALife life);
-	
-	public boolean removeLife(ALife life);
-	
-	public boolean removeLife(Point p);
-	
+	/**
+	 * Checks position for life form
+	 * 
+	 * @param p
+	 * @return true if position has life form
+	 */
 	public boolean hasLife(Point p);
 	
-	public boolean addObstacle(Obstacle o);
-	
-	public boolean removeObstacle(Obstacle o);
-	
-	public boolean removeObstacle(Point p);
-	
-	public boolean addResource(Resource r);
-	
+	/**
+	 * Uses life to consume resource
+	 * 
+	 * Takes life's current position on the map, if this position contains a
+	 * resource then the resource is removed from the map and the calories are
+	 * added to life's energy. Returns false if there was no resource on that
+	 * position.
+	 * 
+	 * @param life
+	 * @return true if a resource is consumed.
+	 */
 	public boolean consumeResource(ALife life);
 	
-	public boolean removeResource(int x, int y);
-	
-	public boolean removeResource(Point p);
-	
-	public boolean removeResource(Resource r);
-	
+	/**
+	 * Used to reset all resources, obstacles and life forms on the map.
+	 * 
+	 * Resets counters to zero, resets life energy. Removes all resources and
+	 * obstacles from the map and adds them back in.
+	 */
 	public void resetMap();
 	
-	public void initResources();
+	/**
+	 * Adds life form to the current map.
+	 * 
+	 * This will add the life form in its current position to the map. Checks
+	 * position when adding
+	 * 
+	 * If false is returned it has not been added
+	 * 
+	 * @param life
+	 * @return false if off map or onto of other life or obstacle and not added.
+	 */
+	@Deprecated
+	public boolean addLife(ALife life);
 	
-	public int getTimeFrame();
+	/**
+	 * Removes life from the map
+	 * 
+	 * Directly removes the ALife from the current map
+	 * 
+	 * 
+	 * @param life
+	 * @return false if no such life is on the map
+	 */
+	@Deprecated
+	public boolean removeLife(ALife life);
+	
+	/**
+	 * Removes life from the map
+	 * 
+	 * Directly removes the ALife from the current map
+	 * 
+	 * 
+	 * @param point
+	 *            to remove life from
+	 * @return false if no such life is on the map
+	 */
+	@Deprecated
+	public boolean removeLife(Point p);
+	
+	public int getTimeFrameNo();
 	
 	public void incrementTimeFrame();
 	

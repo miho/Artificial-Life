@@ -79,23 +79,23 @@ public class SimulationContext {
 		
 		EnvironmentMap map = lf.createMap();
 		
-		final SimulationContext sc = new SimulationContext(map);
+		// final SimulationContext sc = new SimulationContext(map);
 		
 		for (int j = 0; j < lf.getNumClones(); j++) {
 			
-			sc.addLife(lf.createLife(chromo, map));
+			// map.addLife(lf.createLife(chromo, map));
 		}
 		
-		sc.initSimulation();
+		// sc.initSimulation();
 		
-		sc.setTimerListener();
+		// sc.setTimerListener();
 		
 		final SimulationFrame sf = new SimulationFrame(map);
 		
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				createAndShowGUI(sf, sc);
+				SimulationFrame.createAndShowGUI(sf);
 			}
 		});
 		
@@ -103,13 +103,13 @@ public class SimulationContext {
 	
 	public static void createAndShowGUI(SimulationFrame sf, SimulationContext sc) {
 		sf.setVisible(true);
-		sc.start();
+		sf.start();
 	}
 	
 	public SimulationContext(ALife lifeForm, EnvironmentMap map) {
 		
 		this.map = map;
-		map.addLife(lifeForm);
+		// map.addLife(lifeForm);
 		
 		// initSimulation();
 	}
@@ -122,30 +122,12 @@ public class SimulationContext {
 	
 	public void addLife(ALife life) {
 		
-		map.addLife(life);
+		// map.addLife(life);
 		
 	}
 	
 	public EnvironmentMap getMap() {
 		return map;
-	}
-	
-	// TODO
-	// DO WE NEED INIT SIM? Setup stuff in constructor. setup life using
-	// resetLife()?
-	public void initSimulation() {
-		
-		// for (ALife life : bugs) {
-		// // TODO
-		//
-		// // What are these calls doing, should be somewhere else, out of the
-		// // view
-		//
-		// counter = 0;
-		// log.debug("Starting energy: " + life.getEnergy());
-		// }
-		
-		map.resetMap();
 	}
 	
 	public Dimension getSizeOfMap() {
@@ -205,7 +187,7 @@ public class SimulationContext {
 	public void stop() {
 		timer.stop();
 		setTimerListener();
-		initSimulation();
+		// initSimulation();
 		
 		frame.repaint();
 		

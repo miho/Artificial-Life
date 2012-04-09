@@ -20,7 +20,6 @@ import net.cammann.tom.fyp.core.EvolutionCycleEvent;
 import net.cammann.tom.fyp.core.EvolutionCycleListener;
 import net.cammann.tom.fyp.core.EvolutionFactory;
 import net.cammann.tom.fyp.core.EvolutionModule;
-import net.cammann.tom.fyp.core.SimulationContext;
 import net.cammann.tom.fyp.gp.commands.Consume;
 import net.cammann.tom.fyp.gp.commands.FoodAhead;
 import net.cammann.tom.fyp.gp.commands.OnResource;
@@ -478,19 +477,16 @@ public class GeneticProgramFrame extends GPProblem implements EvolutionModule {
 		
 		EnvironmentMap map = factory.createMap();
 		
-		final SimulationContext sc = new SimulationContext(map);
+		map.addLife(factory.createLife(fittest, map));
 		
-		sc.addLife(factory.createLife(fittest, map));
-		
-		sc.initSimulation();
-		sc.setTimerListener();
-		
-		final SimulationFrame sf = new SimulationFrame(sc);
+		SimulationFrame sf = new SimulationFrame(map);
+		// sc.initSimulation();
+		sf.setTimerListener();
 		
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				SimulationContext.createAndShowGUI(sf, sc);
+				SimulationFrame.createAndShowGUI(sf);
 			}
 		});
 		

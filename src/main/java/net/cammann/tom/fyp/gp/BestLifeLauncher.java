@@ -10,7 +10,6 @@ import javax.swing.JPanel;
 import net.cammann.tom.fyp.core.EnvironmentMap;
 import net.cammann.tom.fyp.core.EvolutionFactory;
 import net.cammann.tom.fyp.core.EvolutionModule;
-import net.cammann.tom.fyp.core.SimulationContext;
 import net.cammann.tom.fyp.gui.SimulationFrame;
 
 public class BestLifeLauncher extends JFrame {
@@ -36,21 +35,15 @@ public class BestLifeLauncher extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				if (evoLab.getFittestLife() != null) {
 					EnvironmentMap map = factory.createMap();
+					map.addLife(factory.createLife(evoLab.getFittestLife(), map));
+					final SimulationFrame frame = new SimulationFrame(map);
 					
-					final SimulationContext sc = new SimulationContext(map);
-					
-					sc.addLife(factory.createLife(evoLab.getFittestLife(), map));
-					
-					sc.initSimulation();
-					
-					sc.setTimerListener();
-					
-					final SimulationFrame sf = new SimulationFrame(sc);
+					frame.setTimerListener();
 					
 					javax.swing.SwingUtilities.invokeLater(new Runnable() {
 						@Override
 						public void run() {
-							SimulationContext.createAndShowGUI(sf, sc);
+							SimulationFrame.createAndShowGUI(frame);
 						}
 					});
 				}

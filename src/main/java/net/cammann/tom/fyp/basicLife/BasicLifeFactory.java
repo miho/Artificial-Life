@@ -16,6 +16,66 @@ public class BasicLifeFactory implements EvolutionFactory {
 	private final int NUM_FIT_FUNC_CYCLES = 3;
 	private final int NUM_CLONES = 1;
 	private final int RUN_LEN = 400;
+	private int numOfResources = 200;
+	private int numOfObstacles = 0;
+	private int mapWidth = 400;
+	private int mapHeight = 200;
+	
+	@Override
+	public int getNumOfResources() {
+		return numOfResources;
+	}
+	
+	@Override
+	public void setNumOfResources(int numOfResources) {
+		if (numOfResources < 0) {
+			throw new IllegalArgumentException(
+					"num resource cannot be less than 0");
+		}
+		this.numOfResources = numOfResources;
+	}
+	
+	@Override
+	public int getNumOfObstacles() {
+		return numOfObstacles;
+	}
+	
+	@Override
+	public void setNumOfObstacles(int numOfObstacles) {
+		if (numOfObstacles < 0) {
+			throw new IllegalArgumentException(
+					"num obstaces cannot be less than 0");
+		}
+		this.numOfObstacles = numOfObstacles;
+	}
+	
+	@Override
+	public int getMapWidth() {
+		return mapWidth;
+	}
+	
+	@Override
+	public void setMapWidth(int mapWidth) {
+		if (mapWidth < 0) {
+			throw new IllegalArgumentException(
+					"map width cannot be less than 0");
+		}
+		this.mapWidth = mapWidth;
+	}
+	
+	@Override
+	public int getMapHeight() {
+		return mapHeight;
+	}
+	
+	@Override
+	public void setMapHeight(int mapHeight) {
+		if (mapHeight < 0) {
+			throw new IllegalArgumentException(
+					"map height cannot be less than 0");
+		}
+		this.mapHeight = mapHeight;
+	}
 	
 	@Override
 	public ALife createLife(int[] genes, EnvironmentMap map) {
@@ -44,7 +104,7 @@ public class BasicLifeFactory implements EvolutionFactory {
 	
 	@Override
 	public EnvironmentMap createMap() {
-		return new BasicMap();
+		return new BasicMap(mapWidth, mapHeight, numOfResources, numOfObstacles);
 	}
 	
 	@Override

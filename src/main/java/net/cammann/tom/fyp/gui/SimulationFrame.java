@@ -45,10 +45,9 @@ public class SimulationFrame {
 	private JCheckBoxMenuItem showLoggingFrame;
 	
 	private Timer timer = null;
-	
+	private JPanel mapPanel = null;
 	private int simulationRate;
 	
-	private int counter;
 	private final JFrame mainFrame;
 	public static LoggingFrame loggingFrame = null;
 	
@@ -64,10 +63,10 @@ public class SimulationFrame {
 		
 		setTimerListener();
 		
-		JPanel panel = new MapPanel(map);
+		mapPanel = new MapPanel(map);
 		mainFrame = new JFrame();
 		mainFrame.setJMenuBar(createJMenuBar());
-		mainFrame.setContentPane(panel);
+		mainFrame.setContentPane(mapPanel);
 		mainFrame.setSize(map.getWidth() + 200, map.getHeight() + 100);
 		mainFrame.setLocationByPlatform(true);
 		mainFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -114,7 +113,7 @@ public class SimulationFrame {
 		});
 	}
 	
-	public JMenuBar createJMenuBar() {
+	private JMenuBar createJMenuBar() {
 		JMenuBar bar = new JMenuBar();
 		
 		JMenu menu = new JMenu("Simulation");
@@ -271,7 +270,8 @@ public class SimulationFrame {
 				final ALife life = new BasicLife(genes, map);
 				life.setX(new Random().nextInt((map.getWidth() + 1) / 10) * 10);
 				life.setY(new Random().nextInt((map.getHeight() + 2) / 10) * 10);
-				map.addLife(life);
+				// map.addLife(life);
+				// TODO add back in.
 				
 				addLifeToMenu(life);
 			}
@@ -343,7 +343,8 @@ public class SimulationFrame {
 				ALife clone = life.clone();
 				clone.setX(new Random().nextInt((map.getWidth() + 1) / 10) * 10);
 				clone.setY(new Random().nextInt((map.getHeight() + 2) / 10) * 10);
-				map.addLife(clone);
+				// map.addLife(clone);
+				// TODO ADD BACK IN
 				addLifeToMenu(clone);
 				if (!removeLife.isEnabled()) {
 					cloneLife.setEnabled(true);
@@ -394,8 +395,6 @@ public class SimulationFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				logger.trace("tick.");
 				
-				counter++;
-				
 				map.incrementTimeFrame();
 				
 				logger.trace("About to...");
@@ -424,12 +423,14 @@ public class SimulationFrame {
 	}
 	
 	public void stop() {
+		logger.trace("current timeframeNo: " + getMoveCount());
 		timer.stop();
-		setTimerListener();
-		// initSimulation();
-		
+		logger.trace("Stopping sim");
+		map.resetMap();
+		logger.trace("Reset map");
+		logger.trace("current timeframeNo: " + getMoveCount());
 		mainFrame.repaint();
-		
+		setTimerListener();
 	}
 	
 	public void reset() {
@@ -439,7 +440,7 @@ public class SimulationFrame {
 	}
 	
 	public int getMoveCount() {
-		return counter;
+		return map.getTimeFrameNo();
 	}
 	
 	public void setSimulationRate(int rate) {
@@ -457,4 +458,15 @@ public class SimulationFrame {
 	public int getSimulationRate() {
 		return simulationRate;
 	}
+	
+	public void setVisible(boolean b) {
+		mainFrame.setVisible(true);
+		
+	}
+	
+	public static void createAndShowGUI(SimulationFrame frame) {
+		frame.setVisible(true);
+		frame.start();
+	}
+	
 }

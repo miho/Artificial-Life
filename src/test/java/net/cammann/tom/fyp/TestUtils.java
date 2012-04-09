@@ -35,12 +35,6 @@ public class TestUtils {
 		}
 		
 		@Override
-		public void resetMap() {
-			// TODO Auto-generated method stub
-			
-		}
-		
-		@Override
 		public void initResources() {
 			// TODO Auto-generated method stub
 			
@@ -64,31 +58,26 @@ public class TestUtils {
 		
 		@Override
 		public LifeCommand[] getCommandList() {
-			// TODO Auto-generated method stub
-			return null;
+			return new LifeCommand[] {};
 		}
 		
 		@Override
 		public void reset() {
-			// TODO Auto-generated method stub
 			
 		}
 		
 		@Override
 		public ALife clone() {
-			// TODO Auto-generated method stub
-			return null;
+			return new BlankLife(map);
 		}
 		
 		@Override
 		public void initBrain() {
-			// TODO Auto-generated method stub
 			
 		}
 		
 		@Override
 		public int getMemoryLength() {
-			// TODO Auto-generated method stub
 			return 10;
 		}
 	}

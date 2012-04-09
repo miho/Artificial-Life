@@ -64,15 +64,18 @@ public class MapPanel extends JPanel {
 		g2.setStroke(new BasicStroke(1));
 		
 		Iterator<MapObject> iMap = map.getResourceIterator();
-		MapObject i = iMap.next();
-		for (; iMap.hasNext(); i = iMap.next()) {
-			((Resource) i).draw(g2);
+		if (iMap.hasNext()) {
+			MapObject i = iMap.next();
+			for (; iMap.hasNext(); i = iMap.next()) {
+				((Resource) i).draw(g2);
+			}
 		}
-		
 		iMap = map.getObstacleIterator();
-		i = iMap.next();
-		for (; iMap.hasNext(); i = iMap.next()) {
-			((Resource) i).draw(g2);
+		if (iMap.hasNext()) {
+			MapObject i = iMap.next();
+			for (; iMap.hasNext(); i = iMap.next()) {
+				((Resource) i).draw(g2);
+			}
 		}
 		
 		int count = 0;
@@ -95,7 +98,7 @@ public class MapPanel extends JPanel {
 		}
 		g2.setColor(Color.BLACK);
 		
-		g2.drawString("Time: " + map.getTimeFrame(), map.getWidth() + 30, 20);
+		g2.drawString("Time: " + map.getTimeFrameNo(), map.getWidth() + 30, 20);
 		
 		g2.drawRect(0, 0, map.getWidth() + 10, map.getHeight() + 10);
 		
