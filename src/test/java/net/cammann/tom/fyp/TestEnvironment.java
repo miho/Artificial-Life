@@ -1,5 +1,8 @@
 package net.cammann.tom.fyp;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.awt.Point;
 
 import net.cammann.tom.fyp.commands.LifeCommand;
@@ -15,11 +18,10 @@ import net.cammann.tom.fyp.core.SimpleResource;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class TestEnvironment extends Assert {
+public class TestEnvironment {
 	static Logger logger = Logger.getLogger(TestEnvironment.class);
 	
 	/**
@@ -105,7 +107,7 @@ public class TestEnvironment extends Assert {
 	 * checks that they can be accessed Makes sure duplicate resources cannot be
 	 * added Checks resource cannot be added off the map.
 	 */
-	
+	@Test
 	public void resourceTest() {
 		// TODO remove 'magic numbers'
 		EnvironmentMap map = new BlankMap(100, 200);
