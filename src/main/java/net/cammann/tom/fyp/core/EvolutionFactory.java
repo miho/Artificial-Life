@@ -6,6 +6,7 @@ import org.jgap.gp.GPFitnessFunction;
 import org.jgap.gp.IGPProgram;
 
 public interface EvolutionFactory {
+	
 	/**
 	 * Number of instances of the phenotype to exist inside the simulation
 	 * during the fintess function

@@ -9,7 +9,7 @@ import org.jgap.gp.impl.ProgramChromosome;
 
 public class Orientation extends CommandGene {
 	
-	public Orientation(GPConfiguration a_conf, Class a_returnType)
+	public Orientation(final GPConfiguration a_conf, final Class a_returnType)
 			throws InvalidConfigurationException {
 		super(a_conf, 0, a_returnType);
 		// TODO Auto-generated constructor stub
@@ -22,8 +22,9 @@ public class Orientation extends CommandGene {
 	}
 	
 	@Override
-	public double execute_double(ProgramChromosome c, int n, Object[] args) {
-		Commandable life = (Commandable) args[0];
+	public double execute_double(final ProgramChromosome c, final int n,
+			final Object[] args) {
+		final Commandable life = (Commandable) args[0];
 		return life.getOrientation().ordinal();
 		
 	}

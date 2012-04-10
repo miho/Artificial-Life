@@ -14,23 +14,23 @@ public class GPLifeFitFunc extends GPFitnessFunction {
 	
 	private final EvolutionFactory factory;
 	
-	public GPLifeFitFunc(EvolutionFactory factory) {
+	public GPLifeFitFunc(final EvolutionFactory factory) {
 		this.factory = factory;
 	}
 	
-	public double run(IGPProgram gp) {
+	public double run(final IGPProgram gp) {
 		double fitness = 0;
 		
-		int num_clones = factory.getNumClones();
+		final int num_clones = factory.getNumClones();
 		
 		// TODO add checks on num_runs and clones
 		
-		EnvironmentMap map = factory.createMap();
-		List<ALife> lifeList = new ArrayList<ALife>();
+		final EnvironmentMap map = factory.createMap();
+		final List<ALife> lifeList = new ArrayList<ALife>();
 		
 		for (int j = 0; j < num_clones; j++) {
 			
-			ALife life = factory.createLife(gp, map);
+			final ALife life = factory.createLife(gp, map);
 			lifeList.add(life);
 			map.addLife(life);
 		}
@@ -39,9 +39,9 @@ public class GPLifeFitFunc extends GPFitnessFunction {
 			map.incrementTimeFrame();
 		}
 		
-		for (ALife life : lifeList) {
+		for (final ALife life : lifeList) {
 			
-			double f = computeRawFitness(life);
+			final double f = computeRawFitness(life);
 			
 			fitness += f;
 			
@@ -55,11 +55,11 @@ public class GPLifeFitFunc extends GPFitnessFunction {
 	 * Lower fitness is better here
 	 */
 	@Override
-	protected double evaluate(IGPProgram gp) {
+	protected double evaluate(final IGPProgram gp) {
 		
 		double fitness = 50000;
 		
-		int num_runs = factory.getFitnessFunctionRuns();
+		final int num_runs = factory.getFitnessFunctionRuns();
 		for (int i = 0; i < num_runs; i++) {
 			fitness -= run(gp);
 		}
@@ -73,7 +73,7 @@ public class GPLifeFitFunc extends GPFitnessFunction {
 	 * @return
 	 */
 	
-	public double computeRawFitness(ALife life) {
+	public double computeRawFitness(final ALife life) {
 		return (life.getEnergy());
 	}
 	

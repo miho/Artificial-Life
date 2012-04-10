@@ -9,11 +9,35 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.jgap.IChromosome;
 
+/**
+ * Main class to launch GA algorithm.
+ * 
+ * @author TC
+ * 
+ */
 public class SimulationContext {
 	
-	static Logger logger = Logger.getLogger(SimulationContext.class);
+	/**
+	 * 
+	 */
+	private SimulationContext() {
+
+	}
 	
-	public static void main(String args[]) {
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = Logger.getLogger(SimulationContext.class);
+	
+	/**
+	 * Starts genetic algorithm for creating ALife.
+	 * 
+	 * Creates gui to launch fittest life so far and graphs.
+	 * 
+	 * @param args
+	 *            do nothing
+	 */
+	public static void main(final String[] args) {
 		
 		PropertyConfigurator.configure("src/main/resources/log4j.properties");
 		
@@ -21,19 +45,19 @@ public class SimulationContext {
 		
 		final StatsPackage stats = new StatsPackage();
 		
-		EvolutionFactory lf = new BasicLifeFactory();
+		final EvolutionFactory lf = new BasicLifeFactory();
 		
-		GeneLab g = new GeneLab(lf);
+		final GeneLab g = new GeneLab(lf);
 		g.setEvolutions(100);
 		// g.setPopulationSize(100);
-		BestLifeLauncher bll = new BestLifeLauncher(g, lf);
+		final BestLifeLauncher bll = new BestLifeLauncher(g, lf);
 		bll.createAndShowGui();
 		stats.startFitnessGraph();
 		// stats.startFreqFitnessGraph();
 		g.addEvolutionCycleListener(new EvolutionCycleListener() {
 			
 			@Override
-			public void startCycle(EvolutionCycleEvent e) {
+			public void startCycle(final EvolutionCycleEvent e) {
 				logger.trace("Generation: " + e.getGenerationNum());
 				logger.trace("Highest fitness: "
 						+ e.getPopulation().determineFittestChromosome()
@@ -42,7 +66,7 @@ public class SimulationContext {
 			}
 			
 			@Override
-			public void endCycle(EvolutionCycleEvent e) {
+			public void endCycle(final EvolutionCycleEvent e) {
 				logger.trace("Finished Generation: " + e.getGenerationNum());
 				stats.add(e.getPopulation(), e.getGenerationNum());
 				
@@ -60,25 +84,23 @@ public class SimulationContext {
 		
 	}
 	
-	public static void createAndShowFromFactory(EvolutionFactory lf,
-			IChromosome chromo) {
+	/**
+	 * Create and show gui with chromosome.
+	 * 
+	 * @param factory
+	 *            creates map and life
+	 * @param chromo
+	 *            used to create life
+	 */
+	public static void createAndShowFromFactory(final EvolutionFactory factory,
+			final IChromosome chromo) {
 		
-		EnvironmentMap map = lf.createMap();
-		
-		// final SimulationContext sc = new SimulationContext(map);
-		
-		for (int j = 0; j < lf.getNumClones(); j++) {
-			
-			// map.addLife(lf.createLife(chromo, map));
-		}
-		
-		// sc.initSimulation();
-		
-		// sc.setTimerListener();
+		final EnvironmentMap map = factory.createMap();
 		
 		final SimulationFrame sf = new SimulationFrame(map);
 		
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			
 			@Override
 			public void run() {
 				SimulationFrame.createAndShowGUI(sf);

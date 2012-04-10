@@ -15,8 +15,8 @@ import net.cammann.tom.fyp.commands.MoveTowardsUp;
 import net.cammann.tom.fyp.commands.RandomCommand;
 import net.cammann.tom.fyp.commands.TurnLeftCommand;
 import net.cammann.tom.fyp.commands.TurnRightCommand;
-import net.cammann.tom.fyp.core.AbstactLife;
 import net.cammann.tom.fyp.core.ALife;
+import net.cammann.tom.fyp.core.AbstactLife;
 import net.cammann.tom.fyp.core.BasicBrain;
 import net.cammann.tom.fyp.core.Commandable;
 import net.cammann.tom.fyp.core.EnvironmentMap;
@@ -24,14 +24,14 @@ import net.cammann.tom.fyp.core.GENE_TYPE;
 
 import org.jgap.IChromosome;
 
-public class BasicLife extends AbstactLife {
+public final class BasicLife extends AbstactLife {
 	
-	public BasicLife(IChromosome chrome, EnvironmentMap map) {
+	public BasicLife(final IChromosome chrome, final EnvironmentMap map) {
 		super(chrome, map);
 		// TODO Auto-generated constructor stub
 	}
 	
-	public BasicLife(int[] genes, EnvironmentMap map) {
+	public BasicLife(final int[] genes, final EnvironmentMap map) {
 		super(genes, map);
 	}
 	
@@ -48,14 +48,15 @@ public class BasicLife extends AbstactLife {
 	@Override
 	public LifeCommand[] getCommandList() {
 		
-		LifeCommand doNothing = new LifeCommand("Nothing") {
+		final LifeCommand doNothing = new LifeCommand("Nothing") {
+			
 			@Override
-			public void execute(Commandable life) {
-				
+			public void execute(final Commandable life) {
+
 			}
 		};
 		
-		LifeCommand commands[] = {
+		final LifeCommand commands[] = {
 				new ConsumeCommand(),
 				new ForwardCommand(),
 				new TurnLeftCommand(),
@@ -100,7 +101,7 @@ public class BasicLife extends AbstactLife {
 	}
 	
 	@Override
-	public void draw(Graphics2D g2) {
+	public void draw(final Graphics2D g2) {
 		g2.drawImage(getImage(), getX(), getY(), null);
 	}
 	

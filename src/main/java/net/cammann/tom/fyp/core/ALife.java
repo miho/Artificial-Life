@@ -11,6 +11,7 @@ import java.util.List;
  */
 public abstract class ALife implements Cloneable, Commandable, Paintable,
 		MapObject, Consumer {
+	
 	public int MOVE_COUNT = 0;
 	protected int x, y;
 	protected int energy;
@@ -45,7 +46,7 @@ public abstract class ALife implements Cloneable, Commandable, Paintable,
 	
 	public abstract Point getPositionAhead(int steps);
 	
-	public void setBrain(Brain brain) {
+	public void setBrain(final Brain brain) {
 		this.brain = brain;
 	}
 	
@@ -60,7 +61,7 @@ public abstract class ALife implements Cloneable, Commandable, Paintable,
 	 * @param gene
 	 * @return
 	 */
-	public int getGene(int gene) {
+	public int getGene(final int gene) {
 		return genes[gene];
 	}
 	
@@ -80,14 +81,14 @@ public abstract class ALife implements Cloneable, Commandable, Paintable,
 		return y;
 	}
 	
-	public int getGene(GENE_TYPE gene) {
+	public int getGene(final GENE_TYPE gene) {
 		return getGene(gene.ordinal());
 	}
 	
 	/**
 	 * @param energy
 	 */
-	public void setEnergy(int energy) {
+	public void setEnergy(final int energy) {
 		this.energy = energy;
 	}
 	
@@ -109,7 +110,7 @@ public abstract class ALife implements Cloneable, Commandable, Paintable,
 	}
 	
 	// TODO remove?
-	public void setPosition(Point p) {
+	public void setPosition(final Point p) {
 		this.x = p.x;
 		this.y = p.y;
 	}
@@ -118,7 +119,7 @@ public abstract class ALife implements Cloneable, Commandable, Paintable,
 	 * @param x
 	 */
 	
-	public void setX(int x) {
+	public void setX(final int x) {
 		this.x = x;
 	}
 	
@@ -126,7 +127,7 @@ public abstract class ALife implements Cloneable, Commandable, Paintable,
 	 * @param y
 	 */
 	
-	public void setY(int y) {
+	public void setY(final int y) {
 		
 		this.y = y;
 	}
@@ -136,7 +137,7 @@ public abstract class ALife implements Cloneable, Commandable, Paintable,
 	 * 
 	 * @param decrementBy
 	 */
-	public void decrementEnegery(int decrementBy) {
+	public void decrementEnegery(final int decrementBy) {
 		this.energy -= decrementBy;
 		
 	}
@@ -148,11 +149,11 @@ public abstract class ALife implements Cloneable, Commandable, Paintable,
 	/**
 	 * @param orientation
 	 */
-	public void setOrientation(ORIENTATION orientation) {
+	public void setOrientation(final ORIENTATION orientation) {
 		this.orientation = orientation;
 	}
 	
-	public void setOrientation(int o) {
+	public void setOrientation(final int o) {
 		if (o < 0 || o > 3) {
 			throw new IllegalArgumentException("Cannot set orientation to: "
 					+ o);
@@ -196,7 +197,7 @@ public abstract class ALife implements Cloneable, Commandable, Paintable,
 	 * @param map
 	 */
 	
-	public void setMap(EnvironmentMap map) {
+	public void setMap(final EnvironmentMap map) {
 		this.map = map;
 	}
 	
@@ -215,7 +216,7 @@ public abstract class ALife implements Cloneable, Commandable, Paintable,
 		return map.consumeResource(this);
 	}
 	
-	public void incrementEnergy(int i) {
+	public void incrementEnergy(final int i) {
 		energy += i;
 		
 	}

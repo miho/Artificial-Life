@@ -1,22 +1,23 @@
 package net.cammann.tom.fyp;
 
 import net.cammann.tom.fyp.commands.LifeCommand;
-import net.cammann.tom.fyp.core.AbstactLife;
 import net.cammann.tom.fyp.core.ALife;
-import net.cammann.tom.fyp.core.EnvironmentMap;
+import net.cammann.tom.fyp.core.AbstactLife;
 import net.cammann.tom.fyp.core.AbstactMap;
+import net.cammann.tom.fyp.core.EnvironmentMap;
+import net.cammann.tom.fyp.core.Resource;
 
 public class TestUtils {
+	
 	private static TestUtils utils = new TestUtils();
 	
-	private TestUtils() {
-	}
+	private TestUtils() {}
 	
 	public static TestUtils getInstance() {
 		return utils;
 	}
 	
-	public EnvironmentMap getBlankMap(int width, int height) {
+	public EnvironmentMap getBlankMap(final int width, final int height) {
 		
 		return new BlankMap(width, height);
 	}
@@ -26,11 +27,10 @@ public class TestUtils {
 	 * 
 	 * Does not init any resources
 	 * 
-	 * 
 	 */
 	private class BlankMap extends AbstactMap {
 		
-		private BlankMap(int w, int h) {
+		private BlankMap(final int w, final int h) {
 			super(w, h);
 		}
 		
@@ -42,7 +42,7 @@ public class TestUtils {
 		
 	}
 	
-	public ALife getBlankLife(EnvironmentMap map) {
+	public ALife getBlankLife(final EnvironmentMap map) {
 		return new BlankLife(map);
 	}
 	
@@ -52,7 +52,8 @@ public class TestUtils {
 	 * Does not init any commands.
 	 */
 	private class BlankLife extends AbstactLife {
-		private BlankLife(EnvironmentMap map) {
+		
+		private BlankLife(final EnvironmentMap map) {
 			super(map);
 		}
 		
@@ -63,7 +64,7 @@ public class TestUtils {
 		
 		@Override
 		public void reset() {
-			
+
 		}
 		
 		@Override
@@ -73,12 +74,24 @@ public class TestUtils {
 		
 		@Override
 		public void initBrain() {
-			
+
 		}
 		
 		@Override
 		public int getMemoryLength() {
 			return 10;
+		}
+		
+		@Override
+		public boolean dropResource() {
+			// TODO Auto-generated method stub
+			return false;
+		}
+		
+		@Override
+		public boolean canConsumeResource(final Resource r) {
+			// TODO Auto-generated method stub
+			return true;
 		}
 	}
 }

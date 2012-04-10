@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
  * 
  */
 public class SimpleResource extends Resource {
+	
 	Logger logger = Logger.getLogger(SimpleResource.class);
 	protected int x;
 	protected int y;
@@ -34,11 +35,11 @@ public class SimpleResource extends Resource {
 	private final double radius = 5;
 	public static Logger log = Logger.getLogger(Resource.class);
 	
-	public SimpleResource(Point p) {
+	public SimpleResource(final Point p) {
 		this(p.x, p.y);
 	}
 	
-	public SimpleResource(int x, int y) {
+	public SimpleResource(final int x, final int y) {
 		
 		this.x = x;
 		this.y = y;
@@ -47,7 +48,8 @@ public class SimpleResource extends Resource {
 		isCarried = false;
 	}
 	
-	public SimpleResource(int x, int y, int min_cals, int max_cals) {
+	public SimpleResource(final int x, final int y, final int min_cals,
+			final int max_cals) {
 		
 		this.x = x;
 		this.y = y;
@@ -64,7 +66,7 @@ public class SimpleResource extends Resource {
 	}
 	
 	@Override
-	public void setCalories(int calories) {
+	public void setCalories(final int calories) {
 		this.calories = calories;
 	}
 	
@@ -73,7 +75,7 @@ public class SimpleResource extends Resource {
 		return calories;
 	}
 	
-	public void setPosition(Point p) {
+	public void setPosition(final Point p) {
 		this.y = p.y;
 		this.x = p.x;
 		
@@ -103,14 +105,14 @@ public class SimpleResource extends Resource {
 		if (img == null) {
 			try {
 				
-				URL url = this.getClass().getResource("/redApple.png");
+				final URL url = this.getClass().getResource("/redApple.png");
 				
-				BufferedImage bi = ImageIO.read(url);
+				final BufferedImage bi = ImageIO.read(url);
 				
 				img = bi.getScaledInstance(15, 15, 0);
 				
 				return img;
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				
 				logger.error("Unable to locate Apple Image");
 				
@@ -119,10 +121,10 @@ public class SimpleResource extends Resource {
 			return img;
 		}
 		
-		BufferedImage b2 = new BufferedImage(10, 10,
+		final BufferedImage b2 = new BufferedImage(10, 10,
 				BufferedImage.TYPE_INT_ARGB);
 		
-		Graphics2D g2 = b2.createGraphics();
+		final Graphics2D g2 = b2.createGraphics();
 		g2.setColor(Color.RED);
 		g2.fill(new Ellipse2D.Double(0, 0, 10, 10));
 		
@@ -147,7 +149,7 @@ public class SimpleResource extends Resource {
 	}
 	
 	@Override
-	public void draw(Graphics2D g2) {
+	public void draw(final Graphics2D g2) {
 		g2.drawImage(getImage(), getX(), getY(), null);
 		
 	}

@@ -5,6 +5,7 @@ import java.awt.Point;
 import net.cammann.tom.fyp.commands.LifeCommand;
 
 public interface Commandable {
+	
 	public enum ORIENTATION {
 		UP, RIGHT, LEFT, DOWN
 	}

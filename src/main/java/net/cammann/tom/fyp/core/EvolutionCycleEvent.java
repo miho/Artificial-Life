@@ -12,13 +12,13 @@ public class EvolutionCycleEvent {
 	private final int genNum;
 	private boolean isGeneticProgram = true;
 	
-	public EvolutionCycleEvent(Population population, int genNum) {
+	public EvolutionCycleEvent(final Population population, final int genNum) {
 		this.population = population;
 		
 		this.genNum = genNum;
 	}
 	
-	public EvolutionCycleEvent(GPPopulation population, int genNum) {
+	public EvolutionCycleEvent(final GPPopulation population, final int genNum) {
 		this.gpPopulation = population;
 		this.genNum = genNum;
 		isGeneticProgram = true;

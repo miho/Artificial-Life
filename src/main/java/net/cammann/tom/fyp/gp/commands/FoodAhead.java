@@ -11,7 +11,7 @@ import org.jgap.gp.impl.ProgramChromosome;
 
 public class FoodAhead extends CommandGene {
 	
-	public FoodAhead(GPConfiguration a_conf, Class a_returnType)
+	public FoodAhead(final GPConfiguration a_conf, final Class a_returnType)
 			throws InvalidConfigurationException {
 		super(a_conf, 1, a_returnType);
 		// TODO Auto-generated constructor stub
@@ -24,17 +24,18 @@ public class FoodAhead extends CommandGene {
 	}
 	
 	@Override
-	public double execute_double(ProgramChromosome c, int n, Object[] args) {
+	public double execute_double(final ProgramChromosome c, final int n,
+			final Object[] args) {
 		return isFoodAhead((Commandable) args[0], c.execute_double(n, 0, args));
 		
 	}
 	
-	private int isFoodAhead(Commandable life, double range) {
+	private int isFoodAhead(final Commandable life, final double range) {
 		
 		// int foodRange = life.getGene(GENE_TYPE.SEE_FOOD_RANGE);
 		
 		for (int i = 1; i < 10; i++) {
-			Point p = GPCommandUtil.getPositionAhead(life, i);
+			final Point p = GPCommandUtil.getPositionAhead(life, i);
 			
 			if (life.getMap().hasResource(p)) {
 				return i;

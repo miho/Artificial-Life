@@ -4,11 +4,12 @@ import net.cammann.tom.fyp.core.SimpleResource;
 
 public class Apple extends SimpleResource {
 	
-	public Apple(int x, int y) {
+	public Apple(final int x, final int y) {
 		super(x, y);
 	}
 	
-	public Apple(int x, int y, int min_cals, int max_cals) {
+	public Apple(final int x, final int y, final int min_cals,
+			final int max_cals) {
 		super(x, y, min_cals, max_cals);
 	}
 }

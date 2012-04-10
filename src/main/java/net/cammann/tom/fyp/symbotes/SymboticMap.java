@@ -4,7 +4,7 @@ import net.cammann.tom.fyp.core.AbstactMap;
 
 public class SymboticMap extends AbstactMap {
 	
-	public SymboticMap(int width, int height) {
+	public SymboticMap(final int width, final int height) {
 		super(width, height);
 		
 	}

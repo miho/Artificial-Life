@@ -25,9 +25,9 @@ public class LoggingFrame extends JFrame {
 	
 	private final SimulationFrame simFrame;
 	
-	public LoggingFrame(SimulationFrame sf) {
+	public LoggingFrame(final SimulationFrame sf) {
 		simFrame = sf;
-		JPanel jpanel = new JPanel();
+		final JPanel jpanel = new JPanel();
 		jpanel.setLayout(new BorderLayout());
 		this.textArea = new JTextArea();
 		jsp = new JScrollPane(textArea);
@@ -42,7 +42,7 @@ public class LoggingFrame extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			
 			@Override
-			public void windowClosing(WindowEvent arg0) {
+			public void windowClosing(final WindowEvent arg0) {
 				setVisible(false);
 				
 			}
@@ -57,25 +57,25 @@ public class LoggingFrame extends JFrame {
 			
 			@Override
 			public void close() {
-				
+
 			}
 			
 			@Override
-			protected void append(LoggingEvent arg0) {
+			protected void append(final LoggingEvent arg0) {
 				appendLine(arg0.getMessage());
 			}
 		});
 	}
 	
 	private JToolBar createToolBar() {
-		String[] petStrings = { "All", "Bug", "Brain", "SimContext" };
-		JToolBar jtb = new JToolBar();
-		JComboBox dropList = new JComboBox(petStrings);
+		final String[] petStrings = { "All", "Bug", "Brain", "SimContext" };
+		final JToolBar jtb = new JToolBar();
+		final JComboBox dropList = new JComboBox(petStrings);
 		dropList.setSelectedIndex(0);
 		dropList.addActionListener(new ActionListener() {
 			
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(final ActionEvent arg0) {
 				simFrame.hideLogFrame();
 			}
 		});
@@ -83,14 +83,14 @@ public class LoggingFrame extends JFrame {
 		return jtb;
 	}
 	
-	public void appendLine(String line) {
+	public void appendLine(final String line) {
 		textArea.append(line + "\n");
 		textArea.scrollRectToVisible(new Rectangle(0, textArea.getHeight() - 2,
 				1, 1));
 		
 	}
 	
-	public void appendLine(Object obj) {
+	public void appendLine(final Object obj) {
 		appendLine(obj.toString());
 	}
 }

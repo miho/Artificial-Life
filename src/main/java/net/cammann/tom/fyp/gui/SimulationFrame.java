@@ -21,7 +21,6 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.Timer;
 
-import net.cammann.tom.fyp.basicLife.BasicLife;
 import net.cammann.tom.fyp.core.ALife;
 import net.cammann.tom.fyp.core.EnvironmentMap;
 import net.cammann.tom.fyp.utils.MapUtils;
@@ -35,6 +34,7 @@ import org.apache.log4j.Logger;
  * 
  */
 public class SimulationFrame {
+	
 	private final EnvironmentMap map;
 	
 	static Logger logger = Logger.getLogger(SimulationFrame.class);
@@ -51,12 +51,12 @@ public class SimulationFrame {
 	private final JFrame mainFrame;
 	public static LoggingFrame loggingFrame = null;
 	
-	public SimulationFrame(EnvironmentMap map) {
+	public SimulationFrame(final EnvironmentMap map) {
 		this.map = map;
 		
 		try {
 			// UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Exception e1) {
+		} catch (final Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
@@ -75,19 +75,19 @@ public class SimulationFrame {
 		mainFrame.addKeyListener(new KeyListener() {
 			
 			@Override
-			public void keyTyped(KeyEvent e) {
+			public void keyTyped(final KeyEvent e) {
 				// TODO Auto-generated method stub
 				
 			}
 			
 			@Override
-			public void keyReleased(KeyEvent e) {
+			public void keyReleased(final KeyEvent e) {
 				// TODO Auto-generated method stub
 				
 			}
 			
 			@Override
-			public void keyPressed(KeyEvent e) {
+			public void keyPressed(final KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 					if (isStopped()) {
 						start();
@@ -114,28 +114,28 @@ public class SimulationFrame {
 	}
 	
 	private JMenuBar createJMenuBar() {
-		JMenuBar bar = new JMenuBar();
+		final JMenuBar bar = new JMenuBar();
 		
 		JMenu menu = new JMenu("Simulation");
 		menu.setMnemonic(KeyEvent.VK_S);
 		
-		JMenuItem start = new JMenuItem("Start");
+		final JMenuItem start = new JMenuItem("Start");
 		
 		start.addActionListener(new ActionListener() {
 			
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(final ActionEvent arg0) {
 				start();
 				
 			}
 		});
 		
 		menu.add(start);
-		JMenuItem pause = new JMenuItem("Pause");
+		final JMenuItem pause = new JMenuItem("Pause");
 		pause.addActionListener(new ActionListener() {
 			
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(final ActionEvent arg0) {
 				pause();
 				
 			}
@@ -143,11 +143,11 @@ public class SimulationFrame {
 		
 		menu.add(pause);
 		
-		JMenuItem stop = new JMenuItem("Stop");
+		final JMenuItem stop = new JMenuItem("Stop");
 		stop.addActionListener(new ActionListener() {
 			
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(final ActionEvent arg0) {
 				stop();
 				
 			}
@@ -159,12 +159,12 @@ public class SimulationFrame {
 		
 		menu.add(new JLabel("Simulation Speed"));
 		
-		ButtonGroup group = new ButtonGroup();
+		final ButtonGroup group = new ButtonGroup();
 		JRadioButtonMenuItem item = new JRadioButtonMenuItem("Super Fast");
 		item.addActionListener(new ActionListener() {
 			
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(final ActionEvent arg0) {
 				setSimulationRate(1);
 			}
 		});
@@ -175,7 +175,7 @@ public class SimulationFrame {
 		item.addActionListener(new ActionListener() {
 			
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(final ActionEvent arg0) {
 				setSimulationRate(10);
 			}
 		});
@@ -186,7 +186,7 @@ public class SimulationFrame {
 		item.addActionListener(new ActionListener() {
 			
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(final ActionEvent arg0) {
 				setSimulationRate(100);
 			}
 		});
@@ -198,7 +198,7 @@ public class SimulationFrame {
 		item.addActionListener(new ActionListener() {
 			
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(final ActionEvent arg0) {
 				setSimulationRate(500);
 			}
 		});
@@ -207,12 +207,12 @@ public class SimulationFrame {
 		menu.add(item);
 		
 		menu.addSeparator();
-		JMenuItem exit = new JMenuItem("Exit");
+		final JMenuItem exit = new JMenuItem("Exit");
 		
 		exit.addActionListener(new ActionListener() {
 			
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(final ActionEvent e) {
 				System.exit(0);
 				
 			}
@@ -229,7 +229,7 @@ public class SimulationFrame {
 		showLoggingFrame.addItemListener(new ItemListener() {
 			
 			@Override
-			public void itemStateChanged(ItemEvent e) {
+			public void itemStateChanged(final ItemEvent e) {
 				if (e.getStateChange() == ItemEvent.DESELECTED) {
 					hideLogFrame();
 				} else {
@@ -242,12 +242,12 @@ public class SimulationFrame {
 		
 		menu = new JMenu("Life");
 		
-		JMenuItem exportItem = new JMenuItem("Export Geneotype");
+		final JMenuItem exportItem = new JMenuItem("Export Geneotype");
 		
 		exportItem.addActionListener(new ActionListener() {
 			
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(final ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				// Save to csv
 			}
@@ -255,17 +255,18 @@ public class SimulationFrame {
 		
 		menu.add(exportItem);
 		
-		JMenuItem addLifeItem = new JMenuItem("Add Geneotype");
+		final JMenuItem addLifeItem = new JMenuItem("Add Geneotype");
 		addLifeItem.addActionListener(new ActionListener() {
 			
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(final ActionEvent e) {
 				// TODO Auto-generated method stub
 				// Load from csv
 				// or enter string of genes
 				// sc.stop();
-				int[] genes = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
-						15, 16, 17, 18, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19 };
+				final int[] genes = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+						13, 14, 15, 16, 17, 18, 19, 19, 19, 19, 19, 19, 19, 19,
+						19, 19 };
 				
 				final ALife life = new BasicLife(genes, map);
 				life.setX(new Random().nextInt((map.getWidth() + 1) / 10) * 10);
@@ -290,39 +291,39 @@ public class SimulationFrame {
 		
 		menu = new JMenu("Map");
 		
-		JMenuItem exportMap = new JMenuItem("Export Map");
+		final JMenuItem exportMap = new JMenuItem("Export Map");
 		exportMap.addActionListener(new ActionListener() {
 			
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				String home = System.getProperty("user.home");
-				JFileChooser jfc = new JFileChooser(home);
-				int r = jfc.showSaveDialog(mainFrame);
+			public void actionPerformed(final ActionEvent arg0) {
+				final String home = System.getProperty("user.home");
+				final JFileChooser jfc = new JFileChooser(home);
+				final int r = jfc.showSaveDialog(mainFrame);
 				if (r == JFileChooser.APPROVE_OPTION) {
-					File file = jfc.getSelectedFile();
+					final File file = jfc.getSelectedFile();
 					MapUtils.SaveMap(file, map);
 				}
 			}
 		});
 		
 		menu.add(exportMap);
-		JMenuItem importMap = new JMenuItem("Import Map");
+		final JMenuItem importMap = new JMenuItem("Import Map");
 		importMap.addActionListener(new ActionListener() {
 			
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				String home = System.getProperty("user.home");
-				JFileChooser jfc = new JFileChooser(home);
-				int r = jfc.showOpenDialog(mainFrame);
+			public void actionPerformed(final ActionEvent arg0) {
+				final String home = System.getProperty("user.home");
+				final JFileChooser jfc = new JFileChooser(home);
+				final int r = jfc.showOpenDialog(mainFrame);
 				if (r == JFileChooser.APPROVE_OPTION) {
-					File file = jfc.getSelectedFile();
+					final File file = jfc.getSelectedFile();
 					// TODO add back in
 					// sc.setMap(MapUtils.LoadMap(file));
 				}
 			}
 		});
 		menu.add(importMap);
-		JMenuItem mapEdit = new JMenuItem("Edit Map");
+		final JMenuItem mapEdit = new JMenuItem("Edit Map");
 		
 		bar.add(menu);
 		
@@ -339,8 +340,8 @@ public class SimulationFrame {
 		clone_item.addActionListener(new ActionListener() {
 			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				ALife clone = life.clone();
+			public void actionPerformed(final ActionEvent e) {
+				final ALife clone = life.clone();
 				clone.setX(new Random().nextInt((map.getWidth() + 1) / 10) * 10);
 				clone.setY(new Random().nextInt((map.getHeight() + 2) / 10) * 10);
 				// map.addLife(clone);
@@ -357,7 +358,7 @@ public class SimulationFrame {
 		remove_item.addActionListener(new ActionListener() {
 			
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(final ActionEvent e) {
 				// TODO add this back in
 				// sc.removeLife(life);
 				cloneLife.remove(clone_item);
@@ -392,7 +393,7 @@ public class SimulationFrame {
 		timer = new Timer(1000, new ActionListener() {
 			
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(final ActionEvent arg0) {
 				logger.trace("tick.");
 				
 				map.incrementTimeFrame();
@@ -443,7 +444,7 @@ public class SimulationFrame {
 		return map.getTimeFrameNo();
 	}
 	
-	public void setSimulationRate(int rate) {
+	public void setSimulationRate(final int rate) {
 		this.simulationRate = rate;
 		if (timer.isRunning()) {
 			pause();
@@ -459,12 +460,12 @@ public class SimulationFrame {
 		return simulationRate;
 	}
 	
-	public void setVisible(boolean b) {
+	public void setVisible(final boolean b) {
 		mainFrame.setVisible(true);
 		
 	}
 	
-	public static void createAndShowGUI(SimulationFrame frame) {
+	public static void createAndShowGUI(final SimulationFrame frame) {
 		frame.setVisible(true);
 		frame.start();
 	}

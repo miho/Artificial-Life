@@ -15,7 +15,7 @@ public class SymboteFactory extends AbstractEvolutionFactory {
 	
 	private final ResourceType c, d;
 	
-	public SymboteFactory(ResourceType c, ResourceType d) {
+	public SymboteFactory(final ResourceType c, final ResourceType d) {
 		this.c = c;
 		this.d = d;
 	}
@@ -26,12 +26,12 @@ public class SymboteFactory extends AbstractEvolutionFactory {
 	}
 	
 	@Override
-	public ALife createLife(IChromosome chromo, EnvironmentMap map) {
+	public ALife createLife(final IChromosome chromo, final EnvironmentMap map) {
 		return new Symbote(chromo, map, c, d);
 	}
 	
 	@Override
-	public ALife createLife(int[] genes, EnvironmentMap map) {
+	public ALife createLife(final int[] genes, final EnvironmentMap map) {
 		return new Symbote(genes, map, c, d);
 	}
 	
@@ -51,7 +51,7 @@ public class SymboteFactory extends AbstractEvolutionFactory {
 	}
 	
 	@Override
-	public ALife createLife(IGPProgram gp, EnvironmentMap map) {
+	public ALife createLife(final IGPProgram gp, final EnvironmentMap map) {
 		
 		return null;
 	}
@@ -78,8 +78,8 @@ public class SymboteFactory extends AbstractEvolutionFactory {
 	}
 	
 	@Override
-	public ALife createLife(ALife life, EnvironmentMap map) {
-		ALife second_life = life.clone();
+	public ALife createLife(final ALife life, final EnvironmentMap map) {
+		final ALife second_life = life.clone();
 		// TODO NOT FIXED
 		return null;
 	}

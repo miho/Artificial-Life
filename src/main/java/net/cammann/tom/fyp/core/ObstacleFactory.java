@@ -7,7 +7,7 @@ public class ObstacleFactory {
 	private final EnvironmentMap map;
 	private final static Random rand = new Random();
 	
-	public ObstacleFactory(EnvironmentMap map) {
+	public ObstacleFactory(final EnvironmentMap map) {
 		this.map = map;
 	}
 	

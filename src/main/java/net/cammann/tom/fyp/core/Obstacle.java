@@ -13,12 +13,12 @@ public class Obstacle implements MapObject {
 	private static Image img = null;
 	private final double radius;
 	
-	public Obstacle(Point p, double radius) {
+	public Obstacle(final Point p, final double radius) {
 		this.p = p;
 		this.radius = radius;
 	}
 	
-	public Obstacle(double x, double y, double radius) {
+	public Obstacle(final double x, final double y, final double radius) {
 		p = new Point();
 		p.setLocation(x, y);
 		
@@ -35,16 +35,16 @@ public class Obstacle implements MapObject {
 		return p.y;
 	}
 	
-	public void setX(int x) {
+	public void setX(final int x) {
 		p.setLocation(x, p.y);
 	}
 	
-	public void setY(int y) {
+	public void setY(final int y) {
 		p.setLocation(p.x, y);
 	}
 	
 	// TODO remove?
-	public void setPosition(Point p) {
+	public void setPosition(final Point p) {
 		this.p = p;
 		
 	}
@@ -62,10 +62,10 @@ public class Obstacle implements MapObject {
 	private Image getObstacleImage() {
 		if (img == null) {
 			
-			BufferedImage b2 = new BufferedImage(10, 10,
+			final BufferedImage b2 = new BufferedImage(10, 10,
 					BufferedImage.TYPE_INT_ARGB);
 			
-			Graphics2D g2 = b2.createGraphics();
+			final Graphics2D g2 = b2.createGraphics();
 			g2.setColor(Color.BLACK);
 			g2.fill(new Ellipse2D.Double(0, 0, 10, 10));
 			
@@ -78,7 +78,7 @@ public class Obstacle implements MapObject {
 		
 	}
 	
-	public void draw(Graphics2D g2) {
+	public void draw(final Graphics2D g2) {
 		
 		g2.drawImage(getObstacleImage(), getX(), getY(), null);
 		

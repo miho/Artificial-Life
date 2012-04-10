@@ -6,6 +6,7 @@ import org.jgap.gp.GPFitnessFunction;
 import org.jgap.gp.IGPProgram;
 
 public abstract class AbstractEvolutionFactory implements EvolutionFactory {
+	
 	protected final int num_fit_func_cycles = 1;
 	protected final int num_fit_func_alife_clones = 1;
 	protected final int fit_func_run_len = 400;
@@ -59,7 +60,7 @@ public abstract class AbstractEvolutionFactory implements EvolutionFactory {
 	}
 	
 	@Override
-	public void setNumOfResources(int numOfResources) {
+	public void setNumOfResources(final int numOfResources) {
 		if (numOfResources < 0) {
 			throw new IllegalArgumentException(
 					"num resource cannot be less than 0");
@@ -73,7 +74,7 @@ public abstract class AbstractEvolutionFactory implements EvolutionFactory {
 	}
 	
 	@Override
-	public void setNumOfObstacles(int numOfObstacles) {
+	public void setNumOfObstacles(final int numOfObstacles) {
 		if (numOfObstacles < 0) {
 			throw new IllegalArgumentException(
 					"num obstaces cannot be less than 0");
@@ -87,7 +88,7 @@ public abstract class AbstractEvolutionFactory implements EvolutionFactory {
 	}
 	
 	@Override
-	public void setMapWidth(int mapWidth) {
+	public void setMapWidth(final int mapWidth) {
 		if (mapWidth < 0) {
 			throw new IllegalArgumentException(
 					"map width cannot be less than 0");
@@ -101,7 +102,7 @@ public abstract class AbstractEvolutionFactory implements EvolutionFactory {
 	}
 	
 	@Override
-	public void setMapHeight(int mapHeight) {
+	public void setMapHeight(final int mapHeight) {
 		if (mapHeight < 0) {
 			throw new IllegalArgumentException(
 					"map height cannot be less than 0");

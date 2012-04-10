@@ -1,8 +1,9 @@
 package net.cammann.tom.fyp.ants;
 
 import net.cammann.tom.fyp.commands.LifeCommand;
-import net.cammann.tom.fyp.core.AbstactLife;
 import net.cammann.tom.fyp.core.ALife;
+import net.cammann.tom.fyp.core.AbstactLife;
+import net.cammann.tom.fyp.core.Resource;
 
 public class Ant extends AbstactLife {
 	
@@ -40,6 +41,18 @@ public class Ant extends AbstactLife {
 	public int getMemoryLength() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	
+	@Override
+	public boolean dropResource() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	@Override
+	public boolean canConsumeResource(final Resource r) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 }

@@ -5,70 +5,83 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import net.cammann.tom.fyp.commands.LifeCommand;
-import net.cammann.tom.fyp.core.AbstactLife;
 import net.cammann.tom.fyp.core.ALife;
+import net.cammann.tom.fyp.core.AbstactLife;
+import net.cammann.tom.fyp.core.Beta;
 import net.cammann.tom.fyp.core.Brain;
 import net.cammann.tom.fyp.core.EnvironmentMap;
+import net.cammann.tom.fyp.core.Resource;
 
 import org.apache.log4j.Logger;
 import org.jgap.gp.IGPProgram;
 
-public class ALifeGP extends AbstactLife {
+/**
+ * This class is used for creating the GP ALife.
+ * 
+ * Takes in IGPProgram from JGAP and converts it into ALife
+ * 
+ * @author TC
+ * 
+ */
+public final class ALifeGP extends AbstactLife {
 	
-	static Logger logger = Logger.getLogger(ALifeGP.class);
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = Logger.getLogger(ALifeGP.class);
 	
+	/**
+	 * Energy to init life with.
+	 */
+	private static final int START_ENERGY = 1000;
+	
+	/**
+	 * Length of memory.
+	 */
+	private static final int MEMORY_LENGTH = 10;
+	
+	/**
+	 * Used in Brain for controlling the ALife.
+	 */
 	private final IGPProgram gp;
 	
-	private Object getThis() {
-		return this;
-	}
-	
-	public ALifeGP(IGPProgram gp, EnvironmentMap map) {
-		this.setMap(map);
+	/**
+	 * Create ALife from IGPProgram.
+	 * 
+	 * Uses JGAP GPProgram to create life
+	 * 
+	 * @param igp
+	 *            from JGAP
+	 * @param map
+	 *            used as reference by ALife
+	 */
+	public ALifeGP(final IGPProgram igp, final EnvironmentMap map) {
+		super(map);
+		this.gp = igp;
+		
 		initBrain();
 		orientation = ORIENTATION.UP;
 		
-		energy = 1000;
+		energy = START_ENERGY;
 		
 		this.moveMemory = new ArrayList<Point>();
 		
-		this.gp = gp;
 	}
 	
 	@Override
-	public void addMoveToMemory(Point p) {
-		
-		moveMemory.add(p);
-	}
-	
-	@Override
-	public LifeCommand[] getCommandList() {
+	public final LifeCommand[] getCommandList() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	@Override
-	public boolean consume() {
-		// TODO FIXXXX
-		// // MOVE_COUNT++;
-		// // energy -= 5;
-		// try {
-		// consumeResource(map.getResource(getPosition()));
-		// return true;
-		// } catch (Exception e) {
-		// // TODO: handle exception
-		// }
-		return false;
-	}
-	
-	@Override
-	public void initBrain() {
+	public final void initBrain() {
 		setBrain(new Brain(this) {
 			
 			@Override
 			public int think() {
-				Object[] o = { getThis() };
-				double x = gp.execute_double(0, o);
+				final Object[] o = { life };
+				final double x = gp.execute_double(0, o);
 				if (x < 0) {
 					moveForward();
 				} else if (x > 0 && x < 10) {
@@ -85,21 +98,33 @@ public class ALifeGP extends AbstactLife {
 	}
 	
 	@Override
-	public ALife clone() {
+	public final ALife clone() {
 		return new ALifeGP(gp, getMap());
 	}
 	
 	@Override
-	public void reset() {
-		setEnergy(1000);
-		setOrientation(new Random().nextInt(4));
+	public final void reset() {
+		setEnergy(START_ENERGY);
+		setOrientation(new Random().nextInt(ORIENTATION.values().length));
 		setMoveMemory(new ArrayList<Point>());
 	}
 	
 	@Override
-	public int getMemoryLength() {
+	public final int getMemoryLength() {
 		// TODO add limit in genes?
-		return 10;
+		return MEMORY_LENGTH;
+	}
+	
+	@Override
+	@Beta
+	public boolean dropResource() {
+		return false;
+	}
+	
+	@Override
+	public boolean canConsumeResource(final Resource r) {
+		// Eat anything
+		return true;
 	}
 	
 }

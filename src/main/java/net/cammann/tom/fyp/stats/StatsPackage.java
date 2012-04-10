@@ -36,57 +36,58 @@ public class StatsPackage {
 		stats = new WatchableList<GenerationInformation>();
 	}
 	
-	public void add(Population pop, String id, int genNum) {
+	public void add(final Population pop, final String id, final int genNum) {
 		stats.add(new GenerationInformation(pop, id, genNum));
 	}
 	
-	public void add(GPPopulation pop, String id, int genNum) {
+	public void add(final GPPopulation pop, final String id, final int genNum) {
 		stats.add(new GenerationInformation(pop, id, genNum));
 	}
 	
-	public void add(Population pop, int id) {
+	public void add(final Population pop, final int id) {
 		stats.add(new GenerationInformation(pop, String.valueOf(id), id));
 		
 	}
 	
-	public void add(GPPopulation pop, int id) {
+	public void add(final GPPopulation pop, final int id) {
 		stats.add(new GenerationInformation(pop, String.valueOf(id), id));
 	}
 	
-	public void textStats(int num) {
-		GenerationInformation ps = stats.get(num);
-		BucketList<Double> bucket = ps.getFitnessBucket();
-		for (Double i : bucket) {
+	public void textStats(final int num) {
+		final GenerationInformation ps = stats.get(num);
+		final BucketList<Double> bucket = ps.getFitnessBucket();
+		for (final Double i : bucket) {
 			System.out.println(bucket.getCount(i) + " fitness values of: " + i);
 		}
 	}
 	
 	public void showGenerationGeneTable() {
-		JFrame jf = new JFrame("Generatin Gene Table");
+		final JFrame jf = new JFrame("Generatin Gene Table");
 		
-		JPanel jp = new JPanel();
+		final JPanel jp = new JPanel();
 		
-		TableModel tm = new TableModel() {
+		final TableModel tm = new TableModel() {
 			
 			@Override
-			public void setValueAt(Object arg0, int arg1, int arg2) {
+			public void setValueAt(final Object arg0, final int arg1,
+					final int arg2) {
 				// TODO Auto-generated method stub
 				
 			}
 			
 			@Override
-			public void removeTableModelListener(TableModelListener arg0) {
+			public void removeTableModelListener(final TableModelListener arg0) {
 				// TODO Auto-generated method stub
 				
 			}
 			
 			@Override
-			public boolean isCellEditable(int arg0, int arg1) {
+			public boolean isCellEditable(final int arg0, final int arg1) {
 				return false;
 			}
 			
 			@Override
-			public Object getValueAt(int arg0, int arg1) {
+			public Object getValueAt(final int arg0, final int arg1) {
 				return stats.get(arg0).getBestGene()[arg1];
 			}
 			
@@ -96,7 +97,7 @@ public class StatsPackage {
 			}
 			
 			@Override
-			public String getColumnName(int arg0) {
+			public String getColumnName(final int arg0) {
 				// TODO Auto-generated method stub
 				return "Gene " + arg0;
 			}
@@ -107,29 +108,29 @@ public class StatsPackage {
 			}
 			
 			@Override
-			public Class<?> getColumnClass(int arg0) {
+			public Class<?> getColumnClass(final int arg0) {
 				return Integer.class;
 			}
 			
 			@Override
-			public void addTableModelListener(TableModelListener arg0) {
+			public void addTableModelListener(final TableModelListener arg0) {
 				// TODO Auto-generated method stub
 				
 			}
 		};
 		
-		JTable table = new JTable(tm);
+		final JTable table = new JTable(tm);
 		table.setPreferredScrollableViewportSize(new Dimension(600, 300));
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		
 		for (int i = 0; i < table.getColumnCount(); i++) {
-			TableColumn column = table.getColumnModel().getColumn(i);
+			final TableColumn column = table.getColumnModel().getColumn(i);
 			
 			column.setPreferredWidth(50);
 			
 		}
 		
-		JScrollPane sp = new JScrollPane(table,
+		final JScrollPane sp = new JScrollPane(table,
 				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		sp.setSize(600, 400);
@@ -144,8 +145,8 @@ public class StatsPackage {
 	}
 	
 	public void startFitnessGraph() {
-		String title = "Fitness across generations";
-		XYSeriesCollection data = new XYSeriesCollection();
+		final String title = "Fitness across generations";
+		final XYSeriesCollection data = new XYSeriesCollection();
 		final XYSeries avgFit = new XYSeries("Average Fitness");
 		final XYSeries minFit = new XYSeries("Minimum Fitness");
 		final XYSeries maxFit = new XYSeries("Maximum Fitness");
@@ -154,7 +155,7 @@ public class StatsPackage {
 		data.addSeries(avgFit);
 		data.addSeries(maxFit);
 		// TODO Normalise data, (25000 - x is not good)
-		for (GenerationInformation info : stats) {
+		for (final GenerationInformation info : stats) {
 			avgFit.add(info.getGenNum(), info.getAvgFitness());
 			minFit.add(info.getGenNum(), info.getMinFitness());
 			maxFit.add(info.getGenNum(), info.getMaxFitness());
@@ -163,20 +164,20 @@ public class StatsPackage {
 		stats.addListChangeListener(new ListChangeListener() {
 			
 			@Override
-			public void dataRemoved(ListChangeEvent e) {
+			public void dataRemoved(final ListChangeEvent e) {
 				// TODO Auto-generated method stub
 				
 			}
 			
 			@Override
-			public void dataChanged(ListChangeEvent e) {
+			public void dataChanged(final ListChangeEvent e) {
 				// TODO Auto-generated method stub
 				
 			}
 			
 			@Override
-			public void dataAdded(ListChangeEvent e) {
-				GenerationInformation info = (GenerationInformation) e
+			public void dataAdded(final ListChangeEvent e) {
+				final GenerationInformation info = (GenerationInformation) e
 						.getElement();
 				
 				avgFit.add(info.getGenNum(), info.getAvgFitness());
@@ -189,26 +190,26 @@ public class StatsPackage {
 				"Generation", "Fitness Value", data, PlotOrientation.VERTICAL,
 				true, true, false);
 		
-		XYPlot plot = chart.getXYPlot();
-		NumberAxis axis = new NumberAxis();
+		final XYPlot plot = chart.getXYPlot();
+		final NumberAxis axis = new NumberAxis();
 		// axis.setRange(0, 20);
 		axis.setTickUnit(new NumberTickUnit(4));
 		plot.setDomainAxis(axis);
 		plot.setRangeGridlinePaint(Color.red);
-		ChartFrame chartFrame = new ChartFrame(title, chart);
+		final ChartFrame chartFrame = new ChartFrame(title, chart);
 		chartFrame.setVisible(true);
 		chartFrame.setSize(600, 450);
 		
 	}
 	
 	public void showFitnessGraph() {
-		String title = "Fitness across generations";
-		XYSeriesCollection data = new XYSeriesCollection();
+		final String title = "Fitness across generations";
+		final XYSeriesCollection data = new XYSeriesCollection();
 		final XYSeries avgFit = new XYSeries("Average Fitness");
 		final XYSeries minFit = new XYSeries("Minimum Fitness");
 		final XYSeries maxFit = new XYSeries("Maximum Fitness");
 		int count = 0;
-		for (GenerationInformation pop : stats) {
+		for (final GenerationInformation pop : stats) {
 			avgFit.add(count, pop.getAvgFitness());
 			minFit.add(count, pop.getMinFitness());
 			maxFit.add(count, pop.getMaxFitness());
@@ -218,30 +219,30 @@ public class StatsPackage {
 		data.addSeries(avgFit);
 		data.addSeries(maxFit);
 		
-		JFreeChart chart = ChartFactory.createXYLineChart(title, "Generation",
-				"Fitness Value", data, PlotOrientation.VERTICAL, true, true,
-				false);
+		final JFreeChart chart = ChartFactory.createXYLineChart(title,
+				"Generation", "Fitness Value", data, PlotOrientation.VERTICAL,
+				true, true, false);
 		
-		XYPlot plot = chart.getXYPlot();
-		NumberAxis axis = new NumberAxis();
+		final XYPlot plot = chart.getXYPlot();
+		final NumberAxis axis = new NumberAxis();
 		// axis.setRange(0, 20);
 		axis.setTickUnit(new NumberTickUnit(4));
 		plot.setDomainAxis(axis);
 		plot.setRangeGridlinePaint(Color.red);
-		ChartFrame chartFrame = new ChartFrame(title, chart);
+		final ChartFrame chartFrame = new ChartFrame(title, chart);
 		chartFrame.setVisible(true);
 		chartFrame.setSize(600, 450);
 		
 	}
 	
 	public void startFreqFitnessGraph() {
-		String title = "Frequency of fitness across generations";
+		final String title = "Frequency of fitness across generations";
 		final XYSeriesCollection dataset = new XYSeriesCollection();
 		
-		for (GenerationInformation pop : stats) {
+		for (final GenerationInformation pop : stats) {
 			
-			XYSeries series1 = new XYSeries("Generation " + pop.getId());
-			for (Double i : pop.getFitnessBucket()) {
+			final XYSeries series1 = new XYSeries("Generation " + pop.getId());
+			for (final Double i : pop.getFitnessBucket()) {
 				series1.add(i,
 						Double.valueOf(pop.getFitnessBucket().getCount(i)));
 			}
@@ -250,64 +251,65 @@ public class StatsPackage {
 		stats.addListChangeListener(new ListChangeListener() {
 			
 			@Override
-			public void dataRemoved(ListChangeEvent e) {
+			public void dataRemoved(final ListChangeEvent e) {
 				// TODO Auto-generated method stub
 				
 			}
 			
 			@Override
-			public void dataChanged(ListChangeEvent e) {
+			public void dataChanged(final ListChangeEvent e) {
 				// TODO Auto-generated method stub
 				
 			}
 			
 			@Override
-			public void dataAdded(ListChangeEvent e) {
-				GenerationInformation pop = (GenerationInformation) e
+			public void dataAdded(final ListChangeEvent e) {
+				final GenerationInformation pop = (GenerationInformation) e
 						.getElement();
 				
-				XYSeries series1 = new XYSeries("Generation " + pop.getId());
-				for (Double i : pop.getFitnessBucket()) {
+				final XYSeries series1 = new XYSeries("Generation "
+						+ pop.getId());
+				for (final Double i : pop.getFitnessBucket()) {
 					series1.add(i,
 							Double.valueOf(pop.getFitnessBucket().getCount(i)));
 				}
 				dataset.addSeries(series1);
 			}
 		});
-		JFreeChart chart = ChartFactory.createXYBarChart(title,
+		final JFreeChart chart = ChartFactory.createXYBarChart(title,
 				"Fitness Value", false, "Frequency in Pop", dataset,
 				PlotOrientation.VERTICAL, true, true, false);
 		
-		XYPlot plot = chart.getXYPlot();
+		final XYPlot plot = chart.getXYPlot();
 		
 		plot.setRangeGridlinePaint(Color.red);
-		ChartFrame chartFrame = new ChartFrame(title, chart);
+		final ChartFrame chartFrame = new ChartFrame(title, chart);
 		chartFrame.setVisible(true);
 		chartFrame.setSize(400, 350);
 		
 	}
 	
 	public void showFreqFitnessGraph() {
-		String title = "Frequency of fitness across generations";
-		XYSeriesCollection dataset = new XYSeriesCollection();
+		final String title = "Frequency of fitness across generations";
+		final XYSeriesCollection dataset = new XYSeriesCollection();
 		
-		for (GenerationInformation pop : stats) {
+		for (final GenerationInformation pop : stats) {
 			
-			XYSeries series1 = new XYSeries("Generation " + pop.getId());
-			for (Double i : pop.getFitnessBucket()) {
+			final XYSeries series1 = new XYSeries("Generation " + pop.getId());
+			for (final Double i : pop.getFitnessBucket()) {
 				series1.add(i,
 						Double.valueOf(pop.getFitnessBucket().getCount(i)));
 			}
 			dataset.addSeries(series1);
 		}
-		JFreeChart chart = ChartFactory.createXYBarChart(title,
+		final JFreeChart chart = ChartFactory.createXYBarChart(title,
 				"Fitness Value", false, "Frequency in Pop", dataset,
 				PlotOrientation.VERTICAL, true, true, false);
 		
-		XYPlot plot = chart.getXYPlot();
+		final XYPlot plot = chart.getXYPlot();
 		
 		plot.setRangeGridlinePaint(Color.red);
-		ChartFrame chartFrame = new ChartFrame(title, chart);
+		final ChartFrame chartFrame = new ChartFrame(title, chart);
 		chartFrame.setVisible(true);
 		chartFrame.setSize(400, 350);
 		

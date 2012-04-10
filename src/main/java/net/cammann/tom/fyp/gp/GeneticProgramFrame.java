@@ -56,6 +56,7 @@ import org.jgap.util.NumberKit;
 import org.jgap.util.SystemKit;
 
 public class GeneticProgramFrame extends GPProblem implements EvolutionModule {
+	
 	private transient static Logger LOGGER = Logger
 			.getLogger(GeneticProgramFrame.class);
 	
@@ -111,29 +112,30 @@ public class GeneticProgramFrame extends GPProblem implements EvolutionModule {
 	private final boolean showSimiliar = false;
 	private final List<EvolutionCycleListener> cycleListeners;
 	
-	public void addEvolutionCycleListener(EvolutionCycleListener ecl) {
+	public void addEvolutionCycleListener(final EvolutionCycleListener ecl) {
 		cycleListeners.add(ecl);
 		
 	}
 	
-	public void removeEvolutionCycleListener(EvolutionCycleListener ecl) {
+	public void removeEvolutionCycleListener(final EvolutionCycleListener ecl) {
 		cycleListeners.remove(ecl);
 	}
 	
 	private final EvolutionFactory factory;
 	
-	public GeneticProgramFrame(EvolutionFactory factory) {
+	public GeneticProgramFrame(final EvolutionFactory factory) {
 		cycleListeners = new ArrayList<EvolutionCycleListener>();
 		this.factory = factory;
 	}
 	
-	public static void main(String args[]) {
+	public static void main(final String args[]) {
 		
-		EvolutionFactory factory = new BasicLifeFactory();
+		final EvolutionFactory factory = new BasicLifeFactory();
 		
-		GeneticProgramFrame gpf = new GeneticProgramFrame(factory);
+		final GeneticProgramFrame gpf = new GeneticProgramFrame(factory);
 		
-		BestLifeLauncher launcherFrame = new BestLifeLauncher(gpf, factory);
+		final BestLifeLauncher launcherFrame = new BestLifeLauncher(gpf,
+				factory);
 		launcherFrame.createAndShowGui();
 		
 		final StatsPackage stats = new StatsPackage();
@@ -141,13 +143,13 @@ public class GeneticProgramFrame extends GPProblem implements EvolutionModule {
 		gpf.addEvolutionCycleListener(new EvolutionCycleListener() {
 			
 			@Override
-			public void startCycle(EvolutionCycleEvent e) {
+			public void startCycle(final EvolutionCycleEvent e) {
 				// TODO Auto-generated method stub
 				
 			}
 			
 			@Override
-			public void endCycle(EvolutionCycleEvent e) {
+			public void endCycle(final EvolutionCycleEvent e) {
 				stats.add(e.getGPPopulation(), e.getGenerationNum());
 				
 			}
@@ -167,7 +169,7 @@ public class GeneticProgramFrame extends GPProblem implements EvolutionModule {
 	 */
 	@Override
 	public GPGenotype create() throws InvalidConfigurationException {
-		GPConfiguration conf = new GPConfiguration();
+		final GPConfiguration conf = new GPConfiguration();
 		setGPConfiguration(conf);
 		initConfig(conf);
 		Class<?>[] types;
@@ -182,7 +184,7 @@ public class GeneticProgramFrame extends GPProblem implements EvolutionModule {
 		// You can easily add commands and terminals of your own.
 		// ----------------------------------------------------------------------
 		
-		CommandGene[] commands = {
+		final CommandGene[] commands = {
 				new Consume(conf, CommandGene.DoubleClass),
 				// new MoveForward(conf, CommandGene.DoubleClass),
 				// new TurnLeft(conf, CommandGene.DoubleClass),
@@ -211,8 +213,8 @@ public class GeneticProgramFrame extends GPProblem implements EvolutionModule {
 				new SubProgram(conf, 3, CommandGene.DoubleClass),
 				new SubProgram(conf, 2, CommandGene.DoubleClass), };
 		// Create the node sets
-		int command_len = commands.length;
-		CommandGene[][] nodeSets = new CommandGene[1][numInputVariables
+		final int command_len = commands.length;
+		final CommandGene[][] nodeSets = new CommandGene[1][numInputVariables
 				+ command_len];
 		// the variables:
 		// 1) in the nodeSets matrix
@@ -245,7 +247,7 @@ public class GeneticProgramFrame extends GPProblem implements EvolutionModule {
 		return fittest;
 	}
 	
-	public void initConfig(GPConfiguration config)
+	public void initConfig(final GPConfiguration config)
 			throws InvalidConfigurationException {
 		
 		// We use a delta fitness evaluator because we compute a defect rate,
@@ -329,7 +331,7 @@ public class GeneticProgramFrame extends GPProblem implements EvolutionModule {
 			
 			gp = create();
 			
-		} catch (InvalidConfigurationException e) {
+		} catch (final InvalidConfigurationException e) {
 			e.printStackTrace();
 		}
 		
@@ -368,7 +370,7 @@ public class GeneticProgramFrame extends GPProblem implements EvolutionModule {
 		int plateau = 0;
 		for (int gen = 1; gen <= numEvolutions; gen++) {
 			GPPopulation pop = gp.getGPPopulation();
-			for (EvolutionCycleListener e : cycleListeners) {
+			for (final EvolutionCycleListener e : cycleListeners) {
 				e.startCycle(new EvolutionCycleEvent(pop, gen));
 			}
 			
@@ -378,12 +380,12 @@ public class GeneticProgramFrame extends GPProblem implements EvolutionModule {
 			}
 			gp.calcFitness();
 			pop = gp.getGPPopulation();
-			IGPProgram thisFittest = pop.determineFittestProgram();
+			final IGPProgram thisFittest = pop.determineFittestProgram();
 			// TODO: Here I would like to have the correlation coefficient etc
 			thisFittest.setApplicationData(("gen" + gen));
-			ProgramChromosome chrom = thisFittest.getChromosome(0);
-			String program = chrom.toStringNorm(0);
-			double fitness = thisFittest.getFitnessValue();
+			final ProgramChromosome chrom = thisFittest.getChromosome(0);
+			final String program = chrom.toStringNorm(0);
+			final double fitness = thisFittest.getFitnessValue();
 			// if (showSimiliar || showPopulation) {
 			// if (showPopulation) {
 			// System.out.println("Generation " + gen
@@ -444,7 +446,7 @@ public class GeneticProgramFrame extends GPProblem implements EvolutionModule {
 				plateau = 0;
 			}
 			
-			for (EvolutionCycleListener e : cycleListeners) {
+			for (final EvolutionCycleListener e : cycleListeners) {
 				e.endCycle(new EvolutionCycleEvent(pop, gen));
 			}
 			
@@ -464,18 +466,18 @@ public class GeneticProgramFrame extends GPProblem implements EvolutionModule {
 		// problem.showTree(gp.getAllTimeBest(), "mathproblem_best.png");
 		
 		endTime = System.currentTimeMillis();
-		long elapsedTime = endTime - startTime;
+		final long elapsedTime = endTime - startTime;
 		System.out.println("\nTotal time " + elapsedTime + "ms");
 		if (showSimiliar) {
 			System.out.println("\nAll solutions with the best fitness ("
 					+ bestFit + "):");
 			// TODO: These should be sorted by values.
-			for (String p : similiar.keySet()) {
+			for (final String p : similiar.keySet()) {
 				System.out.println(p + " (" + similiar.get(p) + ")");
 			}
 		}
 		
-		EnvironmentMap map = factory.createMap();
+		final EnvironmentMap map = factory.createMap();
 		
 		map.addLife(factory.createLife(fittest, map));
 		
@@ -484,6 +486,7 @@ public class GeneticProgramFrame extends GPProblem implements EvolutionModule {
 		sf.setTimerListener();
 		
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			
 			@Override
 			public void run() {
 				SimulationFrame.createAndShowGUI(sf);
@@ -511,15 +514,15 @@ public class GeneticProgramFrame extends GPProblem implements EvolutionModule {
 	 * 
 	 * @author Hakan Kjellerstrand (originally by Klaus Meffert)
 	 */
-	public void myOutputSolution(IGPProgram a_best, int gen) {
-		String freeMB = SystemKit.niceMemory(SystemKit.getFreeMemoryMB());
+	public void myOutputSolution(final IGPProgram a_best, final int gen) {
+		final String freeMB = SystemKit.niceMemory(SystemKit.getFreeMemoryMB());
 		System.out.println("Evolving generation " + (gen) + "/" + numEvolutions
 				+ ", memory free: " + freeMB + " MB");
 		if (a_best == null) {
 			System.out.println("No best solution (null)");
 			return;
 		}
-		double bestValue = a_best.getFitnessValue();
+		final double bestValue = a_best.getFitnessValue();
 		if (Double.isInfinite(bestValue)) {
 			System.out.println("No best solution (infinite)");
 			return;
@@ -528,7 +531,7 @@ public class GeneticProgramFrame extends GPProblem implements EvolutionModule {
 				+ NumberKit.niceDecimalNumber(bestValue, 2));
 		System.out.println("Best solution: " + a_best.toStringNorm(0));
 		String depths = "";
-		int size = a_best.size();
+		final int size = a_best.size();
 		for (int i = 0; i < size; i++) {
 			if (i > 0) {
 				depths += " / ";

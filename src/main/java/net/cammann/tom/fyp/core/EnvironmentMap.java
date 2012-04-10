@@ -12,6 +12,7 @@ import java.util.List;
  * 
  */
 public interface EnvironmentMap {
+	
 	/**
 	 * 
 	 * @return map height

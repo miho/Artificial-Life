@@ -17,16 +17,36 @@ import org.apache.log4j.Logger;
  */
 public abstract class AbstactMap implements EnvironmentMap {
 	
-	static Logger logger = Logger.getLogger(AbstactMap.class);
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = Logger.getLogger(AbstactMap.class);
+	/**
+	 * height of map.
+	 */
 	protected int height;
+	/**
+	 * width of map.
+	 */
 	protected int width;
+	/**
+	 * HashMap that holds all resources.
+	 */
 	protected final MapObjectMap resourceList;
+	/**
+	 * HashMap that holds all life.
+	 */
 	protected final MapObjectMap obstacleList;
+	/**
+	 * List that holds all life.
+	 */
 	protected final List<ALife> lifeList;
-	
+	/**
+	 * Records what time frame map is in.
+	 */
 	private int timeFrameNo = 0;
 	
-	public AbstactMap(int width, int height) {
+	public AbstactMap(final int width, final int height) {
 		this.height = height;
 		this.width = width;
 		resourceList = new MapObjectMap();
@@ -41,15 +61,15 @@ public abstract class AbstactMap implements EnvironmentMap {
 		logger.trace("timeFrameNo: " + getTimeFrameNo());
 		resourceList.clear();
 		initResources();
-		for (MapObject i : lifeList) {
-			ALife life = (ALife) i;
+		for (final MapObject i : lifeList) {
+			final ALife life = (ALife) i;
 			placeLife(life);
 		}
 	}
 	
 	protected abstract void initResources();
 	
-	protected void placeLife(ALife life) {
+	protected void placeLife(final ALife life) {
 		// TODO check not on resource
 		life.setX(new Random().nextInt((getWidth() + 1) / 10) * 10);
 		life.setY(new Random().nextInt((getHeight() + 1) / 10) * 10);
@@ -68,34 +88,30 @@ public abstract class AbstactMap implements EnvironmentMap {
 	}
 	
 	@Override
-	public Dimension getDimension() {
+	public final Dimension getDimension() {
 		return new Dimension(width, height);
 		
 	}
 	
 	@Override
-	public boolean hasResource(int x, int y) {
+	public final boolean hasResource(final int x, final int y) {
 		return this.hasResource(new Point(x, y));
 	}
 	
 	@Override
-	public boolean hasResource(Point p) {
+	public final boolean hasResource(final Point p) {
 		
 		return resourceList.hasObject(p) ? true : false;
-	}
-	
-	protected boolean removeResource(int x, int y) {
-		return this.removeResource(new Point(x, y));
 	}
 	
 	// could change to return resource.
 	// only remove one resource (not stacked)
 	
-	protected boolean removeResource(Point p) {
+	protected boolean removeResource(final Point p) {
 		return resourceList.removeObject(p);
 	}
 	
-	protected boolean addResource(Resource r) {
+	protected boolean addResource(final Resource r) {
 		if (obstacleList.hasObject(r.getPosition())) {
 			logger.trace("Obstacle occupies obstacle position");
 			return false;
@@ -116,16 +132,16 @@ public abstract class AbstactMap implements EnvironmentMap {
 	}
 	
 	@Override
-	public Iterator<MapObject> getResourceIterator() {
+	public final Iterator<MapObject> getResourceIterator() {
 		return resourceList.hashMap.values().iterator();
 	}
 	
-	protected boolean removeResource(Resource r) {
+	protected boolean removeResource(final Resource r) {
 		return resourceList.removeObject(r);
 	}
 	
 	@Override
-	public boolean validPosition(Point p) {
+	public final boolean validPosition(final Point p) {
 		
 		if (p.getX() > getWidth() || p.getX() < 0) {
 			return false;
@@ -141,52 +157,53 @@ public abstract class AbstactMap implements EnvironmentMap {
 	}
 	
 	@Override
-	public boolean validPosition(double x, double y) {
-		Point p = new Point();
+	public final boolean validPosition(final double x, final double y) {
+		final Point p = new Point();
 		p.setLocation(x, y);
 		return validPosition(p);
 	}
 	
 	/**
-	 * Adds an obstacle to the current map
+	 * Adds an obstacle to the current map.
 	 * 
-	 * @param o
-	 * @return
+	 * @param obstacle
+	 *            to add
+	 * @return whether it has been added to the hashmap or not.
 	 */
-	protected boolean addObstacle(Obstacle o) {
-		if (obstacleList.hasObject(o.getPosition())) {
+	protected final boolean addObstacle(final Obstacle obstacle) {
+		if (obstacleList.hasObject(obstacle.getPosition())) {
 			logger.trace("duplicated obstacle");
 			return false;
 		}
-		if (resourceList.hasObject(o.getPosition())) {
+		if (resourceList.hasObject(obstacle.getPosition())) {
 			logger.trace("Resource occupies obstacle position");
 			return false;
 		}
 		// Check in bounds
-		if (o.getX() > getWidth() || o.getX() < 0 || o.getY() > getHeight()
-				|| o.getY() < 0) {
+		if (obstacle.getX() > getWidth() || obstacle.getX() < 0
+				|| obstacle.getY() > getHeight() || obstacle.getY() < 0) {
 			// logger.trace("Invalid position");
 			logger.trace("obstacle out of map");
 			return false;
 		}
-		obstacleList.addObject(o);
+		obstacleList.addObject(obstacle);
 		return true;
 		
 	}
 	
-	protected boolean removeObstacle(Obstacle o) {
+	protected boolean removeObstacle(final Obstacle o) {
 		return obstacleList.removeObject(o);
 	}
 	
-	protected boolean removeObstacle(Point p) {
+	protected boolean removeObstacle(final Point p) {
 		return obstacleList.removeObject(p);
 	}
 	
 	@Override
-	public boolean consumeResource(ALife life) {
-		Point p = life.getPosition();
+	public final boolean consumeResource(final ALife life) {
+		final Point p = life.getPosition();
 		if (hasResource(p)) {
-			Resource r = (Resource) resourceList.getObject(p);
+			final Resource r = (Resource) resourceList.getObject(p);
 			resourceList.removeObject(r);
 			life.energy += r.getCalories();
 			return true;
@@ -196,8 +213,8 @@ public abstract class AbstactMap implements EnvironmentMap {
 	}
 	
 	@Override
-	public boolean hasLife(Point p) {
-		for (ALife i : lifeList) {
+	public final boolean hasLife(final Point p) {
+		for (final ALife i : lifeList) {
 			if (i.getPosition().equals(p)) {
 				return true;
 			}
@@ -206,7 +223,7 @@ public abstract class AbstactMap implements EnvironmentMap {
 	}
 	
 	@Override
-	public boolean addLife(ALife life) {
+	public final boolean addLife(final ALife life) {
 		if (obstacleList.hasObject(life.getPosition())) {
 			logger.trace("obstacle occupies life position");
 			return false;
@@ -233,14 +250,14 @@ public abstract class AbstactMap implements EnvironmentMap {
 	}
 	
 	@Override
-	public boolean removeLife(ALife life) {
+	public final boolean removeLife(final ALife life) {
 		return lifeList.remove(life);
 	}
 	
 	@Override
-	public boolean removeLife(Point p) {
+	public final boolean removeLife(final Point p) {
 		ALife tmp = null;
-		for (ALife i : lifeList) {
+		for (final ALife i : lifeList) {
 			if (i.getPosition().equals(p)) {
 				tmp = i;
 			}
@@ -253,46 +270,46 @@ public abstract class AbstactMap implements EnvironmentMap {
 	}
 	
 	@Override
-	public Iterator<ALife> getLifeIterator() {
+	public final Iterator<ALife> getLifeIterator() {
 		return lifeList.iterator();
 	}
 	
 	@Override
-	public Iterator<MapObject> getObstacleIterator() {
+	public final Iterator<MapObject> getObstacleIterator() {
 		return obstacleList.hashMap.values().iterator();
 	}
 	
 	@Override
-	public int getTimeFrameNo() {
+	public final int getTimeFrameNo() {
 		return timeFrameNo;
 	}
 	
 	@Override
-	public void incrementTimeFrame() {
+	public final void incrementTimeFrame() {
 		timeFrameNo++;
-		for (MapObject mo : lifeList) {
+		for (final MapObject mo : lifeList) {
 			((ALife) mo).doMove();
 			
 		}
 	}
 	
 	@Override
-	public List<Paintable> getLifePaintables() {
-		List<Paintable> paints = new ArrayList<Paintable>();
+	public final List<Paintable> getLifePaintables() {
+		final List<Paintable> paints = new ArrayList<Paintable>();
 		// TODO finish
 		return paints;
 	}
 	
 	@Override
-	public List<Paintable> getObstaclePaintables() {
-		List<Paintable> paints = new ArrayList<Paintable>();
+	public final List<Paintable> getObstaclePaintables() {
+		final List<Paintable> paints = new ArrayList<Paintable>();
 		// TODO finish
 		return paints;
 	}
 	
 	@Override
-	public List<Paintable> getResourcePaintables() {
-		List<Paintable> paints = new ArrayList<Paintable>();
+	public final List<Paintable> getResourcePaintables() {
+		final List<Paintable> paints = new ArrayList<Paintable>();
 		// TODO finish
 		return paints;
 	}

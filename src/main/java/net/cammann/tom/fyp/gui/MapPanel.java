@@ -26,14 +26,14 @@ public class MapPanel extends JPanel {
 	
 	EnvironmentMap map;
 	
-	public MapPanel(EnvironmentMap map) {
+	public MapPanel(final EnvironmentMap map) {
 		this.map = map;
 	}
 	
 	@Override
-	public void paint(Graphics g) {
+	public void paint(final Graphics g) {
 		
-		Graphics2D g2 = (Graphics2D) g;
+		final Graphics2D g2 = (Graphics2D) g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
 		g2.setColor(Color.PINK);
@@ -42,17 +42,17 @@ public class MapPanel extends JPanel {
 		Iterator<ALife> it = map.getLifeIterator();
 		while (it.hasNext()) {
 			Line2D lp = null;
-			ALife life = it.next();
-			for (Point p : life.getMoveMemory()) {
+			final ALife life = it.next();
+			for (final Point p : life.getMoveMemory()) {
 				Line2D l2 = null;
 				if (lp != null) {
 					
-					Point p2 = new Point(p.x + 10 / 2, p.y + 10 / 2);
+					final Point p2 = new Point(p.x + 10 / 2, p.y + 10 / 2);
 					l2 = new Line2D.Double(p2, lp.getP1());
 					g2.draw(l2);
 					
 				} else {
-					Point p2 = new Point(p.x + 10 / 2, p.y + 10 / 2);
+					final Point p2 = new Point(p.x + 10 / 2, p.y + 10 / 2);
 					l2 = new Line2D.Double(p2, p2);
 				}
 				lp = l2;
@@ -81,7 +81,7 @@ public class MapPanel extends JPanel {
 		int count = 0;
 		it = map.getLifeIterator();
 		while (it.hasNext()) {
-			ALife life = it.next();
+			final ALife life = it.next();
 			life.draw(g2);
 			g2.setColor(Color.BLACK);
 			

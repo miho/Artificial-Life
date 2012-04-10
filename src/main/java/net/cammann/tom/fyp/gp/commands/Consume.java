@@ -7,11 +7,26 @@ import org.jgap.gp.CommandGene;
 import org.jgap.gp.impl.GPConfiguration;
 import org.jgap.gp.impl.ProgramChromosome;
 
-public class Consume extends CommandGene {
+/**
+ * Consume resource command.
+ * 
+ * @author TC
+ * 
+ */
+public final class Consume extends CommandGene {
 	
-	public Consume(GPConfiguration a_conf, Class a_returnType)
+	/**
+	 * 
+	 * @param conf
+	 *            jgap config
+	 * @param returnType
+	 *            return type from gp
+	 * @throws InvalidConfigurationException
+	 *             bad config
+	 */
+	public Consume(final GPConfiguration conf, final Class<?> returnType)
 			throws InvalidConfigurationException {
-		super(a_conf, 0, a_returnType);
+		super(conf, 0, returnType);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -21,17 +36,22 @@ public class Consume extends CommandGene {
 		return "Cosume";
 	}
 	
+	// CHECKSTYLE.OFF: MethodName
 	@Override
-	public boolean execute_boolean(ProgramChromosome c, int n, Object[] args) {
+	public boolean execute_boolean(final ProgramChromosome c, final int n,
+			final Object[] args) {
+		
 		return ((Commandable) args[0]).consume();
 	}
 	
 	@Override
-	public double execute_double(ProgramChromosome c, int n, Object[] args) {
+	public double execute_double(final ProgramChromosome c, final int n,
+			final Object[] args) {
 		if (((Commandable) args[0]).consume()) {
 			return 1;
 		} else {
 			return 0;
 		}
 	}
+	// CHECKSTYLE.ON: MethodName
 }

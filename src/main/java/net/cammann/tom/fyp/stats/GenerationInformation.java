@@ -21,7 +21,8 @@ public class GenerationInformation {
 	private final BucketList<Double> fitnessBucket;
 	private final int genNum;
 	
-	public GenerationInformation(Population pop, String id, int genNum) {
+	public GenerationInformation(final Population pop, final String id,
+			final int genNum) {
 		this.id = id;
 		this.genNum = genNum;
 		
@@ -34,22 +35,23 @@ public class GenerationInformation {
 		
 		bestGene = EasyUtils.getChromosoneArray(pop.getChromosome(0));
 		
-		for (Object i : pop.getChromosomes()) {
+		for (final Object i : pop.getChromosomes()) {
 			fitnessBucket.add(((IChromosome) i).getFitnessValue());
 		}
 		
 		double total = 0;
 		sizeOfPop = pop.size();
 		
-		for (Double i : fitnessBucket) {
-			int count = fitnessBucket.getCount(i);
+		for (final Double i : fitnessBucket) {
+			final int count = fitnessBucket.getCount(i);
 			total += count * i;
 		}
 		avgFitness = total / sizeOfPop;
 		
 	}
 	
-	public GenerationInformation(GPPopulation pop, String id, int genNum) {
+	public GenerationInformation(final GPPopulation pop, final String id,
+			final int genNum) {
 		this.id = id;
 		this.genNum = genNum;
 		isGeneticProgram = true;
@@ -60,15 +62,15 @@ public class GenerationInformation {
 		
 		fitnessBucket = new BucketList<Double>();
 		
-		for (Object i : pop.getGPPrograms()) {
+		for (final Object i : pop.getGPPrograms()) {
 			fitnessBucket.add(((IGPProgram) i).getFitnessValue());
 		}
 		
 		double total = 0;
 		sizeOfPop = pop.size();
 		
-		for (Double i : fitnessBucket) {
-			int count = fitnessBucket.getCount(i);
+		for (final Double i : fitnessBucket) {
+			final int count = fitnessBucket.getCount(i);
 			total += count * i;
 		}
 		avgFitness = total / sizeOfPop;

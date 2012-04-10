@@ -14,12 +14,12 @@ import org.jgap.gp.IGPProgram;
 public class BasicLifeFactory extends AbstractEvolutionFactory {
 	
 	@Override
-	public ALife createLife(int[] genes, EnvironmentMap map) {
+	public ALife createLife(final int[] genes, final EnvironmentMap map) {
 		return new BasicLife(genes, map);
 	}
 	
 	@Override
-	public ALife createLife(IChromosome chromo, EnvironmentMap map) {
+	public ALife createLife(final IChromosome chromo, final EnvironmentMap map) {
 		return new BasicLife(chromo, map);
 	}
 	
@@ -34,7 +34,7 @@ public class BasicLifeFactory extends AbstractEvolutionFactory {
 	}
 	
 	@Override
-	public ALife createLife(IGPProgram gp, EnvironmentMap map) {
+	public ALife createLife(final IGPProgram gp, final EnvironmentMap map) {
 		return new ALifeGP(gp, map);
 	}
 	
@@ -49,8 +49,8 @@ public class BasicLifeFactory extends AbstractEvolutionFactory {
 	}
 	
 	@Override
-	public ALife createLife(ALife life, EnvironmentMap map) {
-		ALife second_life = life.clone();
+	public ALife createLife(final ALife life, final EnvironmentMap map) {
+		final ALife second_life = life.clone();
 		second_life.reset();
 		second_life.setMap(map);
 		return second_life;

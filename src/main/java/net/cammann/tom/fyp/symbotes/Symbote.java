@@ -1,6 +1,5 @@
 package net.cammann.tom.fyp.symbotes;
 
-import java.awt.Graphics2D;
 import java.lang.reflect.Method;
 
 import net.cammann.tom.fyp.commands.ConsumeCommand;
@@ -15,42 +14,43 @@ import net.cammann.tom.fyp.commands.RandomCommand;
 import net.cammann.tom.fyp.commands.SubProgram;
 import net.cammann.tom.fyp.commands.TurnLeftCommand;
 import net.cammann.tom.fyp.commands.TurnRightCommand;
-import net.cammann.tom.fyp.core.AbstactLife;
 import net.cammann.tom.fyp.core.ALife;
+import net.cammann.tom.fyp.core.AbstactLife;
+import net.cammann.tom.fyp.core.AbstactMap;
 import net.cammann.tom.fyp.core.BasicBrain;
 import net.cammann.tom.fyp.core.Commandable;
 import net.cammann.tom.fyp.core.EnvironmentMap;
 import net.cammann.tom.fyp.core.Resource;
 import net.cammann.tom.fyp.core.Resource.ResourceType;
-import net.cammann.tom.fyp.core.AbstactMap;
 
 import org.apache.log4j.Logger;
 import org.jgap.IChromosome;
 
 /**
- * Symbote that lays edible resource
+ * Symbote that lays edible resource.
  * 
  * @author TC
  * 
  */
-public class Symbote extends AbstactLife {
+public final class Symbote extends AbstactLife {
+	
 	static Logger logger = Logger.getLogger(Symbote.class);
 	private ResourceType consumable, droppable;
 	
 	public Symbote() {
-		
+
 	}
 	
-	public Symbote(IChromosome chrome, EnvironmentMap map, ResourceType c,
-			ResourceType d) {
+	public Symbote(final IChromosome chrome, final EnvironmentMap map,
+			final ResourceType c, final ResourceType d) {
 		super(chrome, map);
 		this.consumable = c;
 		this.droppable = d;
 		
 	}
 	
-	public Symbote(int[] genes, EnvironmentMap map, ResourceType c,
-			ResourceType d) {
+	public Symbote(final int[] genes, final EnvironmentMap map,
+			final ResourceType c, final ResourceType d) {
 		super(genes, map);
 		this.consumable = c;
 		this.droppable = d;
@@ -63,13 +63,13 @@ public class Symbote extends AbstactLife {
 			return false;
 		}
 		try {
-			Method addResource = AbstactMap.class.getDeclaredMethod(
+			final Method addResource = AbstactMap.class.getDeclaredMethod(
 					"addResource", new Class<?>[] { Resource.class });
 			addResource.setAccessible(true);
 			
-			Resource r = new SymbResource(getPosition(), droppable);
+			final Resource r = new SymbResource(getPosition(), droppable);
 			
-			Object out = addResource.invoke(map, r);
+			final Object out = addResource.invoke(map, r);
 			
 			if (!(Boolean) out) {
 				logger.info("failed to drop resource, not sure why..");
@@ -77,19 +77,19 @@ public class Symbote extends AbstactLife {
 			}
 			
 			decrementEnegery(70);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			logger.fatal("Could not use refelection to add resource: ", e);
 		}
 		return true;
 	}
 	
-	public Symbote(int genes[], EnvironmentMap map) {
+	public Symbote(final int genes[], final EnvironmentMap map) {
 		super(genes, map);
 		
 	}
 	
 	@Override
-	public boolean canConsumeResource(Resource r) {
+	public boolean canConsumeResource(final Resource r) {
 		if (r.getResourceType() == consumable) {
 			return true;
 		}
@@ -102,12 +102,6 @@ public class Symbote extends AbstactLife {
 	}
 	
 	@Override
-	public boolean pickUpResource() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
-	@Override
 	public void initBrain() {
 		setBrain(new BasicBrain(this));
 		
@@ -115,13 +109,14 @@ public class Symbote extends AbstactLife {
 	
 	@Override
 	public LifeCommand[] getCommandList() {
-		LifeCommand doNothing = new LifeCommand("Nothing") {
+		final LifeCommand doNothing = new LifeCommand("Nothing") {
+			
 			@Override
-			public void execute(Commandable life) {
-				
+			public void execute(final Commandable life) {
+
 			}
 		};
-		LifeCommand commands[] = {
+		final LifeCommand commands[] = {
 				doNothing,
 				new ConsumeCommand(),
 				new DropResourceCommand(),
@@ -174,11 +169,6 @@ public class Symbote extends AbstactLife {
 	// return consumeResource(map.getResource(getPosition()));
 	// }
 	//
-	
-	@Override
-	public void draw(Graphics2D g2) {
-		g2.drawImage(getImage(), getX(), getY(), null);
-	}
 	
 	@Override
 	public void reset() {

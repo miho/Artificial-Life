@@ -11,7 +11,7 @@ import org.jgap.gp.impl.ProgramChromosome;
 
 public class SmellResource extends CommandGene {
 	
-	public SmellResource(GPConfiguration a_conf, Class a_returnType)
+	public SmellResource(final GPConfiguration a_conf, final Class a_returnType)
 			throws InvalidConfigurationException {
 		super(a_conf, 1, a_returnType);
 		
@@ -23,9 +23,10 @@ public class SmellResource extends CommandGene {
 	}
 	
 	@Override
-	public double execute_double(ProgramChromosome c, int n, Object[] args) {
-		Commandable life = (Commandable) args[0];
-		double range = c.execute_double(n, 0, args);
+	public double execute_double(final ProgramChromosome c, final int n,
+			final Object[] args) {
+		final Commandable life = (Commandable) args[0];
+		final double range = c.execute_double(n, 0, args);
 		if (consumableResourcesInRange(life, range)) {
 			return 1;
 		}
@@ -33,11 +34,12 @@ public class SmellResource extends CommandGene {
 		
 	}
 	
-	private boolean consumableResourcesInRange(Commandable life, double range) {
+	private boolean consumableResourcesInRange(final Commandable life,
+			final double range) {
 		
-		int STEP = 10;
-		int x = life.getX();
-		int y = life.getY();
+		final int STEP = 10;
+		final int x = life.getX();
+		final int y = life.getY();
 		
 		for (int i = (int) -(range / 2); i < (range / 2); i++) {
 			for (int j = (int) -(range / 2); j < (range / 2); j++) {

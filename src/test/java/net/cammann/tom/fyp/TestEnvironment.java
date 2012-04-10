@@ -8,12 +8,12 @@ import java.lang.reflect.Method;
 
 import junit.framework.Assert;
 import net.cammann.tom.fyp.core.ALife;
+import net.cammann.tom.fyp.core.AbstactMap;
 import net.cammann.tom.fyp.core.Commandable;
 import net.cammann.tom.fyp.core.EnvironmentMap;
 import net.cammann.tom.fyp.core.MapObject;
 import net.cammann.tom.fyp.core.Obstacle;
 import net.cammann.tom.fyp.core.Resource;
-import net.cammann.tom.fyp.core.AbstactMap;
 import net.cammann.tom.fyp.core.SimpleResource;
 
 import org.apache.log4j.Logger;
@@ -21,11 +21,22 @@ import org.apache.log4j.PropertyConfigurator;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+/**
+ * Test the basics of the EnvironmentMap class.
+ * 
+ * @see EnvironmentMap
+ * @author TC
+ * 
+ */
 public class TestEnvironment {
-	static Logger logger = Logger.getLogger(TestEnvironment.class);
 	
 	/**
-	 * Used to setup logger in test mode
+	 * Logger.
+	 */
+	private static Logger logger = Logger.getLogger(TestEnvironment.class);
+	
+	/**
+	 * Used to setup logger in test mode.
 	 */
 	@BeforeClass
 	public static void before() {
@@ -40,35 +51,36 @@ public class TestEnvironment {
 	 * added Checks resource cannot be added off the map.
 	 */
 	@Test
-	public void resourceTest() {
+	public final void resourceTest() {
 		try {
 			// TODO remove 'magic numbers'
-			EnvironmentMap map = TestUtils.getInstance().getBlankMap(100, 200);
-			Resource r = new SimpleResource(new Point(10, 30));
+			final EnvironmentMap map = TestUtils.getInstance().getBlankMap(100,
+					200);
+			final Resource r = new SimpleResource(new Point(10, 30));
 			// Check normalcy of resource
 			assertTrue(r.getPosition().equals(new Point(10, 30)));
 			assertTrue(r.getResourceType().equals(Resource.ResourceType.SIMPLE));
 			
-			Method removeResourceR = AbstactMap.class.getDeclaredMethod(
+			final Method removeResourceR = AbstactMap.class.getDeclaredMethod(
 					"removeResource", new Class<?>[] { Resource.class });
 			removeResourceR.setAccessible(true);
 			
-			Method removeResourceP = AbstactMap.class.getDeclaredMethod(
+			final Method removeResourceP = AbstactMap.class.getDeclaredMethod(
 					"removeResource", new Class<?>[] { Point.class });
 			removeResourceP.setAccessible(true);
 			
-			Method addResource = AbstactMap.class.getDeclaredMethod(
+			final Method addResource = AbstactMap.class.getDeclaredMethod(
 					"addResource", new Class<?>[] { Resource.class });
 			addResource.setAccessible(true);
 			
-			Method addObstacle = AbstactMap.class.getDeclaredMethod(
+			final Method addObstacle = AbstactMap.class.getDeclaredMethod(
 					"addObstacle", new Class<?>[] { Obstacle.class });
 			addObstacle.setAccessible(true);
 			
 			// Check added correctly
 			Object out = addResource.invoke(map, r);
 			assertTrue((Boolean) out);
-			MapObject ro = map.getResourceIterator().next();
+			final MapObject ro = map.getResourceIterator().next();
 			assertTrue(ro.equals(ro));
 			
 			// Check no duplicates can be added
@@ -84,7 +96,7 @@ public class TestEnvironment {
 			assertFalse((Boolean) out);
 			
 			// Check resources cannot be added over an obstacle
-			Obstacle o = new Obstacle(new Point(50, 40), 5);
+			final Obstacle o = new Obstacle(new Point(50, 40), 5);
 			addObstacle.invoke(map, o);
 			tmp = new SimpleResource(new Point(50, 40));
 			out = addResource.invoke(map, tmp);
@@ -102,7 +114,7 @@ public class TestEnvironment {
 			assertTrue((Boolean) out);
 			out = removeResourceP.invoke(map, new Point(10, 30));
 			assertTrue((Boolean) out);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			logger.fatal("Failed in resource test", e);
 			Assert.fail();
 		}
@@ -110,22 +122,22 @@ public class TestEnvironment {
 	}
 	
 	/**
-	 * Test validity when adding an obstacle
+	 * Test validity when adding an obstacle.
 	 * 
 	 * no duplicate positions, not off map,not on top of resource
 	 */
 	@Test
-	public void obstacleTest() {
+	public final void obstacleTest() {
 		try {
 			// TODO remove 'magic numbers'
-			AbstactMap map = (AbstactMap) TestUtils.getInstance().getBlankMap(
-					100, 200);
+			final AbstactMap map = (AbstactMap) TestUtils.getInstance()
+					.getBlankMap(100, 200);
 			
-			Method addObstacle = AbstactMap.class.getDeclaredMethod(
+			final Method addObstacle = AbstactMap.class.getDeclaredMethod(
 					"addObstacle", new Class<?>[] { Obstacle.class });
 			addObstacle.setAccessible(true);
 			
-			Obstacle o = new Obstacle(new Point(50, 60), 5);
+			final Obstacle o = new Obstacle(new Point(50, 60), 5);
 			
 			// Check normal add
 			Object out = addObstacle.invoke(map, o);
@@ -134,15 +146,15 @@ public class TestEnvironment {
 			out = addObstacle.invoke(map, o);
 			assertFalse((Boolean) out);
 			
-			Obstacle o2 = new Obstacle(new Point(-10, 10), 5);
+			final Obstacle o2 = new Obstacle(new Point(-10, 10), 5);
 			// Check cant be added off map
 			out = addObstacle.invoke(map, o2);
 			assertFalse((Boolean) out);
 			
-			Resource r = new SimpleResource(new Point(80, 40));
-			Obstacle o3 = new Obstacle(new Point(80, 40), 5);
+			final Resource r = new SimpleResource(new Point(80, 40));
+			final Obstacle o3 = new Obstacle(new Point(80, 40), 5);
 			
-			Method addResource = AbstactMap.class.getDeclaredMethod(
+			final Method addResource = AbstactMap.class.getDeclaredMethod(
 					"addResource", new Class<?>[] { Resource.class });
 			addResource.setAccessible(true);
 			
@@ -152,13 +164,13 @@ public class TestEnvironment {
 			out = addObstacle.invoke(map, o3);
 			assertFalse((Boolean) out);
 			
-			Method removeObstacle1 = AbstactMap.class.getDeclaredMethod(
+			final Method removeObstacle1 = AbstactMap.class.getDeclaredMethod(
 					"removeObstacle", new Class<?>[] { Obstacle.class });
 			removeObstacle1.setAccessible(true);
-			Method removeObstacle2 = AbstactMap.class.getDeclaredMethod(
+			final Method removeObstacle2 = AbstactMap.class.getDeclaredMethod(
 					"removeObstacle", new Class<?>[] { Point.class });
 			removeObstacle2.setAccessible(true);
-			Method removeResource = AbstactMap.class.getDeclaredMethod(
+			final Method removeResource = AbstactMap.class.getDeclaredMethod(
 					"removeResource", new Class<?>[] { Resource.class });
 			removeResource.setAccessible(true);
 			
@@ -175,7 +187,7 @@ public class TestEnvironment {
 			assertTrue((Boolean) out);
 			out = removeObstacle2.invoke(map, o3.getPosition());
 			assertTrue((Boolean) out);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			logger.fatal("Failed in resource test", e);
 			Assert.fail();
 		}
@@ -183,15 +195,16 @@ public class TestEnvironment {
 	}
 	
 	/**
-	 * Test validity of Life object
+	 * Test validity of Life object.
 	 * 
 	 */
 	@Test
-	public void lifeTest() {
+	public final void lifeTest() {
 		// TODO remove 'magic numbers'
-		EnvironmentMap map = TestUtils.getInstance().getBlankMap(100, 200);
+		final EnvironmentMap map = TestUtils.getInstance()
+				.getBlankMap(100, 200);
 		
-		ALife life = TestUtils.getInstance().getBlankLife(map);
+		final ALife life = TestUtils.getInstance().getBlankLife(map);
 		// Check add to map
 		assertTrue(map.addLife(life));
 		assertTrue(map.validPosition(life.getPosition()));
@@ -240,17 +253,17 @@ public class TestEnvironment {
 		assertTrue(life.getEnergy() == 90);
 		
 		life.setOrientation(Commandable.ORIENTATION.UP);
-		Point p = life.getPosition();
+		final Point p = life.getPosition();
 		p.setLocation(p.x, p.y - 10);
-		Resource r = new SimpleResource(p);
+		final Resource r = new SimpleResource(p);
 		
 		try {
-			Method addResource = AbstactMap.class.getDeclaredMethod(
+			final Method addResource = AbstactMap.class.getDeclaredMethod(
 					"addResource", new Class<?>[] { Resource.class });
 			addResource.setAccessible(true);
 			
-			Object out = addResource.invoke(map, r);
-		} catch (Exception e) {
+			final Object out = addResource.invoke(map, r);
+		} catch (final Exception e) {
 			logger.fatal("Failed invokign add resource", e);
 			Assert.fail();
 		}
@@ -261,7 +274,7 @@ public class TestEnvironment {
 		logger.debug("Resource position: " + r.getPosition());
 		assertTrue(life.getPosition().equals(r.getPosition()));
 		
-		int curNrg = life.getEnergy();
+		final int curNrg = life.getEnergy();
 		assertTrue(map.hasResource(life.getPosition()));
 		assertTrue(life.consume());
 		assertTrue(life.getEnergy() == curNrg + r.getCalories());

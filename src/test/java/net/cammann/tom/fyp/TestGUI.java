@@ -11,6 +11,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class TestGUI {
+	
 	static Logger logger = Logger.getLogger(TestGUI.class);
 	
 	/**
@@ -24,9 +25,10 @@ public class TestGUI {
 	@Test
 	public void guiTest() {
 		
-		EnvironmentMap map = TestUtils.getInstance().getBlankMap(400, 400);
+		final EnvironmentMap map = TestUtils.getInstance()
+				.getBlankMap(400, 400);
 		
-		SimulationFrame sf = new SimulationFrame(map);
+		final SimulationFrame sf = new SimulationFrame(map);
 		
 		assertTrue(sf.isStopped());
 		assertTrue(sf.getMoveCount() == 0);
@@ -43,12 +45,12 @@ public class TestGUI {
 		sf.start();
 		try {
 			Thread.sleep(10);
-		} catch (InterruptedException e) {
+		} catch (final InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		sf.pause();
-		int mc = sf.getMoveCount();
+		final int mc = sf.getMoveCount();
 		sf.moveOnce();
 		assertTrue(sf.getMoveCount() == mc + 1);
 		
@@ -56,8 +58,9 @@ public class TestGUI {
 	
 	public void launcherTest() {
 		
-		EnvironmentMap map = TestUtils.getInstance().getBlankMap(400, 400);
-		ALife life = TestUtils.getInstance().getBlankLife(map);
+		final EnvironmentMap map = TestUtils.getInstance()
+				.getBlankMap(400, 400);
+		final ALife life = TestUtils.getInstance().getBlankLife(map);
 		
 		// BestLifeLauncher launcher = new BestLifeLauncher(evoLab, factory)
 		

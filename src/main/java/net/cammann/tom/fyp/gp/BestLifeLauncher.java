@@ -26,21 +26,22 @@ public class BestLifeLauncher extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
 		
-		JPanel jp = new JPanel();
+		final JPanel jp = new JPanel();
 		// setUndecorated(true);
-		JButton jb = new JButton("Launch Best");
+		final JButton jb = new JButton("Launch Best");
 		jb.addActionListener(new ActionListener() {
 			
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(final ActionEvent arg0) {
 				if (evoLab.getFittestLife() != null) {
-					EnvironmentMap map = factory.createMap();
+					final EnvironmentMap map = factory.createMap();
 					map.addLife(factory.createLife(evoLab.getFittestLife(), map));
 					final SimulationFrame frame = new SimulationFrame(map);
 					
 					frame.setTimerListener();
 					
 					javax.swing.SwingUtilities.invokeLater(new Runnable() {
+						
 						@Override
 						public void run() {
 							SimulationFrame.createAndShowGUI(frame);
@@ -60,6 +61,7 @@ public class BestLifeLauncher extends JFrame {
 	
 	public void createAndShowGui() {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			
 			@Override
 			public void run() {
 				

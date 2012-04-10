@@ -20,11 +20,11 @@ public class MapObjectMap implements Iterable<MapObject> {
 		hashMap.clear();
 	}
 	
-	public MapObject getObject(Point p) {
+	public MapObject getObject(final Point p) {
 		return hashMap.get(p);
 	}
 	
-	public boolean hasObject(Point p) {
+	public boolean hasObject(final Point p) {
 		if (hashMap.get(p) == null) {
 			return false;
 		}
@@ -32,17 +32,17 @@ public class MapObjectMap implements Iterable<MapObject> {
 	}
 	
 	// could use boolean to signify already something there
-	public void addObject(MapObject r) {
+	public void addObject(final MapObject r) {
 		hashMap.put(r.getPosition(), r);
 	}
 	
-	public boolean removeObject(MapObject r) {
-		Point p = r.getPosition();
+	public boolean removeObject(final MapObject r) {
+		final Point p = r.getPosition();
 		
 		return hashMap.remove(p) == null ? false : true;
 	}
 	
-	public boolean removeObject(Point p) {
+	public boolean removeObject(final Point p) {
 		return hashMap.remove(p) == null ? false : true;
 	}
 	
@@ -63,12 +63,12 @@ public class MapObjectMap implements Iterable<MapObject> {
 		return hashMap.keySet();
 	}
 	
-	public void addAll(MapObjectMap map) {
+	public void addAll(final MapObjectMap map) {
 		this.hashMap.putAll(map.hashMap);
 	}
 	
-	public void addAll(List<MapObject> list) {
-		for (MapObject r : list) {
+	public void addAll(final List<MapObject> list) {
+		for (final MapObject r : list) {
 			hashMap.put(r.getPosition(), r);
 		}
 	}

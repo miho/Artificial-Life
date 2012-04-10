@@ -7,16 +7,16 @@ package net.cammann.tom.fyp.core;
  * 
  */
 public abstract class Brain {
-
+	
 	public static final int STEP = 10;
-
+	
 	protected ALife life;
-
-	public Brain(ALife life) {
+	
+	public Brain(final ALife life) {
 		this.life = life;
-
+		
 	}
-
+	
 	public abstract int think();
-
+	
 }

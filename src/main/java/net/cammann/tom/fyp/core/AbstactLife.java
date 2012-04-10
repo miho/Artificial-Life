@@ -21,29 +21,47 @@ import org.jgap.IChromosome;
  */
 public abstract class AbstactLife extends ALife {
 	
-	static Logger logger = Logger.getLogger(AbstactLife.class);
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = Logger.getLogger(AbstactLife.class);
 	
 	// TODO make uMC private
 	/**
 	 * Tracks number of moves which are 'unique', moves that have are not in the
 	 * move memory. Used in fitness function
 	 */
-	public int uniqueMoveCount = 0;
+	private int uniqueMoveCount = 0;
 	
+	/**
+	 * Amount to decrease energy on consumption of a resource.
+	 */
+	private static final int ENERGY_LOSS_ON_CONSUME = 15;
+	/**
+	 * Amount of enery got decrease on consumpiton failure on a resource.
+	 */
+	private static final int ENERGY_LOSS_ON_CONSUME_FAIL = 5;
+	
+	/**
+	 * Currently not used.
+	 * 
+	 * Possible use in future of specifying size on map.
+	 */
 	private final double radius = 5;
 	
 	/**
-	 * Copy constructor
+	 * Copy constructor.
 	 * 
-	 * @param bug
+	 * @param life
+	 *            to copy
 	 */
-	public AbstactLife(ALife bug) {
-		this.map = bug.map;
+	public AbstactLife(final ALife life) {
+		this.map = life.map;
 		initBrain();
 		
 		orientation = ORIENTATION.UP;
 		
-		genes = new int[bug.getGenes().length];
+		genes = new int[life.getGenes().length];
 		
 		energy = getGene(0);
 		
@@ -51,12 +69,16 @@ public abstract class AbstactLife extends ALife {
 		
 	}
 	
-	public AbstactLife(EnvironmentMap map) {
+	/**
+	 * Creates life, creates GP/GA brain, set orientaion to up.
+	 * 
+	 * @param map
+	 *            Used by life/brain when looking for food etc.
+	 */
+	public AbstactLife(final EnvironmentMap map) {
 		this.setMap(map);
 		initBrain();
-		
 		orientation = ORIENTATION.UP;
-		
 		moveMemory = new ArrayList<Point>();
 	}
 	
@@ -67,17 +89,20 @@ public abstract class AbstactLife extends ALife {
 	 * basic variables.
 	 * 
 	 * @param chrome
+	 *            used to create life from chromosone
+	 * @param map
+	 *            used for life for reference
+	 * 
 	 */
-	public AbstactLife(IChromosome chrome, EnvironmentMap map) {
+	public AbstactLife(final IChromosome chrome, final EnvironmentMap map) {
 		this.setMap(map);
 		initBrain();
-		
 		orientation = ORIENTATION.UP;
-		int len = chrome.getGenes().length;
+		final int len = chrome.getGenes().length;
 		genes = new int[len];
 		
 		for (int i = 0; i < len; i++) {
-			Gene g = chrome.getGene(i);
+			final Gene g = chrome.getGene(i);
 			genes[i] = (Integer) g.getAllele();
 		}
 		
@@ -86,6 +111,11 @@ public abstract class AbstactLife extends ALife {
 		this.moveMemory = new ArrayList<Point>();
 	}
 	
+	/**
+	 * Used to setup 'brain'.
+	 * 
+	 * The decision making center is initiailised here.
+	 */
 	public abstract void initBrain();
 	
 	/**
@@ -94,8 +124,11 @@ public abstract class AbstactLife extends ALife {
 	 * Sets up some variables such as logger.
 	 * 
 	 * @param genes
+	 *            used to generate life from genes
+	 * @param map
+	 *            used as reference for life
 	 */
-	public AbstactLife(int[] genes, EnvironmentMap map) {
+	public AbstactLife(final int[] genes, final EnvironmentMap map) {
 		initBrain();
 		this.map = map;
 		this.genes = genes;
@@ -106,22 +139,41 @@ public abstract class AbstactLife extends ALife {
 		
 	}
 	
+	/**
+	 * Create empty life instance.
+	 * 
+	 * Used to copy life
+	 */
+	@Deprecated
 	protected AbstactLife() {
+
+	}
+	
+	/**
+	 * Radius of life form.
+	 * 
+	 * @return radius
+	 */
+	@Override
+	public final double getRadius() {
+		return radius;
+	}
+	
+	/**
+	 * For future implementation.
+	 * 
+	 * @Beta not yet used
+	 * @return false due to not being fully implemented
+	 */
+	@Override
+	@Beta
+	public final boolean pickUpResource() {
+		return false;
 		
 	}
 	
 	@Override
-	public double getRadius() {
-		return radius;
-	}
-	
-	@Override
-	public boolean pickUpResource() {
-		return false;
-	}
-	
-	@Override
-	public void addMoveToMemory(Point p) {
+	public final void addMoveToMemory(final Point p) {
 		
 		if (moveMemory.size() > getMemoryLength()) {
 			moveMemory.remove(0);
@@ -131,38 +183,38 @@ public abstract class AbstactLife extends ALife {
 	}
 	
 	@Override
-	public void setMoveMemory(List<Point> pointList) {
+	public final void setMoveMemory(final List<Point> pointList) {
 		moveMemory = pointList;
 	}
 	
 	@Override
-	public void moveForward() {
+	public final void moveForward() {
 		
 		MOVE_COUNT++;
 		logger.trace("Move forward");
 		logger.trace("Orientation: " + orientation.toString());
 		
-		Point p = getPositionAhead();
-		boolean moveValid = map.validPosition(p);
+		final Point p = getPositionAhead();
+		final boolean moveValid = map.validPosition(p);
 		logger.trace("Valid Move = " + moveValid);
 		if (moveValid) {
 			logger.trace(p);
 			logger.trace(getPosition());
 			setX(p.x);
 			setY(p.y);
-			energy -= 5;
+			energy -= ENERGY_LOSS_ON_CONSUME_FAIL;
 			
 		} else {
 			logger.trace("Fail Move Forward");
 			logger.trace("Position: " + getPosition());
 			
-			decrementEnegery(15);
+			decrementEnegery(ENERGY_LOSS_ON_CONSUME);
 		}
 		addMoveToMemory(getPosition());
 	}
 	
 	@Override
-	public Point getPositionAhead() {
+	public final Point getPositionAhead() {
 		if (getOrientation() == ORIENTATION.UP) {
 			return new Point(x, y - Brain.STEP);
 		} else if (getOrientation() == ORIENTATION.RIGHT) {
@@ -176,7 +228,7 @@ public abstract class AbstactLife extends ALife {
 	}
 	
 	@Override
-	public Point getPositionAhead(int steps) {
+	public final Point getPositionAhead(final int steps) {
 		if (getOrientation() == ORIENTATION.UP) {
 			return new Point(x, y - Brain.STEP * steps);
 		} else if (getOrientation() == ORIENTATION.RIGHT) {
@@ -201,7 +253,7 @@ public abstract class AbstactLife extends ALife {
 	// }
 	
 	@Override
-	public void doMove() {
+	public final void doMove() {
 		if (energy > 0) {
 			brain.think();
 			logger.trace("Energy After move: " + energy);
@@ -215,14 +267,13 @@ public abstract class AbstactLife extends ALife {
 	}
 	
 	@Override
-	public boolean consumeResource(Resource r) {
+	public final boolean consumeResource(final Resource r) {
 		if (r == null) {
-			logger.warn("NULLL RESOURCE");
+			logger.error("NULLL RESOURCE");
 			return false;
 		}
 		if (canConsumeResource(r)) {
 			
-			// energy += r.getCalories();
 			map.consumeResource(this);
 			return true;
 		}
@@ -230,7 +281,7 @@ public abstract class AbstactLife extends ALife {
 	}
 	
 	@Override
-	public boolean hasMoveInMemory(Point position) {
+	public final boolean hasMoveInMemory(final Point position) {
 		if (moveMemory.contains(position)) {
 			return true;
 		}
@@ -238,50 +289,61 @@ public abstract class AbstactLife extends ALife {
 	}
 	
 	@Override
-	public List<Point> getMoveMemory() {
+	@Deprecated
+	public final List<Point> getMoveMemory() {
 		return moveMemory;
 	}
 	
-	protected Image getImage() {
-		BufferedImage bi = new BufferedImage(15, 15,
+	/**
+	 * Returns image used to visualise life.
+	 * 
+	 * @return image of ALife
+	 */
+	protected final Image getImage() {
+		
+		final int scale = (int) (getRadius() * 3);
+		
+		final BufferedImage bi = new BufferedImage(scale, scale,
 				BufferedImage.TYPE_INT_ARGB);
 		
-		Graphics2D g2 = bi.createGraphics();
+		final Graphics2D g2 = bi.createGraphics();
 		g2.setColor(Color.GREEN);
-		g2.fill(new Ellipse2D.Double(0, 0, 15, 15));
-		
+		g2.fill(new Ellipse2D.Double(0, 0, scale, scale));
+		// CHECKSTYLE.OFF: MagicNumber
 		if (orientation == ORIENTATION.UP) {
 			g2.setPaint(Color.BLACK);
-			g2.fill(new Ellipse2D.Double(15 / 2 - (15 / 4), 15 / 4, 15 / 4,
-					15 / 4));
-			g2.fill(new Ellipse2D.Double(15 / 2 + (15 / 4), 15 / 4, 15 / 4,
-					15 / 4));
+			g2.fill(new Ellipse2D.Double(scale / 2 - (scale / 4), scale / 4,
+					scale / 4, scale / 4));
+			g2.fill(new Ellipse2D.Double(scale / 2 + (scale / 4), scale / 4,
+					scale / 4, scale / 4));
 		} else if (orientation == ORIENTATION.RIGHT) {
 			g2.setPaint(Color.BLACK);
-			g2.fill(new Ellipse2D.Double(15 / 2 + (15 / 4), 15 / 2 + 15 / 4,
-					15 / 4, 15 / 4));
-			g2.fill(new Ellipse2D.Double(15 / 2 + 15 / 4, 15 / 4, 15 / 4,
-					15 / 4));
+			g2.fill(new Ellipse2D.Double(scale / 2 + (scale / 4), scale / 2
+					+ scale / 4, scale / 4, scale / 4));
+			g2.fill(new Ellipse2D.Double(scale / 2 + scale / 4, scale / 4,
+					scale / 4, scale / 4));
 		} else if (orientation == ORIENTATION.DOWN) {
 			g2.setPaint(Color.BLACK);
-			g2.fill(new Ellipse2D.Double(15 / 2 + (15 / 4), 15 / 2 + 15 / 4,
-					15 / 4, 15 / 4));
-			g2.fill(new Ellipse2D.Double(15 / 2 - (15 / 4), 15 / 2 + 15 / 4,
-					15 / 4, 15 / 4));
+			g2.fill(new Ellipse2D.Double(scale / 2 + (scale / 4), scale / 2
+					+ scale / 4, scale / 4, scale / 4));
+			g2.fill(new Ellipse2D.Double(scale / 2 - (scale / 4), scale / 2
+					+ scale / 4, scale / 4, scale / 4));
 			
 		} else {
 			g2.setPaint(Color.BLACK);
-			g2.fill(new Ellipse2D.Double(15 / 2 - (15 / 4), 15 / 2 + 15 / 4,
-					15 / 4, 15 / 4));
-			g2.fill(new Ellipse2D.Double(15 / 2 - (15 / 4), 15 / 4, 15 / 4,
-					15 / 4));
+			g2.fill(new Ellipse2D.Double(scale / 2 - (scale / 4), scale / 2
+					+ scale / 4, scale / 4, scale / 4));
+			g2.fill(new Ellipse2D.Double(scale / 2 - (scale / 4), scale / 4,
+					scale / 4, scale / 4));
+			// CHECKSTYLE.ON: MAGICNUMBER
 		}
-		return bi.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+		
+		return bi.getScaledInstance(scale, scale, Image.SCALE_SMOOTH);
 		
 	}
 	
 	@Override
-	public void turnLeft() {
+	public final void turnLeft() {
 		MOVE_COUNT++;
 		
 		switch (orientation) {
@@ -305,7 +367,7 @@ public abstract class AbstactLife extends ALife {
 	}
 	
 	@Override
-	public void turnRight() {
+	public final void turnRight() {
 		MOVE_COUNT++;
 		
 		switch (orientation) {
@@ -328,24 +390,12 @@ public abstract class AbstactLife extends ALife {
 	}
 	
 	@Override
-	public boolean canConsumeResource(Resource r) {
-		// EATS ANYTHING
-		return true;
-	}
-	
-	@Override
-	public boolean dropResource() {
-		// TODO Auto-generated method stub
+	public final boolean isHoldingResource() {
 		return false;
 	}
 	
 	@Override
-	public boolean isHoldingResource() {
-		return false;
-	}
-	
-	@Override
-	public void draw(Graphics2D g2) {
+	public final void draw(final Graphics2D g2) {
 		g2.drawImage(getImage(), getX(), getY(), null);
 	}
 	

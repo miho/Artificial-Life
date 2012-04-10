@@ -9,7 +9,7 @@ import org.jgap.gp.impl.ProgramChromosome;
 
 public class MoveForward extends CommandGene {
 	
-	public MoveForward(GPConfiguration a_conf, Class a_returnType)
+	public MoveForward(final GPConfiguration a_conf, final Class a_returnType)
 			throws InvalidConfigurationException {
 		super(a_conf, 1, a_returnType);
 		// TODO Auto-generated constructor stub
@@ -22,10 +22,11 @@ public class MoveForward extends CommandGene {
 	}
 	
 	@Override
-	public void execute_void(ProgramChromosome c, int n, Object[] args) {
-		Commandable life = (Commandable) args[0];
+	public void execute_void(final ProgramChromosome c, final int n,
+			final Object[] args) {
+		final Commandable life = (Commandable) args[0];
 		
-		double x = c.execute_double(n, 0, args);
+		final double x = c.execute_double(n, 0, args);
 		
 		for (int i = 0; i < x; i++) {
 			life.moveForward();
@@ -33,9 +34,10 @@ public class MoveForward extends CommandGene {
 	}
 	
 	@Override
-	public double execute_double(ProgramChromosome c, int n, Object[] args) {
-		Commandable life = (Commandable) args[0];
-		double x = c.execute_double(n, 0, args);
+	public double execute_double(final ProgramChromosome c, final int n,
+			final Object[] args) {
+		final Commandable life = (Commandable) args[0];
+		final double x = c.execute_double(n, 0, args);
 		
 		for (int i = 0; i < x; i++) {
 			life.moveForward();

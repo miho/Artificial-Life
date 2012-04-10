@@ -18,16 +18,16 @@ public class BasicBrain extends Brain {
 	
 	static Logger logger = Logger.getLogger(BasicBrain.class);
 	
-	public BasicBrain(ALife life) {
+	public BasicBrain(final ALife life) {
 		super(life);
 		// commands = life
 	}
 	
-	private List<Point> resourcesInRange(int range) {
+	private List<Point> resourcesInRange(final int range) {
 		
-		int x = life.getX();
-		int y = life.getY();
-		List<Point> rList = new ArrayList<Point>();
+		final int x = life.getX();
+		final int y = life.getY();
+		final List<Point> rList = new ArrayList<Point>();
 		
 		for (int i = -(range / 2); i < (range / 2); i++) {
 			for (int j = -(range / 2); j < (range / 2); j++) {
@@ -60,10 +60,10 @@ public class BasicBrain extends Brain {
 	
 	private boolean canSeeLife() {
 		
-		int lifeRange = life.getGene(GENE_TYPE.SEE_LIFE_RANGE);
+		final int lifeRange = life.getGene(GENE_TYPE.SEE_LIFE_RANGE);
 		
 		for (int i = 1; i < lifeRange; i++) {
-			Point p = life.getPositionAhead(i);
+			final Point p = life.getPositionAhead(i);
 			if (!life.getMap().hasLife(p)) {
 				return true;
 			}
@@ -73,10 +73,10 @@ public class BasicBrain extends Brain {
 	
 	public boolean canSeeObstacle() {
 		
-		int wallRange = life.getGene(GENE_TYPE.SEE_WALL_RANGE);
+		final int wallRange = life.getGene(GENE_TYPE.SEE_WALL_RANGE);
 		
 		for (int i = 1; i < wallRange; i++) {
-			Point p = life.getPositionAhead(i);
+			final Point p = life.getPositionAhead(i);
 			if (!life.getMap().validPosition(p)) {
 				return true;
 				
@@ -89,11 +89,11 @@ public class BasicBrain extends Brain {
 	
 	private boolean canSeeResource() {
 		
-		int foodRange = life.getGene(GENE_TYPE.SEE_FOOD_RANGE);
+		final int foodRange = life.getGene(GENE_TYPE.SEE_FOOD_RANGE);
 		// int foodRange = 5;
 		logger.trace("Checking for resources");
 		for (int i = 1; i < foodRange; i++) {
-			Point p = life.getPositionAhead(i);
+			final Point p = life.getPositionAhead(i);
 			
 			if (life.getMap().hasResource(p)) {
 				logger.trace("Resource at: " + p);
@@ -107,7 +107,7 @@ public class BasicBrain extends Brain {
 	
 	// public List<LifeCommand> getCommandList() {
 	
-	private int moveByNum(int n) {
+	private int moveByNum(final int n) {
 		life.getCommandList()[n].execute(life);
 		logger.trace("Move: " + n);
 		return 0;
@@ -159,8 +159,8 @@ public class BasicBrain extends Brain {
 			// gene reference number. completely static.
 			// represents the offset in the chromosone. from 10 on wards are
 			// these random move genes.
-			int gRef = 12;
-			Set<Integer> a = new HashSet<Integer>();
+			final int gRef = 12;
+			final Set<Integer> a = new HashSet<Integer>();
 			for (int i = 0; i < 4; i++) {
 				if (isMoveInMemory(i)) {
 					a.add(i);
@@ -169,26 +169,27 @@ public class BasicBrain extends Brain {
 			if (a.size() == 0) {
 				return moveByNum(life.getGene(gRef));
 			}
-			List<Set<Integer>> s2List = new ArrayList<Set<Integer>>();
-			List<Set<Integer>> s3List = new ArrayList<Set<Integer>>();
+			final List<Set<Integer>> s2List = new ArrayList<Set<Integer>>();
+			final List<Set<Integer>> s3List = new ArrayList<Set<Integer>>();
 			
 			@SuppressWarnings("unused")
-			int[][] s1 = { { 0 }, { 1 }, { 2 }, { 3 } };
-			int[][] s2 = { { 0, 1 }, { 0, 2 }, { 0, 3 }, { 1, 2 }, { 1, 3 },
-					{ 2, 3 } };
-			int[][] s3 = { { 0, 1, 2 }, { 0, 1, 3 }, { 0, 2, 3 }, { 1, 2, 3 } };
+			final int[][] s1 = { { 0 }, { 1 }, { 2 }, { 3 } };
+			final int[][] s2 = { { 0, 1 }, { 0, 2 }, { 0, 3 }, { 1, 2 },
+					{ 1, 3 }, { 2, 3 } };
+			final int[][] s3 = { { 0, 1, 2 }, { 0, 1, 3 }, { 0, 2, 3 },
+					{ 1, 2, 3 } };
 			@SuppressWarnings("unused")
-			int[][] s4 = { { 1, 2, 3, 4 } };
+			final int[][] s4 = { { 1, 2, 3, 4 } };
 			
 			for (int i = 0; i < 6; i++) {
-				Set<Integer> s = new HashSet<Integer>();
+				final Set<Integer> s = new HashSet<Integer>();
 				s.add(s2[i][0]);
 				s.add(s2[i][1]);
 				s2List.add(s);
 			}
 			
 			for (int i = 0; i < 4; i++) {
-				Set<Integer> s = new HashSet<Integer>();
+				final Set<Integer> s = new HashSet<Integer>();
 				s.add(s3[i][0]);
 				s.add(s3[i][1]);
 				s.add(s3[i][2]);
@@ -196,14 +197,14 @@ public class BasicBrain extends Brain {
 			}
 			
 			if (a.size() == 1) {
-				int k = a.iterator().next();
+				final int k = a.iterator().next();
 				return moveByNum(life.getGene(gRef + k));
 			} else if (a.size() == 2) {
-				int k = s2List.indexOf(a);
+				final int k = s2List.indexOf(a);
 				return moveByNum(life.getGene(gRef + 4 + k));
 				// return 4+k gene
 			} else if (a.size() == 3) {
-				int k = s3List.indexOf(a);
+				final int k = s3List.indexOf(a);
 				return moveByNum(life.getGene(gRef + 10 + k));
 				// return 10+k gene
 			} else {
@@ -217,21 +218,21 @@ public class BasicBrain extends Brain {
 	}
 	
 	@SuppressWarnings("unused")
-	private boolean moveInMemory(int x, int y) {
+	private boolean moveInMemory(final int x, final int y) {
 		return moveInMemory(new Point(x, y));
 	}
 	
-	private boolean moveInMemory(Point p) {
+	private boolean moveInMemory(final Point p) {
 		return life.getMoveMemory().contains(p);
 	}
 	
 	@SuppressWarnings("unused")
 	private void moveMemCheck() {
 		
-		String s0 = isMoveInMemory(0) ? "x" : "#";
-		String s1 = isMoveInMemory(1) ? "x" : "#";
-		String s2 = isMoveInMemory(2) ? "x" : "#";
-		String s3 = isMoveInMemory(3) ? "x" : "#";
+		final String s0 = isMoveInMemory(0) ? "x" : "#";
+		final String s1 = isMoveInMemory(1) ? "x" : "#";
+		final String s2 = isMoveInMemory(2) ? "x" : "#";
+		final String s3 = isMoveInMemory(3) ? "x" : "#";
 		
 		logger.trace(" - " + s0 + " -");
 		logger.trace(" " + s3 + " " + "o" + " " + s1 + "-");
@@ -241,9 +242,9 @@ public class BasicBrain extends Brain {
 		// - 1
 	}
 	
-	private boolean isMoveInMemory(int n) {
-		int x = life.getX();
-		int y = life.getY();
+	private boolean isMoveInMemory(final int n) {
+		final int x = life.getX();
+		final int y = life.getY();
 		
 		if (n == 0) {
 			return life.getMoveMemory().contains(new Point(x, y - STEP));
@@ -260,9 +261,9 @@ public class BasicBrain extends Brain {
 	
 	@SuppressWarnings("unused")
 	private List<Integer> movesAvaiable() {
-		List<Integer> iList = new ArrayList<Integer>();
-		int x = life.getX();
-		int y = life.getY();
+		final List<Integer> iList = new ArrayList<Integer>();
+		final int x = life.getX();
+		final int y = life.getY();
 		
 		if (life.getMap().validPosition(x, y - STEP)) {
 			

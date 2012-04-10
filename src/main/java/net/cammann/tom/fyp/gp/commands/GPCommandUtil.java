@@ -8,7 +8,7 @@ import net.cammann.tom.fyp.core.Commandable.ORIENTATION;
 
 public class GPCommandUtil {
 	
-	public static Point getPositionAhead(Commandable c) {
+	public static Point getPositionAhead(final Commandable c) {
 		if (c.getOrientation() == ORIENTATION.UP) {
 			return new Point(c.getX(), c.getY() - Brain.STEP);
 		} else if (c.getOrientation() == ORIENTATION.RIGHT) {
@@ -20,7 +20,7 @@ public class GPCommandUtil {
 		}
 	}
 	
-	public static Point getPositionAhead(Commandable c, int steps) {
+	public static Point getPositionAhead(final Commandable c, final int steps) {
 		if (c.getOrientation() == ORIENTATION.UP) {
 			return new Point(c.getX(), c.getY() - Brain.STEP * steps);
 		} else if (c.getOrientation() == ORIENTATION.RIGHT) {

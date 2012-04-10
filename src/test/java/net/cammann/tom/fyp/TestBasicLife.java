@@ -16,6 +16,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class TestBasicLife {
+	
 	static Logger logger = Logger.getLogger(TestBasicLife.class);
 	
 	/**
@@ -34,17 +35,17 @@ public class TestBasicLife {
 	@Test
 	public void testBasicFactory() {
 		// TODO remove 'magic numbers'
-		EvolutionFactory factory = new BasicLifeFactory();
+		final EvolutionFactory factory = new BasicLifeFactory();
 		factory.setNumOfObstacles(5);
 		factory.setNumOfResources(40);
 		factory.setMapHeight(400);
 		factory.setMapWidth(200);
 		
-		EnvironmentMap map = factory.createMap();
-		ALife life = TestUtils.getInstance().getBlankLife(map);
+		final EnvironmentMap map = factory.createMap();
+		final ALife life = TestUtils.getInstance().getBlankLife(map);
 		factory.createLife(life, map);
 		
-		Iterator<MapObject> resourceIterator = map.getResourceIterator();
+		final Iterator<MapObject> resourceIterator = map.getResourceIterator();
 		int resourceCount = 0;
 		while (resourceIterator.hasNext()) {
 			resourceIterator.next();
@@ -53,7 +54,7 @@ public class TestBasicLife {
 		logger.info("resouce count: " + resourceCount);
 		assertTrue(resourceCount == 40);
 		
-		Iterator<MapObject> obstacleIterator = map.getObstacleIterator();
+		final Iterator<MapObject> obstacleIterator = map.getObstacleIterator();
 		int obstacleCount = 0;
 		while (obstacleIterator.hasNext()) {
 			obstacleIterator.next();

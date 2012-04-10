@@ -9,6 +9,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class TestGA {
+	
 	static Logger logger = Logger.getLogger(TestGA.class);
 	
 	/**
@@ -21,8 +22,8 @@ public class TestGA {
 	
 	@Test
 	public void firstTest() {
-		BasicLifeFactory factory = new BasicLifeFactory();
-		GeneLab genelab = new GeneLab(factory);
+		final BasicLifeFactory factory = new BasicLifeFactory();
+		final GeneLab genelab = new GeneLab(factory);
 		
 	}
 }
