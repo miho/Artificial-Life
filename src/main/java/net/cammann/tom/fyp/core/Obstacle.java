@@ -7,11 +7,9 @@ import java.awt.Point;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 
-public class Obstacle implements MapObject {
+public class Obstacle extends AbstractMapObject {
 	
-	private Point p;
 	private static Image img = null;
-	private final double radius;
 	
 	public Obstacle(final Point p, final double radius) {
 		this.p = p;
@@ -25,38 +23,10 @@ public class Obstacle implements MapObject {
 		this.radius = radius;
 	}
 	
-	@Override
-	public int getX() {
-		return p.x;
-	}
-	
-	@Override
-	public int getY() {
-		return p.y;
-	}
-	
-	public void setX(final int x) {
-		p.setLocation(x, p.y);
-	}
-	
-	public void setY(final int y) {
-		p.setLocation(p.x, y);
-	}
-	
 	// TODO remove?
 	public void setPosition(final Point p) {
 		this.p = p;
 		
-	}
-	
-	@Override
-	public Point getPosition() {
-		return p;
-	}
-	
-	@Override
-	public double getRadius() {
-		return 0;
 	}
 	
 	private Image getObstacleImage() {

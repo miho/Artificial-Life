@@ -30,7 +30,7 @@ public interface EvolutionFactory {
 	public FitnessFunction getFitnessFunction();
 	
 	/**
-	 * Create blank unusable instance of the ALife for cloning or other
+	 * Create blank unusable instance of the ALife for cloning or other.
 	 * 
 	 * @return cloneable instance
 	 */

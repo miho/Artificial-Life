@@ -1,6 +1,6 @@
 package net.cammann.tom.fyp.symbotes;
 
-import net.cammann.tom.fyp.basicLife.BugFitnessFunction;
+import net.cammann.tom.fyp.basicLife.BasicFitnessFunction;
 import net.cammann.tom.fyp.core.ALife;
 import net.cammann.tom.fyp.core.AbstractEvolutionFactory;
 import net.cammann.tom.fyp.core.EnvironmentMap;
@@ -18,6 +18,9 @@ public class SymboteFactory extends AbstractEvolutionFactory {
 	public SymboteFactory(final ResourceType c, final ResourceType d) {
 		this.c = c;
 		this.d = d;
+		fit_func_run_len = 400;
+		num_fit_func_cycles = 2;
+		
 	}
 	
 	public SymboteFactory() {
@@ -37,17 +40,7 @@ public class SymboteFactory extends AbstractEvolutionFactory {
 	
 	@Override
 	public SimpleFitnessFunction getFitnessFunction() {
-		return new BugFitnessFunction(this);
-	}
-	
-	@Override
-	public ALife nullInstance() {
-		return new Symbote();
-	}
-	
-	@Override
-	public int getNumClones() {
-		return 2;
+		return new BasicFitnessFunction(this);
 	}
 	
 	@Override
@@ -62,19 +55,9 @@ public class SymboteFactory extends AbstractEvolutionFactory {
 	}
 	
 	@Override
-	public int getFitnessFunctionRuns() {
-		return 1;
-	}
-	
-	@Override
 	public GPFitnessFunction getGPFitnessFunction() {
 		// TODO Auto-generated method stub
 		return null;
-	}
-	
-	@Override
-	public int getLenOfFitFuncRun() {
-		return 400;
 	}
 	
 	@Override
@@ -82,6 +65,11 @@ public class SymboteFactory extends AbstractEvolutionFactory {
 		final ALife second_life = life.clone();
 		// TODO NOT FIXED
 		return null;
+	}
+	
+	@Override
+	public ALife nullInstance() {
+		return new Symbote();
 	}
 	
 }

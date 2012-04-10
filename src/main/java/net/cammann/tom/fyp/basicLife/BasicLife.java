@@ -1,9 +1,5 @@
 package net.cammann.tom.fyp.basicLife;
 
-import java.awt.Point;
-import java.util.ArrayList;
-import java.util.Random;
-
 import net.cammann.tom.fyp.commands.ConsumeCommand;
 import net.cammann.tom.fyp.commands.ForwardCommand;
 import net.cammann.tom.fyp.commands.LifeCommand;
@@ -16,7 +12,6 @@ import net.cammann.tom.fyp.commands.TurnLeftCommand;
 import net.cammann.tom.fyp.commands.TurnRightCommand;
 import net.cammann.tom.fyp.core.ALife;
 import net.cammann.tom.fyp.core.AbstactLife;
-import net.cammann.tom.fyp.core.BasicBrain;
 import net.cammann.tom.fyp.core.Commandable;
 import net.cammann.tom.fyp.core.EnvironmentMap;
 import net.cammann.tom.fyp.core.GENE_TYPE;
@@ -24,6 +19,12 @@ import net.cammann.tom.fyp.core.Resource;
 
 import org.jgap.IChromosome;
 
+/**
+ * Life form that uses basic brain as thinking module.
+ * 
+ * @author TC
+ * 
+ */
 public final class BasicLife extends AbstactLife {
 	
 	public BasicLife(final IChromosome chrome, final EnvironmentMap map) {
@@ -52,11 +53,11 @@ public final class BasicLife extends AbstactLife {
 			
 			@Override
 			public void execute(final Commandable life) {
-
+				
 			}
 		};
 		
-		final LifeCommand commands[] = {
+		final LifeCommand[] commands = {
 				new ConsumeCommand(),
 				new ForwardCommand(),
 				new TurnLeftCommand(),
@@ -101,13 +102,6 @@ public final class BasicLife extends AbstactLife {
 	}
 	
 	@Override
-	public void reset() {
-		setEnergy(getGene(0));
-		setOrientation(new Random().nextInt(4));
-		setMoveMemory(new ArrayList<Point>());
-	}
-	
-	@Override
 	public int getMemoryLength() {
 		return getGene(GENE_TYPE.MEMORY_LENGTH);
 	}
@@ -122,5 +116,10 @@ public final class BasicLife extends AbstactLife {
 	public boolean canConsumeResource(final Resource r) {
 		// TODO Auto-generated method stub
 		return true;
+	}
+	
+	@Override
+	protected int getStartEnergy() {
+		return getGene(0);
 	}
 }

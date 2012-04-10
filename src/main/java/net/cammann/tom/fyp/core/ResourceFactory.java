@@ -6,6 +6,12 @@ import net.cammann.tom.fyp.basicLife.BasicResource;
 import net.cammann.tom.fyp.core.Resource.ResourceType;
 import net.cammann.tom.fyp.symbotes.SymbResource;
 
+/**
+ * Factory object for producing resources.
+ * 
+ * @author TC
+ * 
+ */
 public final class ResourceFactory {
 	
 	int max_cals, min_cals;

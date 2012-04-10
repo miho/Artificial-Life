@@ -8,6 +8,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.apache.log4j.Logger;
 import org.jgap.Gene;
@@ -43,13 +44,6 @@ public abstract class AbstactLife extends ALife {
 	private static final int ENERGY_LOSS_ON_CONSUME_FAIL = 5;
 	
 	/**
-	 * Currently not used.
-	 * 
-	 * Possible use in future of specifying size on map.
-	 */
-	private final double radius = 5;
-	
-	/**
 	 * Copy constructor.
 	 * 
 	 * @param life
@@ -76,7 +70,7 @@ public abstract class AbstactLife extends ALife {
 	 *            Used by life/brain when looking for food etc.
 	 */
 	public AbstactLife(final EnvironmentMap map) {
-		this.setMap(map);
+		this.map = map;
 		initBrain();
 		orientation = ORIENTATION.UP;
 		moveMemory = new ArrayList<Point>();
@@ -95,13 +89,13 @@ public abstract class AbstactLife extends ALife {
 	 * 
 	 */
 	public AbstactLife(final IChromosome chrome, final EnvironmentMap map) {
-		this.setMap(map);
+		this.map = map;
 		initBrain();
 		orientation = ORIENTATION.UP;
 		final int len = chrome.getGenes().length;
 		genes = new int[len];
 		
-		for (int i = 0; i < len; i++) {
+		for ( int i = 0 ; i < len ; i++ ) {
 			final Gene g = chrome.getGene(i);
 			genes[i] = (Integer) g.getAllele();
 		}
@@ -146,17 +140,14 @@ public abstract class AbstactLife extends ALife {
 	 */
 	@Deprecated
 	protected AbstactLife() {
-
+		
 	}
 	
-	/**
-	 * Radius of life form.
-	 * 
-	 * @return radius
-	 */
 	@Override
-	public final double getRadius() {
-		return radius;
+	public final void reset() {
+		setEnergy(getStartEnergy());
+		setOrientation(new Random().nextInt(ORIENTATION.values().length));
+		moveMemory.clear();
 	}
 	
 	/**
@@ -183,14 +174,9 @@ public abstract class AbstactLife extends ALife {
 	}
 	
 	@Override
-	public final void setMoveMemory(final List<Point> pointList) {
-		moveMemory = pointList;
-	}
-	
-	@Override
 	public final void moveForward() {
 		
-		MOVE_COUNT++;
+		moveCount++;
 		logger.trace("Move forward");
 		logger.trace("Orientation: " + orientation.toString());
 		
@@ -216,13 +202,13 @@ public abstract class AbstactLife extends ALife {
 	@Override
 	public final Point getPositionAhead() {
 		if (getOrientation() == ORIENTATION.UP) {
-			return new Point(x, y - SimpleMap.STEP_SIZE);
+			return new Point(p.x, p.y - SimpleMap.STEP_SIZE);
 		} else if (getOrientation() == ORIENTATION.RIGHT) {
-			return new Point(x + SimpleMap.STEP_SIZE, y);
+			return new Point(p.x + SimpleMap.STEP_SIZE, p.y);
 		} else if (getOrientation() == ORIENTATION.DOWN) {
-			return new Point(x, y + SimpleMap.STEP_SIZE);
+			return new Point(p.x, p.y + SimpleMap.STEP_SIZE);
 		} else {
-			return new Point(x - SimpleMap.STEP_SIZE, y);
+			return new Point(p.x - SimpleMap.STEP_SIZE, p.y);
 			
 		}
 	}
@@ -230,13 +216,13 @@ public abstract class AbstactLife extends ALife {
 	@Override
 	public final Point getPositionAhead(final int steps) {
 		if (getOrientation() == ORIENTATION.UP) {
-			return new Point(x, y - SimpleMap.STEP_SIZE * steps);
+			return new Point(p.x, p.y - SimpleMap.STEP_SIZE * steps);
 		} else if (getOrientation() == ORIENTATION.RIGHT) {
-			return new Point(x + SimpleMap.STEP_SIZE * steps, y);
+			return new Point(p.x + SimpleMap.STEP_SIZE * steps, p.y);
 		} else if (getOrientation() == ORIENTATION.DOWN) {
-			return new Point(x, y + SimpleMap.STEP_SIZE * steps);
+			return new Point(p.x, p.y + SimpleMap.STEP_SIZE * steps);
 		} else {
-			return new Point(x - SimpleMap.STEP_SIZE * steps, y);
+			return new Point(p.x - SimpleMap.STEP_SIZE * steps, p.y);
 		}
 	}
 	
@@ -344,7 +330,7 @@ public abstract class AbstactLife extends ALife {
 	
 	@Override
 	public final void turnLeft() {
-		MOVE_COUNT++;
+		moveCount++;
 		
 		switch (orientation) {
 			case UP:
@@ -368,7 +354,7 @@ public abstract class AbstactLife extends ALife {
 	
 	@Override
 	public final void turnRight() {
-		MOVE_COUNT++;
+		moveCount++;
 		
 		switch (orientation) {
 			case UP:

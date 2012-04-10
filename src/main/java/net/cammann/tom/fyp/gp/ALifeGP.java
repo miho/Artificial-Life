@@ -2,7 +2,6 @@ package net.cammann.tom.fyp.gp;
 
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Random;
 
 import net.cammann.tom.fyp.commands.LifeCommand;
 import net.cammann.tom.fyp.core.ALife;
@@ -90,7 +89,7 @@ public final class ALifeGP extends AbstactLife {
 				} else if (x > 10 && x < 20) {
 					turnRight();
 				}
-				MOVE_COUNT++;
+				moveCount++;
 				energy -= 5;
 				return 1;
 			}
@@ -101,13 +100,6 @@ public final class ALifeGP extends AbstactLife {
 	@Override
 	public ALife clone() {
 		return new ALifeGP(gp, getMap());
-	}
-	
-	@Override
-	public void reset() {
-		setEnergy(START_ENERGY);
-		setOrientation(new Random().nextInt(ORIENTATION.values().length));
-		setMoveMemory(new ArrayList<Point>());
 	}
 	
 	@Override
@@ -126,6 +118,12 @@ public final class ALifeGP extends AbstactLife {
 	public boolean canConsumeResource(final Resource r) {
 		// Eat anything
 		return true;
+	}
+	
+	@Override
+	protected int getStartEnergy() {
+		// TODO Auto-generated method stub
+		return START_ENERGY;
 	}
 	
 }
