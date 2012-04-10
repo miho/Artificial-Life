@@ -9,18 +9,17 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
-import net.cammann.tom.fyp.core.ALife;
+import net.cammann.tom.fyp.core.AbstactMap;
 import net.cammann.tom.fyp.core.EnvironmentMap;
 import net.cammann.tom.fyp.core.Resource;
-import net.cammann.tom.fyp.core.AbstactMap;
 
 public class MapUtils {
-	public static void SaveMap(File file, EnvironmentMap map) {
+	
+	public static void SaveMap(final File file, final EnvironmentMap map) {
 		try {
 			// TODO fix
-			BufferedWriter br = new BufferedWriter(new FileWriter(file));
+			final BufferedWriter br = new BufferedWriter(new FileWriter(file));
 			
 			br.write("" + map.getWidth());
 			br.write("\n");
@@ -35,54 +34,40 @@ public class MapUtils {
 			br.flush();
 			br.close();
 			// write each resource
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public static EnvironmentMap LoadMap(File file) {
+	public static EnvironmentMap LoadMap(final File file) {
 		AbstactMap map = null;
 		final List<Resource> rList = new ArrayList<Resource>();
 		class QuickMap extends AbstactMap {
 			
-			public QuickMap(int width, int height) {
+			public QuickMap(final int width, final int height) {
 				super(width, height);
 			}
 			
 			@Override
-			public void resetMap() {
-				resourceList.clear();
-				initResources();
-			}
-			
-			@Override
 			public void initResources() {
-				for (Resource r : rList) {
+				for (final Resource r : rList) {
 					addResource(r);
 				}
 				
 			}
 			
-			@Override
-			public void placeLife(ALife life) {
-				life.setX(new Random()
-						.nextInt((life.getMap().getWidth() + 1) / 10) * 10);
-				life.setY(new Random()
-						.nextInt((life.getMap().getHeight() + 1) / 10) * 10);
-			}
-			
 		}
 		
 		try {
-			BufferedReader br = new BufferedReader(new FileReader(file));
+			final BufferedReader br = new BufferedReader(new FileReader(file));
 			
-			int width = Integer.valueOf(br.readLine());
-			int height = Integer.valueOf(br.readLine());
+			final int width = Integer.valueOf(br.readLine());
+			final int height = Integer.valueOf(br.readLine());
 			
 			map = new QuickMap(width, height);
 			String line = "";
 			while ((line = br.readLine()) != null) {
-				String[] split = line.split(" ");
+				final String[] split = line.split(" ");
 				// TODO fix
 				// Resource r = new SimpleResource(map,
 				// Integer.valueOf(split[0]),
@@ -93,10 +78,10 @@ public class MapUtils {
 			
 			br.close();
 			
-		} catch (FileNotFoundException e) {
+		} catch (final FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

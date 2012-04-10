@@ -9,16 +9,24 @@ import net.cammann.tom.fyp.core.AbstactMap;
 import net.cammann.tom.fyp.core.Resource;
 import net.cammann.tom.fyp.core.Resource.ResourceType;
 import net.cammann.tom.fyp.core.ResourceFactory;
+import net.cammann.tom.fyp.core.SimpleMap;
 
-public class StaticMap extends AbstactMap {
+public final class StaticMap extends AbstactMap {
 	
 	public static List<Resource> RESOURCE_LIST;
-	
+	private final int numResources;
+	/**
+	 * Static start x position for all life.
+	 */
 	private static int x = -1;
+	/**
+	 * Static start y position for all life.
+	 */
 	private static int y = -1;
 	
-	public StaticMap() {
-		super(300, 300);
+	public StaticMap(final int width, final int height, final int numResources) {
+		super(width, height);
+		this.numResources = numResources;
 	}
 	
 	@Override
@@ -26,8 +34,8 @@ public class StaticMap extends AbstactMap {
 		if (RESOURCE_LIST == null) {
 			RESOURCE_LIST = new ArrayList<Resource>();
 			final ResourceFactory r = new ResourceFactory(this);
-			for (int i = 0; i < 50; i++) {
-				RESOURCE_LIST.add(r.createResource(ResourceType.SIMPLE));
+			for (int i = 0; i < numResources; i++) {
+				RESOURCE_LIST.add(r.createResource(ResourceType.BASIC));
 			}
 		}
 		for (final Resource r : RESOURCE_LIST) {
@@ -39,8 +47,12 @@ public class StaticMap extends AbstactMap {
 	@Override
 	public void placeLife(final ALife life) {
 		if (x == -1) {
-			x = new Random().nextInt((life.getMap().getWidth() + 1) / 10) * 10;
-			y = new Random().nextInt((life.getMap().getHeight() + 1) / 10) * 10;
+			x = new Random().nextInt((life.getMap().getWidth() + 1)
+					/ SimpleMap.STEP_SIZE)
+					* SimpleMap.STEP_SIZE;
+			y = new Random().nextInt((life.getMap().getHeight() + 1)
+					/ SimpleMap.STEP_SIZE)
+					* SimpleMap.STEP_SIZE;
 		}
 		life.setX(x);
 		life.setY(y);

@@ -67,6 +67,7 @@ public class GeneticProgramFrame extends GPProblem implements EvolutionModule {
 	// number of variables to use (output variable is excluded)
 	private int numInputVariables;
 	
+	// CHECKSTYLE.OFF: MagicNumber
 	// standard GP parameters
 	private final int minInitDepth = 2;
 	
@@ -111,6 +112,8 @@ public class GeneticProgramFrame extends GPProblem implements EvolutionModule {
 	
 	private final boolean showSimiliar = false;
 	private final List<EvolutionCycleListener> cycleListeners;
+	
+	// CHECKSTYLE.ON: MagicNumber
 	
 	public void addEvolutionCycleListener(final EvolutionCycleListener ecl) {
 		cycleListeners.add(ecl);
@@ -253,7 +256,7 @@ public class GeneticProgramFrame extends GPProblem implements EvolutionModule {
 		// We use a delta fitness evaluator because we compute a defect rate,
 		// not
 		// a point score!
-		// ----------------------------------------------------------------------
+		// -------------------------------------------------------
 		config.setGPFitnessEvaluator(new DeltaGPFitnessEvaluator());
 		config.setFitnessFunction(factory.getGPFitnessFunction());
 		config.setMaxInitDepth(maxInitDepth);
@@ -428,9 +431,11 @@ public class GeneticProgramFrame extends GPProblem implements EvolutionModule {
 					// reset the hash
 					similiar.clear(); // = new HashMap<String,Integer>();
 				}
+				// CHECKSTYLE.OFF: MagicNumber
 				plateau = 0;
 				getGPConfiguration().setMutationProb(0.1f);
 				mutationProb = 0.1f;
+				
 				// Ensure that the best solution is in the population.
 				// gp.addFittestProgram(thisFittest);
 			} else {
@@ -445,7 +450,7 @@ public class GeneticProgramFrame extends GPProblem implements EvolutionModule {
 				
 				plateau = 0;
 			}
-			
+			// CHECKSTYLE.ON: MagicNumber
 			for (final EvolutionCycleListener e : cycleListeners) {
 				e.endCycle(new EvolutionCycleEvent(pop, gen));
 			}

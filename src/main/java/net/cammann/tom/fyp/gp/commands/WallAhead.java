@@ -2,6 +2,7 @@ package net.cammann.tom.fyp.gp.commands;
 
 import net.cammann.tom.fyp.core.Commandable;
 import net.cammann.tom.fyp.core.Commandable.ORIENTATION;
+import net.cammann.tom.fyp.core.SimpleMap;
 
 import org.jgap.InvalidConfigurationException;
 import org.jgap.gp.CommandGene;
@@ -10,9 +11,9 @@ import org.jgap.gp.impl.ProgramChromosome;
 
 public class WallAhead extends CommandGene {
 	
-	public WallAhead(final GPConfiguration a_conf, final Class a_returnType)
+	public WallAhead(final GPConfiguration conf, final Class<?> returnType)
 			throws InvalidConfigurationException {
-		super(a_conf, 0, a_returnType);
+		super(conf, 0, returnType);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -39,25 +40,24 @@ public class WallAhead extends CommandGene {
 	
 	private boolean isWallAhead(final Commandable life) {
 		
-		final int STEP = 10;
 		final int RANGE = 5;
 		final int x = life.getX();
 		final int y = life.getY();
 		
 		if (life.getOrientation() == ORIENTATION.UP) {
-			if (checkNewPosition(x, y - STEP * RANGE, life)) {
+			if (checkNewPosition(x, y - SimpleMap.STEP_SIZE * RANGE, life)) {
 				return false;
 			}
 		} else if (life.getOrientation() == ORIENTATION.RIGHT) {
-			if (checkNewPosition(x + STEP * RANGE, y, life)) {
+			if (checkNewPosition(x + SimpleMap.STEP_SIZE * RANGE, y, life)) {
 				return false;
 			}
 		} else if (life.getOrientation() == ORIENTATION.DOWN) {
-			if (checkNewPosition(x, y + STEP * RANGE, life)) {
+			if (checkNewPosition(x, y + SimpleMap.STEP_SIZE * RANGE, life)) {
 				return false;
 			}
 		} else {
-			if (checkNewPosition(x - STEP * RANGE, y, life)) {
+			if (checkNewPosition(x - SimpleMap.STEP_SIZE * RANGE, y, life)) {
 				return false;
 			}
 		}

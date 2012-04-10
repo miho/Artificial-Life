@@ -9,7 +9,7 @@ package net.cammann.tom.fyp.core;
 public abstract class Resource implements Paintable, MapObject {
 	
 	public enum ResourceType {
-		SIMPLE, CARROT, POISION, TREE, S1, S2
+		BASIC, CARROT, POISION, TREE, S1, S2
 	}
 	
 	public abstract boolean canBeCarried();

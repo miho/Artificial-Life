@@ -9,12 +9,12 @@ import org.jgap.gp.CommandGene;
 import org.jgap.gp.impl.GPConfiguration;
 import org.jgap.gp.impl.ProgramChromosome;
 
-public class FoodAhead extends CommandGene {
+public final class FoodAhead extends CommandGene {
 	
-	public FoodAhead(final GPConfiguration a_conf, final Class a_returnType)
+	public FoodAhead(final GPConfiguration conf, final Class<?> returnType)
 			throws InvalidConfigurationException {
-		super(a_conf, 1, a_returnType);
-		// TODO Auto-generated constructor stub
+		super(conf, 1, returnType);
+		
 	}
 	
 	@Override

@@ -71,8 +71,10 @@ public abstract class AbstactMap implements EnvironmentMap {
 	
 	protected void placeLife(final ALife life) {
 		// TODO check not on resource
-		life.setX(new Random().nextInt((getWidth() + 1) / 10) * 10);
-		life.setY(new Random().nextInt((getHeight() + 1) / 10) * 10);
+		life.setX(new Random().nextInt((getWidth() + 1) / SimpleMap.STEP_SIZE)
+				* SimpleMap.STEP_SIZE);
+		life.setY(new Random().nextInt((getHeight() + 1) / SimpleMap.STEP_SIZE)
+				* SimpleMap.STEP_SIZE);
 		life.reset();
 	}
 	

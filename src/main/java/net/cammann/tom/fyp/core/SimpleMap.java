@@ -17,13 +17,41 @@ import org.apache.log4j.Logger;
  */
 public abstract class SimpleMap implements EnvironmentMap {
 	
+	/**
+	 * Logger.
+	 */
 	static Logger logger = Logger.getLogger(SimpleMap.class);
-	protected int height;
-	protected int width;
-	protected final MapObjectMap resourceList;
-	protected final MapObjectMap obstacleList;
-	protected final List<ALife> lifeList;
 	
+	/**
+	 * Step size.
+	 * 
+	 * 
+	 */
+	public static final int STEP_SIZE = 10;
+	
+	/**
+	 * Height of map.
+	 */
+	protected int height;
+	/**
+	 * Width of map.
+	 */
+	protected int width;
+	/**
+	 * Hashmap of resources.
+	 */
+	protected final MapObjectMap resourceList;
+	/**
+	 * Hashmap of obstacles.
+	 */
+	protected final MapObjectMap obstacleList;
+	/**
+	 * List of ALife on map.
+	 */
+	protected final List<ALife> lifeList;
+	/**
+	 * Current time frame on map.
+	 */
 	private int timeFrameNo = 0;
 	
 	public SimpleMap(final int width, final int height) {
@@ -57,18 +85,18 @@ public abstract class SimpleMap implements EnvironmentMap {
 	}
 	
 	@Override
-	public int getHeight() {
+	public final int getHeight() {
 		return height;
 	}
 	
 	@Override
-	public int getWidth() {
+	public final int getWidth() {
 		return width;
 		
 	}
 	
 	@Override
-	public Dimension getDimension() {
+	public final Dimension getDimension() {
 		return new Dimension(width, height);
 		
 	}
@@ -148,7 +176,7 @@ public abstract class SimpleMap implements EnvironmentMap {
 	}
 	
 	/**
-	 * Adds an obstacle to the current map
+	 * Adds an obstacle to the current map.
 	 * 
 	 * @param o
 	 * @return

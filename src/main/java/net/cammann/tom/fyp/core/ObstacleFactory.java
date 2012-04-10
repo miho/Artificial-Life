@@ -12,7 +12,10 @@ public class ObstacleFactory {
 	}
 	
 	public Obstacle randomObstacle() {
-		return new Obstacle((double) rand.nextInt((map.getWidth()) / 10) * 10,
-				rand.nextInt(map.getHeight() / 10) * 10, 5);
+		return new Obstacle((double) rand.nextInt((map.getWidth())
+				/ SimpleMap.STEP_SIZE)
+				* SimpleMap.STEP_SIZE, rand.nextInt(map.getHeight()
+				/ SimpleMap.STEP_SIZE)
+				* SimpleMap.STEP_SIZE, 5);
 	}
 }

@@ -83,7 +83,7 @@ public class SimpleResource extends Resource {
 	
 	@Override
 	public ResourceType getResourceType() {
-		return ResourceType.SIMPLE;
+		return ResourceType.BASIC;
 	}
 	
 	@Override

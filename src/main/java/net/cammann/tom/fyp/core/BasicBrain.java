@@ -14,7 +14,7 @@ import org.apache.log4j.Logger;
  * @since 31/01/2012
  * 
  */
-public class BasicBrain extends Brain {
+public final class BasicBrain extends Brain {
 	
 	static Logger logger = Logger.getLogger(BasicBrain.class);
 	
@@ -32,8 +32,10 @@ public class BasicBrain extends Brain {
 		for (int i = -(range / 2); i < (range / 2); i++) {
 			for (int j = -(range / 2); j < (range / 2); j++) {
 				
-				if (life.getMap().hasResource(x + i * STEP, y + i * STEP)) {
-					rList.add(new Point(x + i * STEP, y + i * STEP));
+				if (life.getMap().hasResource(x + i * SimpleMap.STEP_SIZE,
+						y + i * SimpleMap.STEP_SIZE)) {
+					rList.add(new Point(x + i * SimpleMap.STEP_SIZE, y + i
+							* SimpleMap.STEP_SIZE));
 					
 				}
 				
@@ -217,43 +219,42 @@ public class BasicBrain extends Brain {
 		
 	}
 	
-	@SuppressWarnings("unused")
-	private boolean moveInMemory(final int x, final int y) {
-		return moveInMemory(new Point(x, y));
-	}
-	
 	private boolean moveInMemory(final Point p) {
 		return life.getMoveMemory().contains(p);
 	}
 	
-	@SuppressWarnings("unused")
-	private void moveMemCheck() {
-		
-		final String s0 = isMoveInMemory(0) ? "x" : "#";
-		final String s1 = isMoveInMemory(1) ? "x" : "#";
-		final String s2 = isMoveInMemory(2) ? "x" : "#";
-		final String s3 = isMoveInMemory(3) ? "x" : "#";
-		
-		logger.trace(" - " + s0 + " -");
-		logger.trace(" " + s3 + " " + "o" + " " + s1 + "-");
-		logger.trace(" - " + s2 + " -");
-		// - 0 -
-		// 1 x 0
-		// - 1
-	}
+	// @SuppressWarnings("unused")
+	// private void moveMemCheck() {
+	//
+	// final String s0 = isMoveInMemory(0) ? "x" : "#";
+	// final String s1 = isMoveInMemory(1) ? "x" : "#";
+	// final String s2 = isMoveInMemory(2) ? "x" : "#";
+	// final String s3 = isMoveInMemory(3) ? "x" : "#";
+	//
+	// logger.trace(" - " + s0 + " -");
+	// logger.trace(" " + s3 + " " + "o" + " " + s1 + "-");
+	// logger.trace(" - " + s2 + " -");
+	// // - 0 -
+	// // 1 x 0
+	// // - 1
+	// }
 	
 	private boolean isMoveInMemory(final int n) {
 		final int x = life.getX();
 		final int y = life.getY();
 		
 		if (n == 0) {
-			return life.getMoveMemory().contains(new Point(x, y - STEP));
+			return life.getMoveMemory().contains(
+					new Point(x, y - SimpleMap.STEP_SIZE));
 		} else if (n == 1) {
-			return life.getMoveMemory().contains(new Point(x + STEP, y));
+			return life.getMoveMemory().contains(
+					new Point(x + SimpleMap.STEP_SIZE, y));
 		} else if (n == 2) {
-			return life.getMoveMemory().contains(new Point(x, y + STEP));
+			return life.getMoveMemory().contains(
+					new Point(x, y + SimpleMap.STEP_SIZE));
 		} else if (n == 3) {
-			return life.getMoveMemory().contains(new Point(x - STEP, y));
+			return life.getMoveMemory().contains(
+					new Point(x - SimpleMap.STEP_SIZE, y));
 		} else {
 			throw new IllegalArgumentException("CANT CHOOSE: " + n);
 		}
@@ -265,17 +266,17 @@ public class BasicBrain extends Brain {
 		final int x = life.getX();
 		final int y = life.getY();
 		
-		if (life.getMap().validPosition(x, y - STEP)) {
+		if (life.getMap().validPosition(x, y - SimpleMap.STEP_SIZE)) {
 			
 			iList.add(0);
 		}
-		if (life.getMap().validPosition(x + STEP, y)) {
+		if (life.getMap().validPosition(x + SimpleMap.STEP_SIZE, y)) {
 			iList.add(1);
 		}
-		if (life.getMap().validPosition(x, y + STEP)) {
+		if (life.getMap().validPosition(x, y + SimpleMap.STEP_SIZE)) {
 			iList.add(2);
 		}
-		if (life.getMap().validPosition(x - STEP, y)) {
+		if (life.getMap().validPosition(x - SimpleMap.STEP_SIZE, y)) {
 			iList.add(3);
 		}
 		return iList;

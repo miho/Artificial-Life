@@ -22,15 +22,16 @@ import net.cammann.tom.fyp.core.Resource;
  * @since 31/01/2012
  * 
  */
-public class MapPanel extends JPanel {
+public final class MapPanel extends JPanel {
 	
-	EnvironmentMap map;
+	private final EnvironmentMap map;
 	
 	public MapPanel(final EnvironmentMap map) {
 		this.map = map;
 	}
 	
 	@Override
+	// CHECKSTYLE.OFF: MagicNumber
 	public void paint(final Graphics g) {
 		
 		final Graphics2D g2 = (Graphics2D) g;
@@ -103,4 +104,5 @@ public class MapPanel extends JPanel {
 		g2.drawRect(0, 0, map.getWidth() + 10, map.getHeight() + 10);
 		
 	}
+	// CHECKSTYLE.ON: MagicNumber
 }

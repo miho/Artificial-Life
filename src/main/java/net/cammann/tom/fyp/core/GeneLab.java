@@ -3,6 +3,8 @@ package net.cammann.tom.fyp.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.cammann.tom.fyp.basicLife.BasicLife;
+
 import org.jgap.Chromosome;
 import org.jgap.Configuration;
 import org.jgap.FitnessFunction;
@@ -21,11 +23,25 @@ import org.jgap.impl.IntegerGene;
  */
 public class GeneLab implements EvolutionModule {
 	
+	/**
+	 * Population size to create in GA.
+	 */
 	private int popSize;
+	/**
+	 * Maximum Number of evolutions to go through in GA.
+	 */
 	private int evolutions;
+	/**
+	 * Current generation number in GA.
+	 */
 	private int genNum;
-	
+	/**
+	 * Factory to create life and map from.
+	 */
 	private final EvolutionFactory factory;
+	/**
+	 * GA JGAP configuration.
+	 */
 	private Configuration conf;
 	private Genotype population;
 	private final List<EvolutionCycleListener> cycleListeners;

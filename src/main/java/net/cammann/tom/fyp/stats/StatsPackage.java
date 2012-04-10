@@ -28,9 +28,16 @@ import org.jfree.data.xy.XYSeriesCollection;
 import org.jgap.Population;
 import org.jgap.gp.impl.GPPopulation;
 
-public class StatsPackage {
+public final class StatsPackage {
 	
+	/**
+	 * List that can be watched for changes.
+	 */
 	private final WatchableList<GenerationInformation> stats;
+	/**
+	 * Default graph size.
+	 */
+	private static final Dimension DEFAULT_GRAPH_SIZE = new Dimension(600, 400);
 	
 	public StatsPackage() {
 		stats = new WatchableList<GenerationInformation>();
@@ -198,7 +205,7 @@ public class StatsPackage {
 		plot.setRangeGridlinePaint(Color.red);
 		final ChartFrame chartFrame = new ChartFrame(title, chart);
 		chartFrame.setVisible(true);
-		chartFrame.setSize(600, 450);
+		chartFrame.setSize(DEFAULT_GRAPH_SIZE);
 		
 	}
 	
@@ -231,7 +238,7 @@ public class StatsPackage {
 		plot.setRangeGridlinePaint(Color.red);
 		final ChartFrame chartFrame = new ChartFrame(title, chart);
 		chartFrame.setVisible(true);
-		chartFrame.setSize(600, 450);
+		chartFrame.setSize(DEFAULT_GRAPH_SIZE);
 		
 	}
 	
@@ -285,7 +292,7 @@ public class StatsPackage {
 		plot.setRangeGridlinePaint(Color.red);
 		final ChartFrame chartFrame = new ChartFrame(title, chart);
 		chartFrame.setVisible(true);
-		chartFrame.setSize(400, 350);
+		chartFrame.setSize(DEFAULT_GRAPH_SIZE);
 		
 	}
 	
@@ -311,7 +318,7 @@ public class StatsPackage {
 		plot.setRangeGridlinePaint(Color.red);
 		final ChartFrame chartFrame = new ChartFrame(title, chart);
 		chartFrame.setVisible(true);
-		chartFrame.setSize(400, 350);
+		chartFrame.setSize(DEFAULT_GRAPH_SIZE);
 		
 	}
 	

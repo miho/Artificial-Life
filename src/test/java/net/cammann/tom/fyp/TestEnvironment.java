@@ -59,7 +59,7 @@ public class TestEnvironment {
 			final Resource r = new SimpleResource(new Point(10, 30));
 			// Check normalcy of resource
 			assertTrue(r.getPosition().equals(new Point(10, 30)));
-			assertTrue(r.getResourceType().equals(Resource.ResourceType.SIMPLE));
+			assertTrue(r.getResourceType().equals(Resource.ResourceType.BASIC));
 			
 			final Method removeResourceR = AbstactMap.class.getDeclaredMethod(
 					"removeResource", new Class<?>[] { Resource.class });

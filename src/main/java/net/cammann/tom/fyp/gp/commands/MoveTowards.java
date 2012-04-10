@@ -13,9 +13,9 @@ import org.jgap.gp.impl.ProgramChromosome;
 
 public class MoveTowards extends CommandGene {
 	
-	public MoveTowards(final GPConfiguration a_conf, final Class a_returnType)
+	public MoveTowards(final GPConfiguration conf, final Class<?> returnType)
 			throws InvalidConfigurationException {
-		super(a_conf, 2, a_returnType);
+		super(conf, 2, returnType);
 		// TODO Auto-generated constructor stub
 	}
 	

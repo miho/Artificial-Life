@@ -9,9 +9,9 @@ import org.jgap.gp.impl.ProgramChromosome;
 
 public class TurnLeft extends CommandGene {
 	
-	public TurnLeft(final GPConfiguration a_conf, final Class a_returnType)
+	public TurnLeft(final GPConfiguration conf, final Class<?> returnType)
 			throws InvalidConfigurationException {
-		super(a_conf, 0, a_returnType);
+		super(conf, 0, returnType);
 		// TODO Auto-generated constructor stub
 	}
 	

@@ -9,9 +9,9 @@ import org.jgap.gp.impl.ProgramChromosome;
 
 public class MoveForward extends CommandGene {
 	
-	public MoveForward(final GPConfiguration a_conf, final Class a_returnType)
+	public MoveForward(final GPConfiguration conf, final Class<?> returnType)
 			throws InvalidConfigurationException {
-		super(a_conf, 1, a_returnType);
+		super(conf, 1, returnType);
 		// TODO Auto-generated constructor stub
 	}
 	

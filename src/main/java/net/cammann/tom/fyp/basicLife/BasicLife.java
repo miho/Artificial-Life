@@ -1,6 +1,5 @@
 package net.cammann.tom.fyp.basicLife;
 
-import java.awt.Graphics2D;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Random;
@@ -21,6 +20,7 @@ import net.cammann.tom.fyp.core.BasicBrain;
 import net.cammann.tom.fyp.core.Commandable;
 import net.cammann.tom.fyp.core.EnvironmentMap;
 import net.cammann.tom.fyp.core.GENE_TYPE;
+import net.cammann.tom.fyp.core.Resource;
 
 import org.jgap.IChromosome;
 
@@ -101,11 +101,6 @@ public final class BasicLife extends AbstactLife {
 	}
 	
 	@Override
-	public void draw(final Graphics2D g2) {
-		g2.drawImage(getImage(), getX(), getY(), null);
-	}
-	
-	@Override
 	public void reset() {
 		setEnergy(getGene(0));
 		setOrientation(new Random().nextInt(4));
@@ -115,5 +110,17 @@ public final class BasicLife extends AbstactLife {
 	@Override
 	public int getMemoryLength() {
 		return getGene(GENE_TYPE.MEMORY_LENGTH);
+	}
+	
+	@Override
+	public boolean dropResource() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	@Override
+	public boolean canConsumeResource(final Resource r) {
+		// TODO Auto-generated method stub
+		return true;
 	}
 }

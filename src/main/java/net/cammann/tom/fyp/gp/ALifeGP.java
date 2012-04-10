@@ -69,13 +69,14 @@ public final class ALifeGP extends AbstactLife {
 	}
 	
 	@Override
-	public final LifeCommand[] getCommandList() {
+	public LifeCommand[] getCommandList() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	@Override
-	public final void initBrain() {
+	public void initBrain() {
+		logger.trace("Init brain");
 		setBrain(new Brain(this) {
 			
 			@Override
@@ -98,19 +99,19 @@ public final class ALifeGP extends AbstactLife {
 	}
 	
 	@Override
-	public final ALife clone() {
+	public ALife clone() {
 		return new ALifeGP(gp, getMap());
 	}
 	
 	@Override
-	public final void reset() {
+	public void reset() {
 		setEnergy(START_ENERGY);
 		setOrientation(new Random().nextInt(ORIENTATION.values().length));
 		setMoveMemory(new ArrayList<Point>());
 	}
 	
 	@Override
-	public final int getMemoryLength() {
+	public int getMemoryLength() {
 		// TODO add limit in genes?
 		return MEMORY_LENGTH;
 	}

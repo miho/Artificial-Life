@@ -27,7 +27,7 @@ public class BasicMap extends AbstactMap {
 	public void initResources() {
 		final ResourceFactory r = new ResourceFactory(this);
 		for (int i = 0; i < numResource; i++) {
-			final Resource res = r.createResource(ResourceType.SIMPLE);
+			final Resource res = r.createResource(ResourceType.BASIC);
 			if (!addResource(res)) {
 				i--;
 			}

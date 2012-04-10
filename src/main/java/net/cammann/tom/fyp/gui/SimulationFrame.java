@@ -21,8 +21,11 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.Timer;
 
+import net.cammann.tom.fyp.basicLife.BasicLife;
 import net.cammann.tom.fyp.core.ALife;
+import net.cammann.tom.fyp.core.Beta;
 import net.cammann.tom.fyp.core.EnvironmentMap;
+import net.cammann.tom.fyp.core.SimpleMap;
 import net.cammann.tom.fyp.utils.MapUtils;
 
 import org.apache.log4j.Logger;
@@ -36,8 +39,26 @@ import org.apache.log4j.Logger;
 public class SimulationFrame {
 	
 	private final EnvironmentMap map;
-	
-	static Logger logger = Logger.getLogger(SimulationFrame.class);
+	/**
+	 * Time frames per second for simulation in slow mode.
+	 */
+	private static final int SLOW_SIMULATION_RATE = 500;
+	/**
+	 * Time frames per second for simulation in medium mode.
+	 */
+	private static final int MED_SIMULATION_RATE = 100;
+	/**
+	 * Time frames per second for simulation in fast mode.
+	 */
+	private static final int FAST_SIMULATION_RATE = 10;
+	/**
+	 * Time frames per second for simulation in very fast mode.
+	 */
+	private static final int V_FAST_SIMULATION_RATE = 1;
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = Logger.getLogger(SimulationFrame.class);
 	
 	private final JMenu removeLife = new JMenu("Remove Genotype");
 	private final JMenu cloneLife = new JMenu("Clone Genotype");
@@ -165,7 +186,7 @@ public class SimulationFrame {
 			
 			@Override
 			public void actionPerformed(final ActionEvent arg0) {
-				setSimulationRate(1);
+				setSimulationRate(V_FAST_SIMULATION_RATE);
 			}
 		});
 		
@@ -176,7 +197,7 @@ public class SimulationFrame {
 			
 			@Override
 			public void actionPerformed(final ActionEvent arg0) {
-				setSimulationRate(10);
+				setSimulationRate(FAST_SIMULATION_RATE);
 			}
 		});
 		
@@ -187,7 +208,7 @@ public class SimulationFrame {
 			
 			@Override
 			public void actionPerformed(final ActionEvent arg0) {
-				setSimulationRate(100);
+				setSimulationRate(MED_SIMULATION_RATE);
 			}
 		});
 		item.setSelected(true);
@@ -199,7 +220,7 @@ public class SimulationFrame {
 			
 			@Override
 			public void actionPerformed(final ActionEvent arg0) {
-				setSimulationRate(500);
+				setSimulationRate(SLOW_SIMULATION_RATE);
 			}
 		});
 		
@@ -259,6 +280,7 @@ public class SimulationFrame {
 		addLifeItem.addActionListener(new ActionListener() {
 			
 			@Override
+			@Beta
 			public void actionPerformed(final ActionEvent e) {
 				// TODO Auto-generated method stub
 				// Load from csv
@@ -269,8 +291,12 @@ public class SimulationFrame {
 						19, 19 };
 				
 				final ALife life = new BasicLife(genes, map);
-				life.setX(new Random().nextInt((map.getWidth() + 1) / 10) * 10);
-				life.setY(new Random().nextInt((map.getHeight() + 2) / 10) * 10);
+				life.setX(new Random().nextInt((map.getWidth() + 1)
+						/ SimpleMap.STEP_SIZE)
+						* SimpleMap.STEP_SIZE);
+				life.setY(new Random().nextInt((map.getHeight() + 2)
+						/ SimpleMap.STEP_SIZE)
+						* SimpleMap.STEP_SIZE);
 				// map.addLife(life);
 				// TODO add back in.
 				
@@ -334,16 +360,20 @@ public class SimulationFrame {
 	private void addLifeToMenu(final ALife life) {
 		
 		final int numItems = removeLife.getItemCount();
-		final JMenuItem clone_item = new JMenuItem("Life " + numItems);
-		final JMenuItem remove_item = new JMenuItem("Life " + numItems);
+		final JMenuItem cloneItem = new JMenuItem("Life " + numItems);
+		final JMenuItem removeItem = new JMenuItem("Life " + numItems);
 		
-		clone_item.addActionListener(new ActionListener() {
+		cloneItem.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(final ActionEvent e) {
 				final ALife clone = life.clone();
-				clone.setX(new Random().nextInt((map.getWidth() + 1) / 10) * 10);
-				clone.setY(new Random().nextInt((map.getHeight() + 2) / 10) * 10);
+				clone.setX(new Random().nextInt((map.getWidth() + 1)
+						/ SimpleMap.STEP_SIZE)
+						* SimpleMap.STEP_SIZE);
+				clone.setY(new Random().nextInt((map.getHeight() + 2)
+						/ SimpleMap.STEP_SIZE)
+						* SimpleMap.STEP_SIZE);
 				// map.addLife(clone);
 				// TODO ADD BACK IN
 				addLifeToMenu(clone);
@@ -353,16 +383,16 @@ public class SimulationFrame {
 				}
 			}
 		});
-		cloneLife.add(clone_item);
+		cloneLife.add(cloneItem);
 		
-		remove_item.addActionListener(new ActionListener() {
+		removeItem.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(final ActionEvent e) {
 				// TODO add this back in
 				// sc.removeLife(life);
-				cloneLife.remove(clone_item);
-				removeLife.remove(remove_item);
+				cloneLife.remove(cloneItem);
+				removeLife.remove(removeItem);
 				
 				if (removeLife.getItemCount() == 0) {
 					removeLife.setEnabled(false);
@@ -370,7 +400,7 @@ public class SimulationFrame {
 				}
 			}
 		});
-		removeLife.add(remove_item);
+		removeLife.add(removeItem);
 		
 		if (!removeLife.isEnabled()) {
 			cloneLife.setEnabled(true);

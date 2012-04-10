@@ -3,6 +3,7 @@ package net.cammann.tom.fyp.gp.commands;
 import java.awt.Point;
 
 import net.cammann.tom.fyp.core.Commandable;
+import net.cammann.tom.fyp.core.SimpleMap;
 
 import org.jgap.InvalidConfigurationException;
 import org.jgap.gp.CommandGene;
@@ -11,9 +12,9 @@ import org.jgap.gp.impl.ProgramChromosome;
 
 public class SmellResource extends CommandGene {
 	
-	public SmellResource(final GPConfiguration a_conf, final Class a_returnType)
+	public SmellResource(final GPConfiguration conf, final Class<?> returnType)
 			throws InvalidConfigurationException {
-		super(a_conf, 1, a_returnType);
+		super(conf, 1, returnType);
 		
 	}
 	
@@ -37,7 +38,6 @@ public class SmellResource extends CommandGene {
 	private boolean consumableResourcesInRange(final Commandable life,
 			final double range) {
 		
-		final int STEP = 10;
 		final int x = life.getX();
 		final int y = life.getY();
 		
@@ -45,7 +45,8 @@ public class SmellResource extends CommandGene {
 			for (int j = (int) -(range / 2); j < (range / 2); j++) {
 				
 				if (life.getMap().hasResource(
-						new Point(x + i * STEP, y + i * STEP))) {
+						new Point(x + i * SimpleMap.STEP_SIZE, y + i
+								* SimpleMap.STEP_SIZE))) {
 					
 					return true;
 				}
