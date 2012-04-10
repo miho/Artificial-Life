@@ -5,11 +5,17 @@ import org.jgap.IChromosome;
 import org.jgap.gp.GPFitnessFunction;
 import org.jgap.gp.IGPProgram;
 
+/**
+ * Skeleton class for producing an Evolution factory
+ * 
+ * @author TC
+ * 
+ */
 public abstract class AbstractEvolutionFactory implements EvolutionFactory {
 	
-	protected final int num_fit_func_cycles = 1;
-	protected final int num_fit_func_alife_clones = 1;
-	protected final int fit_func_run_len = 400;
+	protected int num_fit_func_cycles = 1;
+	protected int num_fit_func_alife_clones = 1;
+	protected int fit_func_run_len = 400;
 	protected int numOfResources = 100;
 	protected int numOfObstacles = 0;
 	protected int mapWidth = 400;
@@ -37,30 +43,27 @@ public abstract class AbstractEvolutionFactory implements EvolutionFactory {
 	public abstract FitnessFunction getFitnessFunction();
 	
 	@Override
-	public abstract ALife nullInstance();
-	
-	@Override
-	public int getLenOfFitFuncRun() {
+	public final int getLenOfFitFuncRun() {
 		return fit_func_run_len;
 	}
 	
 	@Override
-	public int getNumClones() {
+	public final int getNumClones() {
 		return num_fit_func_alife_clones;
 	}
 	
 	@Override
-	public int getFitnessFunctionRuns() {
+	public final int getFitnessFunctionRuns() {
 		return num_fit_func_cycles;
 	}
 	
 	@Override
-	public int getNumOfResources() {
+	public final int getNumOfResources() {
 		return numOfResources;
 	}
 	
 	@Override
-	public void setNumOfResources(final int numOfResources) {
+	public final void setNumOfResources(final int numOfResources) {
 		if (numOfResources < 0) {
 			throw new IllegalArgumentException(
 					"num resource cannot be less than 0");
@@ -69,12 +72,12 @@ public abstract class AbstractEvolutionFactory implements EvolutionFactory {
 	}
 	
 	@Override
-	public int getNumOfObstacles() {
+	public final int getNumOfObstacles() {
 		return numOfObstacles;
 	}
 	
 	@Override
-	public void setNumOfObstacles(final int numOfObstacles) {
+	public final void setNumOfObstacles(final int numOfObstacles) {
 		if (numOfObstacles < 0) {
 			throw new IllegalArgumentException(
 					"num obstaces cannot be less than 0");
@@ -83,12 +86,12 @@ public abstract class AbstractEvolutionFactory implements EvolutionFactory {
 	}
 	
 	@Override
-	public int getMapWidth() {
+	public final int getMapWidth() {
 		return mapWidth;
 	}
 	
 	@Override
-	public void setMapWidth(final int mapWidth) {
+	public final void setMapWidth(final int mapWidth) {
 		if (mapWidth < 0) {
 			throw new IllegalArgumentException(
 					"map width cannot be less than 0");
@@ -97,12 +100,12 @@ public abstract class AbstractEvolutionFactory implements EvolutionFactory {
 	}
 	
 	@Override
-	public int getMapHeight() {
+	public final int getMapHeight() {
 		return mapHeight;
 	}
 	
 	@Override
-	public void setMapHeight(final int mapHeight) {
+	public final void setMapHeight(final int mapHeight) {
 		if (mapHeight < 0) {
 			throw new IllegalArgumentException(
 					"map height cannot be less than 0");

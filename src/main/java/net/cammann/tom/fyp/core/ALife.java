@@ -3,24 +3,57 @@ package net.cammann.tom.fyp.core;
 import java.awt.Point;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 /**
  * @author TC
  * @version 0.8
  * @since 31/01/2012
  * 
  */
-public abstract class ALife implements Cloneable, Commandable, Paintable,
-		MapObject, Consumer {
+public abstract class ALife extends AbstractMapObject implements Cloneable,
+		Commandable, Paintable, Consumer {
 	
-	public int MOVE_COUNT = 0;
-	protected int x, y;
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = Logger.getLogger(ALife.class);
+	
+	/**
+	 * Move counter. After each move increment.
+	 */
+	public int moveCount = 0;
+	
+	/**
+	 * Energy level of life.
+	 */
 	protected int energy;
+	/**
+	 * List of previous moves.
+	 */
 	protected List<Point> moveMemory;
+	/**
+	 * Extracted gene array.
+	 */
 	protected int[] genes;
+	/**
+	 * Brain object, that does thinking for ALife.
+	 */
 	protected Brain brain;
+	/**
+	 * Map object for referencing, sight, smell etc.
+	 */
 	protected EnvironmentMap map;
+	/**
+	 * Currently not used, could be used to hold a resource and move it.
+	 */
+	@Beta
 	protected Resource holding;
-	
+	/**
+	 * Orienation of ALife on map. (UP,LEFT,RIGHT,DOWN)
+	 * 
+	 * @see ORIENTATION
+	 */
 	protected ORIENTATION orientation;
 	
 	/**
@@ -32,63 +65,108 @@ public abstract class ALife implements Cloneable, Commandable, Paintable,
 	 */
 	public abstract void doMove();
 	
+	/**
+	 * 
+	 * @return true if holding resource
+	 */
+	@Beta
 	public abstract boolean isHoldingResource();
 	
+	/**
+	 * 
+	 * @param position
+	 *            to check for in memory
+	 * @return true if is in memory. (Memory often has range)
+	 */
 	public abstract boolean hasMoveInMemory(Point position);
 	
-	public abstract void setMoveMemory(List<Point> moveMemory);
-	
+	/**
+	 * 
+	 * @return whole memory list.
+	 */
+	// TODO should this be abstract
 	public abstract List<Point> getMoveMemory();
 	
-	public abstract void addMoveToMemory(Point p);
+	/**
+	 * Append move to memory.
+	 * 
+	 * If memory is limited could cut off oldest position. Uses queue syste.
+	 * FIFO.
+	 * 
+	 * @param position
+	 *            point to add
+	 */
+	public abstract void addMoveToMemory(Point position);
 	
+	/**
+	 * 
+	 * @return using orientation get position one step ahead of life
+	 */
 	public abstract Point getPositionAhead();
 	
+	/**
+	 * 
+	 * @param steps
+	 *            how many steps ahead to get position of
+	 * @return using orientation get position 'x' steps ahead
+	 */
 	public abstract Point getPositionAhead(int steps);
 	
-	public void setBrain(final Brain brain) {
+	/**
+	 * Set the brain!!
+	 * 
+	 * @param brain
+	 *            to set
+	 */
+	public final void setBrain(final Brain brain) {
 		this.brain = brain;
 	}
 	
-	public Brain getBrain() {
+	/**
+	 * 
+	 * @return brain in use.
+	 */
+	public final Brain getBrain() {
 		return brain;
 	}
 	
+	/**
+	 * 
+	 * @return gives the start energy for the life form
+	 */
+	protected abstract int getStartEnergy();
+	
+	/**
+	 * 
+	 * @return get memory length. Return -1 if no limit.
+	 */
 	public abstract int getMemoryLength();
 	
 	/**
 	 * 
 	 * @param gene
-	 * @return
+	 *            ordinal of gene position
+	 * @return value associated with this ordinal value
 	 */
-	public int getGene(final int gene) {
+	public final int getGene(final int gene) {
 		return genes[gene];
 	}
 	
 	/**
-	 * @return x
+	 * 
+	 * @param gene
+	 *            type
+	 * @return get value associated with gene type
 	 */
-	@Override
-	public int getX() {
-		return x;
-	}
-	
-	/**
-	 * @return y
-	 */
-	@Override
-	public int getY() {
-		return y;
-	}
-	
-	public int getGene(final GENE_TYPE gene) {
+	public final int getGene(final GENE_TYPE gene) {
 		return getGene(gene.ordinal());
 	}
 	
 	/**
 	 * @param energy
+	 *            to set
 	 */
-	public void setEnergy(final int energy) {
+	public final void setEnergy(final int energy) {
 		this.energy = energy;
 	}
 	
@@ -96,65 +174,75 @@ public abstract class ALife implements Cloneable, Commandable, Paintable,
 	 * @return Energy level
 	 */
 	@Override
-	public int getEnergy() {
+	public final int getEnergy() {
 		return energy;
 	}
 	
 	/**
-	 * @return position
+	 * 
+	 * @param p
+	 *            point
 	 */
-	@Override
-	public Point getPosition() {
-		
-		return new Point(x, y);
-	}
-	
-	// TODO remove?
-	public void setPosition(final Point p) {
-		this.x = p.x;
-		this.y = p.y;
+	// TODO remove
+	public final void setPosition(final Point p) {
+		this.p.x = p.x;
+		this.p.y = p.y;
 	}
 	
 	/**
 	 * @param x
+	 *            change position
 	 */
-	
-	public void setX(final int x) {
-		this.x = x;
+	public final void setX(final int x) {
+		this.p.x = x;
 	}
 	
 	/**
 	 * @param y
+	 *            change to position
 	 */
-	
-	public void setY(final int y) {
-		
-		this.y = y;
+	public final void setY(final int y) {
+		// logger.trace("Set y: " + y);
+		this.p.y = y;
 	}
 	
 	/**
 	 * Saved me time.
 	 * 
+	 * this.energy -= decrementBy;
+	 * 
 	 * @param decrementBy
+	 *            amount to remove off of energy.
 	 */
-	public void decrementEnegery(final int decrementBy) {
+	public final void decrementEnegery(final int decrementBy) {
 		this.energy -= decrementBy;
 		
 	}
 	
-	public int[] getGenes() {
+	/**
+	 * 
+	 * @return full array of abstracted genes
+	 */
+	public final int[] getGenes() {
 		return genes;
 	}
 	
 	/**
 	 * @param orientation
+	 *            set new
 	 */
-	public void setOrientation(final ORIENTATION orientation) {
+	public final void setOrientation(final ORIENTATION orientation) {
 		this.orientation = orientation;
 	}
 	
-	public void setOrientation(final int o) {
-		if (o < 0 || o > 3) {
+	/**
+	 * Alters orienation on map.
+	 * 
+	 * @param o
+	 *            direction to change orientation too.
+	 */
+	public final void setOrientation(final int o) {
+		if (o < 0 || o > ORIENTATION.values().length - 1) {
 			throw new IllegalArgumentException("Cannot set orientation to: "
 					+ o);
 		}
@@ -162,10 +250,10 @@ public abstract class ALife implements Cloneable, Commandable, Paintable,
 	}
 	
 	/**
-	 * @return orientation
+	 * @return orientation current life facing direction
 	 */
 	@Override
-	public ORIENTATION getOrientation() {
+	public final ORIENTATION getOrientation() {
 		return orientation;
 	}
 	
@@ -189,35 +277,37 @@ public abstract class ALife implements Cloneable, Commandable, Paintable,
 	@Override
 	public abstract void turnRight();
 	
-	/**
-	 * Moves the life form forward.
-	 * 
-	 * Hopefully in the direction that it is facing.
-	 * 
-	 * @param map
-	 */
-	
-	public void setMap(final EnvironmentMap map) {
-		this.map = map;
-	}
-	
 	@Override
-	public EnvironmentMap getMap() {
+	public final EnvironmentMap getMap() {
 		return map;
 	}
 	
+	/**
+	 * Reset the life form values, ie memory, energy.
+	 * 
+	 * Does not reset position.
+	 */
 	public abstract void reset();
 	
 	@Override
 	public abstract ALife clone();
 	
 	@Override
-	public boolean consume() {
+	public final boolean consume() {
 		return map.consumeResource(this);
 	}
 	
-	public void incrementEnergy(final int i) {
+	/**
+	 * Helper method.
+	 * 
+	 * energy += i;
+	 * 
+	 * @param i
+	 *            to add on to energy.
+	 */
+	public final void incrementEnergy(final int i) {
 		energy += i;
 		
 	}
+	
 }

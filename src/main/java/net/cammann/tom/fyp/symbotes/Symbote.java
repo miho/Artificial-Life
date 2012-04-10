@@ -2,6 +2,7 @@ package net.cammann.tom.fyp.symbotes;
 
 import java.lang.reflect.Method;
 
+import net.cammann.tom.fyp.basicLife.BasicBrain;
 import net.cammann.tom.fyp.commands.ConsumeCommand;
 import net.cammann.tom.fyp.commands.DropResourceCommand;
 import net.cammann.tom.fyp.commands.ForwardCommand;
@@ -17,7 +18,6 @@ import net.cammann.tom.fyp.commands.TurnRightCommand;
 import net.cammann.tom.fyp.core.ALife;
 import net.cammann.tom.fyp.core.AbstactLife;
 import net.cammann.tom.fyp.core.AbstactMap;
-import net.cammann.tom.fyp.core.BasicBrain;
 import net.cammann.tom.fyp.core.Commandable;
 import net.cammann.tom.fyp.core.EnvironmentMap;
 import net.cammann.tom.fyp.core.Resource;
@@ -38,7 +38,7 @@ public final class Symbote extends AbstactLife {
 	private ResourceType consumable, droppable;
 	
 	public Symbote() {
-
+		
 	}
 	
 	public Symbote(final IChromosome chrome, final EnvironmentMap map,
@@ -113,7 +113,7 @@ public final class Symbote extends AbstactLife {
 			
 			@Override
 			public void execute(final Commandable life) {
-
+				
 			}
 		};
 		final LifeCommand commands[] = {
@@ -164,21 +164,15 @@ public final class Symbote extends AbstactLife {
 		return commands;
 	}
 	
-	// @Override
-	// public boolean consume() {
-	// return consumeResource(map.getResource(getPosition()));
-	// }
-	//
-	
-	@Override
-	public void reset() {
-		// TODO Auto-generated method stub
-		
-	}
-	
 	@Override
 	public int getMemoryLength() {
 		return getGene(net.cammann.tom.fyp.core.GENE_TYPE.MEMORY_LENGTH);
+	}
+	
+	@Override
+	protected int getStartEnergy() {
+		// TODO Auto-generated method stub
+		return getGene(0);
 	}
 	
 }

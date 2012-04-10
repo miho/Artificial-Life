@@ -21,7 +21,7 @@ import org.jgap.impl.IntegerGene;
  * @since 31/01/2012
  * 
  */
-public class GeneLab implements EvolutionModule {
+public final class GeneLab implements EvolutionModule {
 	
 	/**
 	 * Population size to create in GA.
@@ -94,7 +94,7 @@ public class GeneLab implements EvolutionModule {
 	
 	private Chromosome getChromosome() {
 		
-		final int RANGE_OF_COMMANDS = factory.nullInstance().getCommandList().length - 1;
+		final int rangeOfCommands = factory.nullInstance().getCommandList().length - 1;
 		
 		try {
 			final Gene[] genes = new Gene[29];
@@ -104,21 +104,21 @@ public class GeneLab implements EvolutionModule {
 			// MEMORY_LENGTH
 			genes[1] = new IntegerGene(conf, 5, 15);
 			
-			genes[2] = new IntegerGene(conf, 0, RANGE_OF_COMMANDS);
+			genes[2] = new IntegerGene(conf, 0, rangeOfCommands);
 			
-			genes[3] = new IntegerGene(conf, 0, RANGE_OF_COMMANDS);
+			genes[3] = new IntegerGene(conf, 0, rangeOfCommands);
 			
-			genes[4] = new IntegerGene(conf, 0, RANGE_OF_COMMANDS);
+			genes[4] = new IntegerGene(conf, 0, rangeOfCommands);
 			
-			genes[5] = new IntegerGene(conf, 0, RANGE_OF_COMMANDS);
-			genes[6] = new IntegerGene(conf, 0, RANGE_OF_COMMANDS);
-			genes[7] = new IntegerGene(conf, 0, RANGE_OF_COMMANDS);
-			genes[8] = new IntegerGene(conf, 0, RANGE_OF_COMMANDS);
+			genes[5] = new IntegerGene(conf, 0, rangeOfCommands);
+			genes[6] = new IntegerGene(conf, 0, rangeOfCommands);
+			genes[7] = new IntegerGene(conf, 0, rangeOfCommands);
+			genes[8] = new IntegerGene(conf, 0, rangeOfCommands);
 			
-			genes[9] = new IntegerGene(conf, 0, RANGE_OF_COMMANDS);
+			genes[9] = new IntegerGene(conf, 0, rangeOfCommands);
 			
-			for (int i = 10; i < (12 + 17); i++) {
-				genes[i] = new IntegerGene(conf, 0, RANGE_OF_COMMANDS);
+			for ( int i = 10 ; i < (12 + 17) ; i++ ) {
+				genes[i] = new IntegerGene(conf, 0, rangeOfCommands);
 			}
 			
 			final Chromosome sampleChromosome = new Chromosome(conf, genes);
@@ -153,15 +153,15 @@ public class GeneLab implements EvolutionModule {
 	
 	public void start() {
 		genNum = 0;
-		for (int i = 0; i < evolutions; i++) {
-			for (final EvolutionCycleListener e : cycleListeners) {
+		for ( int i = 0 ; i < evolutions ; i++ ) {
+			for ( final EvolutionCycleListener e : cycleListeners ) {
 				e.startCycle(new EvolutionCycleEvent(
 						population.getPopulation(), genNum));
 			}
 			
 			population.evolve();
 			genNum++;
-			for (final EvolutionCycleListener e : cycleListeners) {
+			for ( final EvolutionCycleListener e : cycleListeners ) {
 				e.endCycle(new EvolutionCycleEvent(population.getPopulation(),
 						genNum));
 			}

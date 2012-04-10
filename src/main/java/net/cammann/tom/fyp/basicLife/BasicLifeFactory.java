@@ -1,17 +1,33 @@
 package net.cammann.tom.fyp.basicLife;
 
+import java.lang.reflect.Field;
+
 import net.cammann.tom.fyp.core.ALife;
 import net.cammann.tom.fyp.core.AbstractEvolutionFactory;
 import net.cammann.tom.fyp.core.EnvironmentMap;
 import net.cammann.tom.fyp.gp.ALifeGP;
 import net.cammann.tom.fyp.gp.GPLifeFitFunc;
 
+import org.apache.log4j.Logger;
 import org.jgap.FitnessFunction;
 import org.jgap.IChromosome;
 import org.jgap.gp.GPFitnessFunction;
 import org.jgap.gp.IGPProgram;
 
-public class BasicLifeFactory extends AbstractEvolutionFactory {
+/**
+ * Factory to produce basic map, basic life and fitness function.
+ * 
+ * Used by gene lab to create lifes!!
+ * 
+ * @author TC
+ * 
+ */
+public final class BasicLifeFactory extends AbstractEvolutionFactory {
+	
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = Logger.getLogger(BasicLife.class);
 	
 	@Override
 	public ALife createLife(final int[] genes, final EnvironmentMap map) {
@@ -25,12 +41,7 @@ public class BasicLifeFactory extends AbstractEvolutionFactory {
 	
 	@Override
 	public FitnessFunction getFitnessFunction() {
-		return new BugFitnessFunction(this);
-	}
-	
-	@Override
-	public ALife nullInstance() {
-		return new BasicLife();
+		return new BasicFitnessFunction(this);
 	}
 	
 	@Override
@@ -50,9 +61,25 @@ public class BasicLifeFactory extends AbstractEvolutionFactory {
 	
 	@Override
 	public ALife createLife(final ALife life, final EnvironmentMap map) {
-		final ALife second_life = life.clone();
-		second_life.reset();
-		second_life.setMap(map);
-		return second_life;
+		final ALife secondLife = life.clone();
+		secondLife.reset();
+		
+		try {
+			final Field mapField = ALife.class.getDeclaredField("map");
+			mapField.setAccessible(true);
+			
+			mapField.set(secondLife, map);
+		} catch (final Exception e) {
+			e.printStackTrace();
+			logger.fatal("Nauty reflection failed");
+		}
+		
+		return secondLife;
 	}
+	
+	@Override
+	public ALife nullInstance() {
+		return new BasicLife();
+	}
+	
 }

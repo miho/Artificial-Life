@@ -93,7 +93,7 @@ public final class MapPanel extends JPanel {
 			
 			g2.drawString("Current Engery: " + life.getEnergy(),
 					map.getWidth() + 30, 75 + count * 50 - 20);
-			g2.drawString("Move Count: " + life.MOVE_COUNT,
+			g2.drawString("Move Count: " + life.moveCount,
 					map.getWidth() + 30, 90 + count * 50 - 20);
 			count++;
 		}

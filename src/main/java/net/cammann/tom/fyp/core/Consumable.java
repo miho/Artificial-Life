@@ -1,10 +1,31 @@
 package net.cammann.tom.fyp.core;
 
+/**
+ * High level interface for a consumable object.
+ * 
+ * @author TC
+ * 
+ */
 public interface Consumable {
 	
-	public boolean isConsumable();
+	/**
+	 * Is the object consumable?
+	 * 
+	 * Currently not used.
+	 * 
+	 * @return true if consumable.
+	 */
+	boolean isConsumable();
 	
-	public abstract int getCalories();
+	/**
+	 * Number of calories contained in object.
+	 * 
+	 * @return number of calories
+	 */
+	int getCalories();
 	
-	public abstract void consume();
+	/**
+	 * destroy and eat the object.
+	 */
+	void consume();
 }

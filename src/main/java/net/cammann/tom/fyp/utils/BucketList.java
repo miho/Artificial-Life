@@ -6,15 +6,29 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BucketList<E> extends ArrayList<E> {
+/**
+ * A specialised list used for counting occurences of items.
+ * 
+ * Derived name from bucket sort.
+ * 
+ * @author TC
+ * 
+ * @param <E>
+ */
+public final class BucketList<E> extends ArrayList<E> {
 	
-	// This is private. It is not visible from outside.
+	/**
+	 * Hashmap to keep count.
+	 */
 	private final Map<E, Integer> count = new HashMap<E, Integer>();
 	
-	// There are several entry points to this class
-	// this is just to show one of them.
+	/**
+	 * Override list add to update count on every add.
+	 * 
+	 * @return if added already false. True if new item.
+	 */
 	@Override
-	public boolean add(E element) {
+	public boolean add(final E element) {
 		if (!count.containsKey(element)) {
 			count.put(element, 1);
 			return super.add(element);
@@ -25,21 +39,29 @@ public class BucketList<E> extends ArrayList<E> {
 		
 	}
 	
-	// This method belongs to CountItemList interface ( or class )
-	// to used you have to cast.
-	public int getCount(E element) {
+	/**
+	 * Return number of occurences of E in list.
+	 * 
+	 * @param element
+	 *            to find
+	 * @return number of occurences
+	 */
+	public int getCount(final E element) {
 		if (!count.containsKey(element)) {
 			return 0;
 		}
 		return count.get(element);
 	}
 	
-	// Sort by count
+	/**
+	 * Sort by count.
+	 */
 	public void sortByCount() {
-		Comparator<E> c = new Comparator<E>() {
+		final Comparator<E> c = new Comparator<E>() {
 			
-			public int compare(E o1, E o2) {
-				Integer c1 = getCount(o2);
+			@Override
+			public int compare(final E o1, final E o2) {
+				final Integer c1 = getCount(o2);
 				return c1.compareTo(getCount(o1));
 			}
 			

@@ -22,8 +22,7 @@ import org.apache.log4j.Logger;
 public class SimpleResource extends Resource {
 	
 	Logger logger = Logger.getLogger(SimpleResource.class);
-	protected int x;
-	protected int y;
+	
 	protected int calories;
 	protected Image img = null;
 	protected final int foodChainValue = 0;
@@ -32,7 +31,7 @@ public class SimpleResource extends Resource {
 	public int MAX_CALORIES = 200;
 	public int MIN_CALORIES = 100;
 	protected ResourceType type;
-	private final double radius = 5;
+	
 	public static Logger log = Logger.getLogger(Resource.class);
 	
 	public SimpleResource(final Point p) {
@@ -41,8 +40,8 @@ public class SimpleResource extends Resource {
 	
 	public SimpleResource(final int x, final int y) {
 		
-		this.x = x;
-		this.y = y;
+		p.x = x;
+		p.y = y;
 		calories = new Random().nextInt(MAX_CALORIES - MIN_CALORIES)
 				+ MIN_CALORIES;
 		isCarried = false;
@@ -51,18 +50,13 @@ public class SimpleResource extends Resource {
 	public SimpleResource(final int x, final int y, final int min_cals,
 			final int max_cals) {
 		
-		this.x = x;
-		this.y = y;
+		p.x = x;
+		p.y = y;
 		this.MAX_CALORIES = max_cals;
 		this.MIN_CALORIES = min_cals;
 		calories = new Random().nextInt(MAX_CALORIES - MIN_CALORIES)
 				+ MIN_CALORIES;
 		isCarried = false;
-	}
-	
-	@Override
-	public Point getPosition() {
-		return new Point(x, y);
 	}
 	
 	@Override
@@ -75,25 +69,9 @@ public class SimpleResource extends Resource {
 		return calories;
 	}
 	
-	public void setPosition(final Point p) {
-		this.y = p.y;
-		this.x = p.x;
-		
-	}
-	
 	@Override
 	public ResourceType getResourceType() {
 		return ResourceType.BASIC;
-	}
-	
-	@Override
-	public int getX() {
-		return x;
-	}
-	
-	@Override
-	public int getY() {
-		return y;
 	}
 	
 	private Image getImage() {
@@ -134,11 +112,6 @@ public class SimpleResource extends Resource {
 	}
 	
 	@Override
-	public int foodChainValue() {
-		return foodChainValue;
-	}
-	
-	@Override
 	public boolean canBeCarried() {
 		return true;
 	}
@@ -154,9 +127,4 @@ public class SimpleResource extends Resource {
 		
 	}
 	
-	@Override
-	public double getRadius() {
-		return radius;
-		
-	}
 }

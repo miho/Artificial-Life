@@ -2,13 +2,35 @@ package net.cammann.tom.fyp.core;
 
 import java.awt.Point;
 
+/**
+ * High level interface used by any object that is put on the map.
+ * 
+ * @author TC
+ * 
+ */
 public interface MapObject {
 	
-	public int getX();
+	/**
+	 * 
+	 * @return x position
+	 */
+	int getX();
 	
-	public int getY();
+	/**
+	 * 
+	 * @return y position
+	 */
+	int getY();
 	
-	public Point getPosition();
+	/**
+	 * 
+	 * @return position
+	 */
+	Point getPosition();
 	
-	public double getRadius();
+	/**
+	 * 
+	 * @return radius
+	 */
+	double getRadius();
 }
