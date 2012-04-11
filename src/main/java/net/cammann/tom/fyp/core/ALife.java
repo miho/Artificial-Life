@@ -184,27 +184,6 @@ public abstract class ALife extends AbstractMapObject implements Cloneable,
 	 *            point
 	 */
 	// TODO remove
-	public final void setPosition(final Point p) {
-		this.p.x = p.x;
-		this.p.y = p.y;
-	}
-	
-	/**
-	 * @param x
-	 *            change position
-	 */
-	public final void setX(final int x) {
-		this.p.x = x;
-	}
-	
-	/**
-	 * @param y
-	 *            change to position
-	 */
-	public final void setY(final int y) {
-		// logger.trace("Set y: " + y);
-		this.p.y = y;
-	}
 	
 	/**
 	 * Saved me time.

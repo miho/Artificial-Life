@@ -12,21 +12,15 @@ public class Obstacle extends AbstractMapObject {
 	private static Image img = null;
 	
 	public Obstacle(final Point p, final double radius) {
-		this.p = p;
+		setPosition(p);
 		this.radius = radius;
 	}
 	
 	public Obstacle(final double x, final double y, final double radius) {
-		p = new Point();
-		p.setLocation(x, y);
+		
+		setPosition((int) x, (int) y);
 		
 		this.radius = radius;
-	}
-	
-	// TODO remove?
-	public void setPosition(final Point p) {
-		this.p = p;
-		
 	}
 	
 	private Image getObstacleImage() {

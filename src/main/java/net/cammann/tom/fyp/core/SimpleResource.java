@@ -39,7 +39,7 @@ public class SimpleResource extends Resource {
 	}
 	
 	public SimpleResource(final int x, final int y) {
-		p = new Point(x, y);
+		setPosition(x, y);
 		
 		calories = new Random().nextInt(MAX_CALORIES - MIN_CALORIES)
 				+ MIN_CALORIES;
@@ -48,9 +48,9 @@ public class SimpleResource extends Resource {
 	
 	public SimpleResource(final int x, final int y, final int min_cals,
 			final int max_cals) {
-		p = new Point(x, y);
-		p.x = x;
-		p.y = y;
+		
+		setPosition(x, y);
+		
 		this.MAX_CALORIES = max_cals;
 		this.MIN_CALORIES = min_cals;
 		calories = new Random().nextInt(MAX_CALORIES - MIN_CALORIES)

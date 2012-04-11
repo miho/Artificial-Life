@@ -51,7 +51,7 @@ public abstract class AbstactLife extends ALife {
 	 */
 	public AbstactLife(final ALife life) {
 		this.map = life.map;
-		p = new Point();
+		setPosition(new Point(0, 0));
 		initBrain();
 		
 		orientation = ORIENTATION.UP;
@@ -72,7 +72,7 @@ public abstract class AbstactLife extends ALife {
 	 */
 	public AbstactLife(final EnvironmentMap map) {
 		this.map = map;
-		p = new Point();
+		setPosition(new Point(0, 0));
 		initBrain();
 		orientation = ORIENTATION.UP;
 		moveMemory = new ArrayList<Point>();
@@ -92,7 +92,7 @@ public abstract class AbstactLife extends ALife {
 	 */
 	public AbstactLife(final IChromosome chrome, final EnvironmentMap map) {
 		this.map = map;
-		p = new Point();
+		setPosition(new Point(0, 0));
 		initBrain();
 		orientation = ORIENTATION.UP;
 		final int len = chrome.getGenes().length;
@@ -126,7 +126,7 @@ public abstract class AbstactLife extends ALife {
 	 *            used as reference for life
 	 */
 	public AbstactLife(final int[] genes, final EnvironmentMap map) {
-		p = new Point();
+		setPosition(new Point(0, 0));
 		initBrain();
 		this.map = map;
 		this.genes = genes;
@@ -191,8 +191,8 @@ public abstract class AbstactLife extends ALife {
 		if (moveValid) {
 			logger.trace(p);
 			logger.trace(getPosition());
-			setX(p.x);
-			setY(p.y);
+			setX(getX());
+			setY(getY());
 			energy -= ENERGY_LOSS_ON_CONSUME_FAIL;
 			
 		} else {
@@ -207,13 +207,13 @@ public abstract class AbstactLife extends ALife {
 	@Override
 	public final Point getPositionAhead() {
 		if (getOrientation() == ORIENTATION.UP) {
-			return new Point(p.x, p.y - SimpleMap.STEP_SIZE);
+			return new Point(getX(), getY() - SimpleMap.STEP_SIZE);
 		} else if (getOrientation() == ORIENTATION.RIGHT) {
-			return new Point(p.x + SimpleMap.STEP_SIZE, p.y);
+			return new Point(getX() + SimpleMap.STEP_SIZE, getY());
 		} else if (getOrientation() == ORIENTATION.DOWN) {
-			return new Point(p.x, p.y + SimpleMap.STEP_SIZE);
+			return new Point(getX(), getY() + SimpleMap.STEP_SIZE);
 		} else {
-			return new Point(p.x - SimpleMap.STEP_SIZE, p.y);
+			return new Point(getX() - SimpleMap.STEP_SIZE, getY());
 			
 		}
 	}
@@ -221,13 +221,13 @@ public abstract class AbstactLife extends ALife {
 	@Override
 	public final Point getPositionAhead(final int steps) {
 		if (getOrientation() == ORIENTATION.UP) {
-			return new Point(p.x, p.y - SimpleMap.STEP_SIZE * steps);
+			return new Point(getX(), getY() - SimpleMap.STEP_SIZE * steps);
 		} else if (getOrientation() == ORIENTATION.RIGHT) {
-			return new Point(p.x + SimpleMap.STEP_SIZE * steps, p.y);
+			return new Point(getX() + SimpleMap.STEP_SIZE * steps, getY());
 		} else if (getOrientation() == ORIENTATION.DOWN) {
-			return new Point(p.x, p.y + SimpleMap.STEP_SIZE * steps);
+			return new Point(getX(), getY() + SimpleMap.STEP_SIZE * steps);
 		} else {
-			return new Point(p.x - SimpleMap.STEP_SIZE * steps, p.y);
+			return new Point(getX() - SimpleMap.STEP_SIZE * steps, getY());
 		}
 	}
 	

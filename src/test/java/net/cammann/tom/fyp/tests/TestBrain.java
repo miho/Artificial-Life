@@ -72,6 +72,8 @@ public final class TestBrain {
 		life2.setOrientation(ORIENTATION.UP);
 		life2.setX(x2);
 		life2.setY(y2);
+		assertTrue(map.hasLife(life.getPosition()));
+		assertTrue(map.hasLife(life2.getPosition()));
 		
 		assertTrue(map.hasLife(new Point(x1, y1)));
 		assertTrue(map.hasLife(new Point(x2, y2)));
@@ -177,12 +179,14 @@ public final class TestBrain {
 			life.setX(SimpleMap.STEP_SIZE);
 			life.setY(SimpleMap.STEP_SIZE);
 			
-			for ( int i = 1 ; i < sightRange * 2 ; i++ ) {
+			for ( int i = 1 ; i < (sightRange * 2) ; i++ ) {
+				logger.trace("Position: " + life.getPosition());
 				logger.trace("loop i: " + i);
-				life.setY(y + i * SimpleMap.STEP_SIZE);
+				life.setY(SimpleMap.STEP_SIZE + (i * SimpleMap.STEP_SIZE));
 				out = canSeeObstacle.invoke(life.getBrain());
-				if (i < sightRange) {
+				if (i < sightRange - 1) {
 					assertTrue((Boolean) out);
+					
 				} else {
 					assertFalse((Boolean) out);
 				}
