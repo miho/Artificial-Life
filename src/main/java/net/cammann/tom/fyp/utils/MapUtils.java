@@ -11,12 +11,36 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.cammann.tom.fyp.core.AbstactMap;
+import net.cammann.tom.fyp.core.Beta;
 import net.cammann.tom.fyp.core.EnvironmentMap;
 import net.cammann.tom.fyp.core.Resource;
 
-public class MapUtils {
+/**
+ * Utility class for exporting /importing maps.
+ * 
+ * @author TC
+ * 
+ */
+public final class MapUtils {
 	
-	public static void SaveMap(final File file, final EnvironmentMap map) {
+	/**
+	 * Hide constructor for utility class.
+	 */
+	private MapUtils() {
+		
+	}
+	
+	/**
+	 * Method to save map to a file.
+	 * 
+	 * @param file
+	 *            to save too.
+	 * @param map
+	 *            to save
+	 * @Beta not currently working
+	 */
+	@Beta
+	public static void saveMap(final File file, final EnvironmentMap map) {
 		try {
 			// TODO fix
 			final BufferedWriter br = new BufferedWriter(new FileWriter(file));
@@ -39,18 +63,46 @@ public class MapUtils {
 		}
 	}
 	
-	public static EnvironmentMap LoadMap(final File file) {
+	/**
+	 * Method to load map from file.
+	 * 
+	 * Saves map in basic plain text format.
+	 * 
+	 * @param file
+	 *            save location.
+	 * 
+	 * @return If map is successfully loaded return EnvironmentMap, otherwise
+	 *         return null
+	 * 
+	 * @Beta - NOT FINISHED OR WORKING
+	 */
+	@Beta
+	public static EnvironmentMap loadMap(final File file) {
 		AbstactMap map = null;
 		final List<Resource> rList = new ArrayList<Resource>();
+		/**
+		 * Small class to create map from.
+		 * 
+		 * @author TC
+		 * 
+		 */
 		class QuickMap extends AbstactMap {
 			
+			/**
+			 * straight to super.
+			 * 
+			 * @param width
+			 *            -
+			 * @param height
+			 *            -
+			 */
 			public QuickMap(final int width, final int height) {
 				super(width, height);
 			}
 			
 			@Override
 			public void initResources() {
-				for (final Resource r : rList) {
+				for ( final Resource r : rList ) {
 					addResource(r);
 				}
 				
@@ -67,7 +119,7 @@ public class MapUtils {
 			map = new QuickMap(width, height);
 			String line = "";
 			while ((line = br.readLine()) != null) {
-				final String[] split = line.split(" ");
+				// final String[] split = line.split(" ");
 				// TODO fix
 				// Resource r = new SimpleResource(map,
 				// Integer.valueOf(split[0]),
@@ -79,11 +131,13 @@ public class MapUtils {
 			br.close();
 			
 		} catch (final FileNotFoundException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
+			return null;
 		} catch (final IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
 		
 		return map;

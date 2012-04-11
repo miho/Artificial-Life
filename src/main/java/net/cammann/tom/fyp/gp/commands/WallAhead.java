@@ -9,17 +9,16 @@ import org.jgap.gp.CommandGene;
 import org.jgap.gp.impl.GPConfiguration;
 import org.jgap.gp.impl.ProgramChromosome;
 
-public class WallAhead extends CommandGene {
+public final class WallAhead extends CommandGene {
 	
 	public WallAhead(final GPConfiguration conf, final Class<?> returnType)
 			throws InvalidConfigurationException {
 		super(conf, 0, returnType);
-		// TODO Auto-generated constructor stub
+		
 	}
 	
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return "IsOnResource";
 	}
 	

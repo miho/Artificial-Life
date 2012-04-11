@@ -58,7 +58,6 @@ public final class TestGUI {
 		try {
 			Thread.sleep(10);
 		} catch (final InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		sf.pause();

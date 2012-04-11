@@ -29,9 +29,7 @@ import net.cammann.tom.fyp.gp.commands.WallAhead;
 import net.cammann.tom.fyp.gui.SimulationFrame;
 import net.cammann.tom.fyp.stats.StatsPackage;
 
-import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Logger;
-import org.apache.log4j.SimpleLayout;
 import org.jgap.InvalidConfigurationException;
 import org.jgap.gp.CommandGene;
 import org.jgap.gp.GPProblem;
@@ -55,10 +53,13 @@ import org.jgap.gp.terminal.Terminal;
 import org.jgap.util.NumberKit;
 import org.jgap.util.SystemKit;
 
-public class GeneticProgramFrame extends GPProblem implements EvolutionModule {
+public final class GeneticProgramFrame extends GPProblem implements
+		EvolutionModule {
 	
-	private transient static Logger LOGGER = Logger
-			.getLogger(GeneticProgramFrame.class);
+	/**
+	 * Logger.
+	 */
+	private final Logger logger = Logger.getLogger(GeneticProgramFrame.class);
 	
 	/*
 	 * public variables which may be changed by configuration file
@@ -147,7 +148,6 @@ public class GeneticProgramFrame extends GPProblem implements EvolutionModule {
 			
 			@Override
 			public void startCycle(final EvolutionCycleEvent e) {
-				// TODO Auto-generated method stub
 				
 			}
 			
@@ -226,8 +226,8 @@ public class GeneticProgramFrame extends GPProblem implements EvolutionModule {
 		
 		// assign the functions/terminals
 		// ------------------------------
-		for (int i = 0; i < command_len; i++) {
-			System.out.println("function1: " + commands[i]);
+		for ( int i = 0 ; i < command_len ; i++ ) {
+			logger.info("function1: " + commands[i]);
 			nodeSets[0][i + numInputVariables] = commands[i];
 		}
 		// ADF functions in the second array in nodeSets
@@ -328,8 +328,8 @@ public class GeneticProgramFrame extends GPProblem implements EvolutionModule {
 			// -----------------------------
 			// org.apache.log4j.PropertyConfigurator.configure("log4j.properties");
 			
-			LOGGER.addAppender(new ConsoleAppender(new SimpleLayout(),
-					"System.out"));
+			// logger.addAppender(new ConsoleAppender(new SimpleLayout(),
+			// "System.out"));
 			//
 			
 			gp = create();
@@ -358,8 +358,8 @@ public class GeneticProgramFrame extends GPProblem implements EvolutionModule {
 		//
 		// I'm rolling my own to to be able to control output better etc.
 		//
-		System.out.println("Creating initial population");
-		System.out.println("Mem free: "
+		logger.info("Creating initial population");
+		logger.info("Mem free: "
 				+ SystemKit.niceMemory(SystemKit.getTotalMemoryMB()) + " MB");
 		fittest = null;
 		
@@ -371,15 +371,15 @@ public class GeneticProgramFrame extends GPProblem implements EvolutionModule {
 			similiar = new HashMap<String, Integer>();
 		}
 		int plateau = 0;
-		for (int gen = 1; gen <= numEvolutions; gen++) {
+		for ( int gen = 1 ; gen <= numEvolutions ; gen++ ) {
 			GPPopulation pop = gp.getGPPopulation();
-			for (final EvolutionCycleListener e : cycleListeners) {
+			for ( final EvolutionCycleListener e : cycleListeners ) {
 				e.startCycle(new EvolutionCycleEvent(pop, gen));
 			}
 			
 			gp.evolve(); // evolve one generation
 			if (gen % 20 == 0) {
-				System.out.println("Generation: " + gen);
+				logger.info("Generation: " + gen);
 			}
 			gp.calcFitness();
 			pop = gp.getGPPopulation();
@@ -444,14 +444,14 @@ public class GeneticProgramFrame extends GPProblem implements EvolutionModule {
 			}
 			
 			if (plateau > 15 && gen > 30 && mutationProb < 0.3) {
-				System.out.println("Increase Mutation Rate");
+				logger.info("Increase Mutation Rate");
 				mutationProb *= 1.2;
 				getGPConfiguration().setMutationProb(mutationProb);
 				
 				plateau = 0;
 			}
 			// CHECKSTYLE.ON: MagicNumber
-			for (final EvolutionCycleListener e : cycleListeners) {
+			for ( final EvolutionCycleListener e : cycleListeners ) {
 				e.endCycle(new EvolutionCycleEvent(pop, gen));
 			}
 			
@@ -461,9 +461,9 @@ public class GeneticProgramFrame extends GPProblem implements EvolutionModule {
 		// ----------------------------------------------
 		// gp.outputSolution(gp.getAllTimeBest());
 		
-		System.out.println("\nAll time best (from generation " + bestGen + ")");
+		logger.info("\nAll time best (from generation " + bestGen + ")");
 		myOutputSolution(fittest, numEvolutions);
-		System.out.println("applicationData: " + fittest.getApplicationData());
+		logger.info("applicationData: " + fittest.getApplicationData());
 		// Create a graphical tree of the best solution's program and write it
 		// to
 		// a PNG file.
@@ -472,13 +472,13 @@ public class GeneticProgramFrame extends GPProblem implements EvolutionModule {
 		
 		endTime = System.currentTimeMillis();
 		final long elapsedTime = endTime - startTime;
-		System.out.println("\nTotal time " + elapsedTime + "ms");
+		logger.info("\nTotal time " + elapsedTime + "ms");
 		if (showSimiliar) {
-			System.out.println("\nAll solutions with the best fitness ("
-					+ bestFit + "):");
+			logger.info("\nAll solutions with the best fitness (" + bestFit
+					+ "):");
 			// TODO: These should be sorted by values.
-			for (final String p : similiar.keySet()) {
-				System.out.println(p + " (" + similiar.get(p) + ")");
+			for ( final String p : similiar.keySet() ) {
+				logger.info(p + " (" + similiar.get(p) + ")");
 			}
 		}
 		
@@ -521,32 +521,32 @@ public class GeneticProgramFrame extends GPProblem implements EvolutionModule {
 	 */
 	public void myOutputSolution(final IGPProgram a_best, final int gen) {
 		final String freeMB = SystemKit.niceMemory(SystemKit.getFreeMemoryMB());
-		System.out.println("Evolving generation " + (gen) + "/" + numEvolutions
+		logger.info("Evolving generation " + (gen) + "/" + numEvolutions
 				+ ", memory free: " + freeMB + " MB");
 		if (a_best == null) {
-			System.out.println("No best solution (null)");
+			logger.info("No best solution (null)");
 			return;
 		}
 		final double bestValue = a_best.getFitnessValue();
 		if (Double.isInfinite(bestValue)) {
-			System.out.println("No best solution (infinite)");
+			logger.info("No best solution (infinite)");
 			return;
 		}
-		System.out.println("Best solution fitness: "
+		logger.info("Best solution fitness: "
 				+ NumberKit.niceDecimalNumber(bestValue, 2));
-		System.out.println("Best solution: " + a_best.toStringNorm(0));
+		logger.info("Best solution: " + a_best.toStringNorm(0));
 		String depths = "";
 		final int size = a_best.size();
-		for (int i = 0; i < size; i++) {
+		for ( int i = 0 ; i < size ; i++ ) {
 			if (i > 0) {
 				depths += " / ";
 			}
 			depths += a_best.getChromosome(i).getDepth(0);
 		}
 		if (size == 1) {
-			System.out.println("Depth of chrom: " + depths);
+			logger.info("Depth of chrom: " + depths);
 		} else {
-			System.out.println("Depths of chroms: " + depths);
+			logger.info("Depths of chroms: " + depths);
 		}
 	}
 	

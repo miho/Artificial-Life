@@ -27,12 +27,10 @@ public final class Consume extends CommandGene {
 	public Consume(final GPConfiguration conf, final Class<?> returnType)
 			throws InvalidConfigurationException {
 		super(conf, 0, returnType);
-		// TODO Auto-generated constructor stub
 	}
 	
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return "Cosume";
 	}
 	

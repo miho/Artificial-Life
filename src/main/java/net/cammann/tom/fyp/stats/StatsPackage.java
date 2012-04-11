@@ -16,6 +16,7 @@ import net.cammann.tom.fyp.utils.ListChangeEvent;
 import net.cammann.tom.fyp.utils.ListChangeListener;
 import net.cammann.tom.fyp.utils.WatchableList;
 
+import org.apache.log4j.Logger;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.JFreeChart;
@@ -29,6 +30,11 @@ import org.jgap.Population;
 import org.jgap.gp.impl.GPPopulation;
 
 public final class StatsPackage {
+	
+	/**
+	 * Logger.
+	 */
+	private transient Logger logger = Logger.getLogger(StatsPackage.class);
 	
 	/**
 	 * List that can be watched for changes.
@@ -63,8 +69,8 @@ public final class StatsPackage {
 	public void textStats(final int num) {
 		final GenerationInformation ps = stats.get(num);
 		final BucketList<Double> bucket = ps.getFitnessBucket();
-		for (final Double i : bucket) {
-			System.out.println(bucket.getCount(i) + " fitness values of: " + i);
+		for ( final Double i : bucket ) {
+			logger.info(bucket.getCount(i) + " fitness values of: " + i);
 		}
 	}
 	
@@ -78,13 +84,11 @@ public final class StatsPackage {
 			@Override
 			public void setValueAt(final Object arg0, final int arg1,
 					final int arg2) {
-				// TODO Auto-generated method stub
 				
 			}
 			
 			@Override
 			public void removeTableModelListener(final TableModelListener arg0) {
-				// TODO Auto-generated method stub
 				
 			}
 			
@@ -105,7 +109,6 @@ public final class StatsPackage {
 			
 			@Override
 			public String getColumnName(final int arg0) {
-				// TODO Auto-generated method stub
 				return "Gene " + arg0;
 			}
 			
@@ -121,7 +124,6 @@ public final class StatsPackage {
 			
 			@Override
 			public void addTableModelListener(final TableModelListener arg0) {
-				// TODO Auto-generated method stub
 				
 			}
 		};
@@ -130,7 +132,7 @@ public final class StatsPackage {
 		table.setPreferredScrollableViewportSize(new Dimension(600, 300));
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		
-		for (int i = 0; i < table.getColumnCount(); i++) {
+		for ( int i = 0 ; i < table.getColumnCount() ; i++ ) {
 			final TableColumn column = table.getColumnModel().getColumn(i);
 			
 			column.setPreferredWidth(50);
@@ -162,7 +164,7 @@ public final class StatsPackage {
 		data.addSeries(avgFit);
 		data.addSeries(maxFit);
 		// TODO Normalise data, (25000 - x is not good)
-		for (final GenerationInformation info : stats) {
+		for ( final GenerationInformation info : stats ) {
 			avgFit.add(info.getGenNum(), info.getAvgFitness());
 			minFit.add(info.getGenNum(), info.getMinFitness());
 			maxFit.add(info.getGenNum(), info.getMaxFitness());
@@ -172,14 +174,10 @@ public final class StatsPackage {
 			
 			@Override
 			public void dataRemoved(final ListChangeEvent e) {
-				// TODO Auto-generated method stub
-				
 			}
 			
 			@Override
 			public void dataChanged(final ListChangeEvent e) {
-				// TODO Auto-generated method stub
-				
 			}
 			
 			@Override
@@ -216,7 +214,7 @@ public final class StatsPackage {
 		final XYSeries minFit = new XYSeries("Minimum Fitness");
 		final XYSeries maxFit = new XYSeries("Maximum Fitness");
 		int count = 0;
-		for (final GenerationInformation pop : stats) {
+		for ( final GenerationInformation pop : stats ) {
 			avgFit.add(count, pop.getAvgFitness());
 			minFit.add(count, pop.getMinFitness());
 			maxFit.add(count, pop.getMaxFitness());
@@ -246,10 +244,10 @@ public final class StatsPackage {
 		final String title = "Frequency of fitness across generations";
 		final XYSeriesCollection dataset = new XYSeriesCollection();
 		
-		for (final GenerationInformation pop : stats) {
+		for ( final GenerationInformation pop : stats ) {
 			
 			final XYSeries series1 = new XYSeries("Generation " + pop.getId());
-			for (final Double i : pop.getFitnessBucket()) {
+			for ( final Double i : pop.getFitnessBucket() ) {
 				series1.add(i,
 						Double.valueOf(pop.getFitnessBucket().getCount(i)));
 			}
@@ -259,13 +257,11 @@ public final class StatsPackage {
 			
 			@Override
 			public void dataRemoved(final ListChangeEvent e) {
-				// TODO Auto-generated method stub
 				
 			}
 			
 			@Override
 			public void dataChanged(final ListChangeEvent e) {
-				// TODO Auto-generated method stub
 				
 			}
 			
@@ -276,7 +272,7 @@ public final class StatsPackage {
 				
 				final XYSeries series1 = new XYSeries("Generation "
 						+ pop.getId());
-				for (final Double i : pop.getFitnessBucket()) {
+				for ( final Double i : pop.getFitnessBucket() ) {
 					series1.add(i,
 							Double.valueOf(pop.getFitnessBucket().getCount(i)));
 				}
@@ -300,10 +296,10 @@ public final class StatsPackage {
 		final String title = "Frequency of fitness across generations";
 		final XYSeriesCollection dataset = new XYSeriesCollection();
 		
-		for (final GenerationInformation pop : stats) {
+		for ( final GenerationInformation pop : stats ) {
 			
 			final XYSeries series1 = new XYSeries("Generation " + pop.getId());
-			for (final Double i : pop.getFitnessBucket()) {
+			for ( final Double i : pop.getFitnessBucket() ) {
 				series1.add(i,
 						Double.valueOf(pop.getFitnessBucket().getCount(i)));
 			}

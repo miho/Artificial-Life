@@ -56,7 +56,7 @@ public class SymboteFactory extends AbstractEvolutionFactory {
 	
 	@Override
 	public GPFitnessFunction getGPFitnessFunction() {
-		// TODO Auto-generated method stub
+		// TODO Add gp fit func in?
 		return null;
 	}
 	

@@ -171,7 +171,6 @@ public final class Symbote extends AbstactLife {
 	
 	@Override
 	protected int getStartEnergy() {
-		// TODO Auto-generated method stub
 		return getGene(0);
 	}
 	

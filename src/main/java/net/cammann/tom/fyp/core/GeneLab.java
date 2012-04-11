@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.cammann.tom.fyp.basicLife.BasicLife;
 
+import org.apache.log4j.Logger;
 import org.jgap.Chromosome;
 import org.jgap.Configuration;
 import org.jgap.FitnessFunction;
@@ -23,6 +24,10 @@ import org.jgap.impl.IntegerGene;
  */
 public final class GeneLab implements EvolutionModule {
 	
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = Logger.getLogger(GeneLab.class);
 	/**
 	 * Population size to create in GA.
 	 */
@@ -82,8 +87,9 @@ public final class GeneLab implements EvolutionModule {
 		try {
 			conf.setPopulationSize(popSize);
 		} catch (final InvalidConfigurationException e) {
-			// TODO Auto-generated catch block
+			logger.fatal("Could not load configuration");
 			e.printStackTrace();
+			System.exit(1);
 		}
 	}
 	

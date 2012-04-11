@@ -7,17 +7,15 @@ import org.jgap.gp.CommandGene;
 import org.jgap.gp.impl.GPConfiguration;
 import org.jgap.gp.impl.ProgramChromosome;
 
-public class MoveForward extends CommandGene {
+public final class MoveForward extends CommandGene {
 	
 	public MoveForward(final GPConfiguration conf, final Class<?> returnType)
 			throws InvalidConfigurationException {
 		super(conf, 1, returnType);
-		// TODO Auto-generated constructor stub
 	}
 	
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return "MoveForward &1";
 	}
 	
@@ -28,7 +26,7 @@ public class MoveForward extends CommandGene {
 		
 		final double x = c.execute_double(n, 0, args);
 		
-		for (int i = 0; i < x; i++) {
+		for ( int i = 0 ; i < x ; i++ ) {
 			life.moveForward();
 		}
 	}
@@ -39,7 +37,7 @@ public class MoveForward extends CommandGene {
 		final Commandable life = (Commandable) args[0];
 		final double x = c.execute_double(n, 0, args);
 		
-		for (int i = 0; i < x; i++) {
+		for ( int i = 0 ; i < x ; i++ ) {
 			life.moveForward();
 		}
 		return 1;

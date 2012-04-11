@@ -6,11 +6,10 @@ public class DropResourceCommand extends LifeCommand {
 	
 	public DropResourceCommand() {
 		super("Drop Resource");
-		// TODO Auto-generated constructor stub
 	}
 	
 	@Override
-	public void execute(Commandable life) {
+	public void execute(final Commandable life) {
 		life.dropResource();
 		
 	}

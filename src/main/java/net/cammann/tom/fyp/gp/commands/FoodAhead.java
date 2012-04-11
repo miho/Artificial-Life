@@ -19,7 +19,6 @@ public final class FoodAhead extends CommandGene {
 	
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return "FoodAhead in &1";
 	}
 	
@@ -34,7 +33,7 @@ public final class FoodAhead extends CommandGene {
 		
 		// int foodRange = life.getGene(GENE_TYPE.SEE_FOOD_RANGE);
 		
-		for (int i = 1; i < 10; i++) {
+		for ( int i = 1 ; i < 10 ; i++ ) {
 			final Point p = GPCommandUtil.getPositionAhead(life, i);
 			
 			if (life.getMap().hasResource(p)) {
