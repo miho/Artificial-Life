@@ -34,8 +34,8 @@ public final class BasicBrain extends Brain {
 		final int y = life.getY();
 		final List<Point> rList = new ArrayList<Point>();
 		
-		for ( int i = -(range / 2) ; i < (range / 2) ; i++ ) {
-			for ( int j = -(range / 2) ; j < (range / 2) ; j++ ) {
+		for (int i = -(range / 2); i < (range / 2); i++) {
+			for (int j = -(range / 2); j < (range / 2); j++) {
 				
 				if (life.getMap().hasResource(x + i * SimpleMap.STEP_SIZE,
 						y + i * SimpleMap.STEP_SIZE)) {
@@ -69,44 +69,37 @@ public final class BasicBrain extends Brain {
 		
 		final int lifeRange = life.getGene(GENE_TYPE.SEE_LIFE_RANGE);
 		
-		for ( int i = 1 ; i < lifeRange + 1 ; i++ ) {
+		for (int i = 1; i < lifeRange; i++) {
 			final Point p = life.getPositionAhead(i);
-			if (life.getMap().hasLife(p)) {
+			if (!life.getMap().hasLife(p)) {
 				return true;
 			}
 		}
 		return false;
 	}
 	
-	private boolean canSeeObstacle() {
+	public boolean canSeeObstacle() {
 		
 		final int wallRange = life.getGene(GENE_TYPE.SEE_WALL_RANGE);
 		
-		for ( int i = 1 ; i < wallRange + 1 ; i++ ) {
+		for (int i = 1; i < wallRange; i++) {
 			final Point p = life.getPositionAhead(i);
-			logger.trace("Position ahead: " + p);
 			if (!life.getMap().validPosition(p)) {
-				logger.trace("has obstacle at: " + p);
 				return true;
 				
 			}
 		}
 		
-		return false;
+		return true;
 		
 	}
 	
-	/**
-	 * Check whether resource is in front.
-	 * 
-	 * @return true if resource is in range in front of life
-	 */
 	private boolean canSeeResource() {
 		
 		final int foodRange = life.getGene(GENE_TYPE.SEE_FOOD_RANGE);
 		// int foodRange = 5;
 		logger.trace("Checking for resources");
-		for ( int i = 1 ; i < foodRange + 1 ; i++ ) {
+		for (int i = 1; i < foodRange; i++) {
 			final Point p = life.getPositionAhead(i);
 			
 			if (life.getMap().hasResource(p)) {
@@ -175,7 +168,7 @@ public final class BasicBrain extends Brain {
 			// these random move genes.
 			final int gRef = 12;
 			final Set<Integer> a = new HashSet<Integer>();
-			for ( int i = 0 ; i < 4 ; i++ ) {
+			for (int i = 0; i < 4; i++) {
 				if (isMoveInMemory(i)) {
 					a.add(i);
 				}
@@ -195,14 +188,14 @@ public final class BasicBrain extends Brain {
 			@SuppressWarnings("unused")
 			final int[][] s4 = { { 1, 2, 3, 4 } };
 			
-			for ( int i = 0 ; i < 6 ; i++ ) {
+			for (int i = 0; i < 6; i++) {
 				final Set<Integer> s = new HashSet<Integer>();
 				s.add(s2[i][0]);
 				s.add(s2[i][1]);
 				s2List.add(s);
 			}
 			
-			for ( int i = 0 ; i < 4 ; i++ ) {
+			for (int i = 0; i < 4; i++) {
 				final Set<Integer> s = new HashSet<Integer>();
 				s.add(s3[i][0]);
 				s.add(s3[i][1]);

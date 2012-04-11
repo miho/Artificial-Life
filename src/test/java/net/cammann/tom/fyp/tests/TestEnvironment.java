@@ -253,7 +253,7 @@ public class TestEnvironment {
 		assertTrue(life.getEnergy() == 90);
 		
 		life.setOrientation(Commandable.ORIENTATION.UP);
-		final Point p = life.getPosition();
+		final Point p = new Point(life.getPosition());
 		p.setLocation(p.x, p.y - 10);
 		final Resource r = new SimpleResource(p);
 		

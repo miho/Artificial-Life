@@ -51,6 +51,7 @@ public abstract class AbstactLife extends ALife {
 	 */
 	public AbstactLife(final ALife life) {
 		this.map = life.map;
+		p = new Point();
 		initBrain();
 		
 		orientation = ORIENTATION.UP;
@@ -71,6 +72,7 @@ public abstract class AbstactLife extends ALife {
 	 */
 	public AbstactLife(final EnvironmentMap map) {
 		this.map = map;
+		p = new Point();
 		initBrain();
 		orientation = ORIENTATION.UP;
 		moveMemory = new ArrayList<Point>();
@@ -90,6 +92,7 @@ public abstract class AbstactLife extends ALife {
 	 */
 	public AbstactLife(final IChromosome chrome, final EnvironmentMap map) {
 		this.map = map;
+		p = new Point();
 		initBrain();
 		orientation = ORIENTATION.UP;
 		final int len = chrome.getGenes().length;
@@ -123,6 +126,7 @@ public abstract class AbstactLife extends ALife {
 	 *            used as reference for life
 	 */
 	public AbstactLife(final int[] genes, final EnvironmentMap map) {
+		p = new Point();
 		initBrain();
 		this.map = map;
 		this.genes = genes;
@@ -148,6 +152,7 @@ public abstract class AbstactLife extends ALife {
 		setEnergy(getStartEnergy());
 		setOrientation(new Random().nextInt(ORIENTATION.values().length));
 		moveMemory.clear();
+		
 	}
 	
 	/**
