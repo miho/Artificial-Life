@@ -29,7 +29,6 @@ public final class BasicLife extends AbstactLife {
 	
 	public BasicLife(final IChromosome chrome, final EnvironmentMap map) {
 		super(chrome, map);
-		// TODO Auto-generated constructor stub
 	}
 	
 	public BasicLife(final int[] genes, final EnvironmentMap map) {
@@ -108,7 +107,6 @@ public final class BasicLife extends AbstactLife {
 	
 	@Override
 	public boolean dropResource() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	

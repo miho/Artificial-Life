@@ -9,14 +9,13 @@ import java.awt.image.BufferedImage;
 
 import net.cammann.tom.fyp.core.SimpleResource;
 
-public class SymbResource extends SimpleResource {
+public final class SymbResource extends SimpleResource {
 	
 	public SymbResource(final int x, final int y, final ResourceType r) {
 		super(x, y);
 		type = r;
 		setCalories(90);
 		img = null;
-		// TODO Auto-generated constructor stub
 	}
 	
 	public SymbResource(final Point p, final ResourceType r) {

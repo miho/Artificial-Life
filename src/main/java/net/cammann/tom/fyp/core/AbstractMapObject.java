@@ -13,7 +13,7 @@ public class AbstractMapObject implements MapObject {
 	/**
 	 * Location of object.
 	 */
-	protected Point p;
+	private Point p = new Point(0, 0);
 	/**
 	 * Radius of object.
 	 */
@@ -31,7 +31,7 @@ public class AbstractMapObject implements MapObject {
 	
 	@Override
 	public final Point getPosition() {
-		return p;
+		return new Point(p);
 	}
 	
 	@Override
@@ -39,4 +39,27 @@ public class AbstractMapObject implements MapObject {
 		return radius;
 	}
 	
+	public final void setPosition(final Point p) {
+		this.p = new Point(p);
+	}
+	
+	public final void setPosition(final int x, final int y) {
+		p.setLocation(x, y);
+	}
+	
+	/**
+	 * @param x
+	 *            change position
+	 */
+	public final void setX(final int x) {
+		p.x = x;
+	}
+	
+	/**
+	 * @param y
+	 *            change position
+	 */
+	public final void setY(final int y) {
+		p.y = y;
+	}
 }

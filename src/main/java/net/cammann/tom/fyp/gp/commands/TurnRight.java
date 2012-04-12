@@ -17,7 +17,6 @@ public class TurnRight extends CommandGene {
 	
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return "TurnRight";
 	}
 	

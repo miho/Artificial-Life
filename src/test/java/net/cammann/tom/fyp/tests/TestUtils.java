@@ -71,7 +71,6 @@ public final class TestUtils {
 		
 		@Override
 		public void initResources() {
-			// TODO Auto-generated method stub
 			
 		}
 		
@@ -127,19 +126,16 @@ public final class TestUtils {
 		
 		@Override
 		public boolean canConsumeResource(final Resource r) {
-			// TODO Auto-generated method stub
 			return true;
 		}
 		
 		@Override
 		protected int getStartEnergy() {
-			// TODO Auto-generated method stub
 			return 100;
 		}
 		
 		@Override
 		public boolean dropResource() {
-			// TODO Auto-generated method stub
 			return false;
 		}
 	}

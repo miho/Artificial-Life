@@ -2,15 +2,14 @@ package net.cammann.tom.fyp.commands;
 
 import net.cammann.tom.fyp.core.Commandable;
 
-public class MoveTowardsUp extends LifeCommand {
+public final class MoveTowardsUp extends LifeCommand {
 	
 	public MoveTowardsUp() {
 		super("Move Towards Up");
-		// TODO Auto-generated constructor stub
 	}
 	
 	@Override
-	public void execute(Commandable life) {
+	public void execute(final Commandable life) {
 		switch (life.getOrientation()) {
 			case UP:
 				life.moveForward();

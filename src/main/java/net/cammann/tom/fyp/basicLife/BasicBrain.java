@@ -72,6 +72,7 @@ public final class BasicBrain extends Brain {
 		for ( int i = 1 ; i < lifeRange + 1 ; i++ ) {
 			final Point p = life.getPositionAhead(i);
 			if (life.getMap().hasLife(p)) {
+				logger.trace("Life at: " + p);
 				return true;
 			}
 		}
@@ -83,7 +84,7 @@ public final class BasicBrain extends Brain {
 		final int wallRange = life.getGene(GENE_TYPE.SEE_WALL_RANGE);
 		
 		for ( int i = 1 ; i < wallRange + 1 ; i++ ) {
-			final Point p = life.getPositionAhead(i);
+			final Point p = new Point(life.getPositionAhead(i));
 			logger.trace("Position ahead: " + p);
 			if (!life.getMap().validPosition(p)) {
 				logger.trace("has obstacle at: " + p);

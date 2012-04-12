@@ -14,13 +14,40 @@ import net.cammann.tom.fyp.symbotes.SymbResource;
  */
 public final class ResourceFactory {
 	
-	int max_cals, min_cals;
+	/**
+	 * Min,max calories to set on resource.
+	 */
+	private int maxCalories, minCalories;
+	
+	/**
+	 * Map reference for setting position of resource.
+	 */
 	private final EnvironmentMap map;
 	
+	/**
+	 * Create resource factory for this map size.
+	 * 
+	 * Uses size to initialise position of resource
+	 * 
+	 * @param map
+	 *            Map size to use.
+	 */
 	public ResourceFactory(final EnvironmentMap map) {
 		this.map = map;
+		this.maxCalories = 40;
+		this.minCalories = 30;
 	}
 	
+	/**
+	 * Create a resource for the map.
+	 * 
+	 * Does not add to the map, only uses size given by map to initialize
+	 * positon of resource.
+	 * 
+	 * @param rt
+	 *            resource type to create.
+	 * @return new type of resource with random position on map.
+	 */
 	public Resource createResource(final ResourceType rt) {
 		final Random r = new Random();
 		switch (rt) {
@@ -35,7 +62,7 @@ public final class ResourceFactory {
 					// System.exit(0);
 				}
 				
-				return new BasicResource(x, y);
+				return new BasicResource(x, y, minCalories, maxCalories);
 			case CARROT:
 				throw new IllegalArgumentException("Carrot not implemented yet");
 				
@@ -59,12 +86,29 @@ public final class ResourceFactory {
 		
 	}
 	
-	public void setMaxCal(final int max_cals) {
-		this.max_cals = max_cals;
+	/**
+	 * Set minimum calories for resource creation.
+	 * 
+	 * @param maxCals
+	 *            to set as max
+	 */
+	public void setMaxCalories(final int maxCals) {
+		this.maxCalories = maxCals;
 		
 	}
 	
-	public void setMinCal(final int min_cal) {
-		this.min_cals = min_cal;
+	/**
+	 * Set minimum calories for resource creation.
+	 * 
+	 * @param minCals
+	 *            to set as min
+	 * 
+	 */
+	public void setMinCalories(final int minCals) {
+		if (minCals > maxCalories) {
+			throw new IllegalArgumentException(
+					"Min calories cannot be set to greater than max calories");
+		}
+		this.minCalories = minCals;
 	}
 }

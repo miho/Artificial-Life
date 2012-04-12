@@ -18,8 +18,8 @@ public class HeavyAndFewMap extends AbstactMap {
 	@Override
 	public void initResources() {
 		final ResourceFactory r = new ResourceFactory(this);
-		r.setMaxCal(CALORIE_VALUE);
-		r.setMinCal(CALORIE_VALUE);
+		r.setMaxCalories(CALORIE_VALUE);
+		r.setMinCalories(CALORIE_VALUE);
 		
 		for (int i = 0; i < numResources; i++) {
 			addResource(r.createResource(ResourceType.BASIC));

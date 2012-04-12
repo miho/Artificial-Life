@@ -34,6 +34,7 @@ public final class TestGA {
 	 */
 	@Test
 	public void firstTest() {
+		
 		logger.trace("Testing Genelab");
 		final BasicLifeFactory factory = new BasicLifeFactory();
 		final GeneLab genelab = new GeneLab(factory);

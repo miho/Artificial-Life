@@ -11,17 +11,16 @@ import org.jgap.gp.CommandGene;
 import org.jgap.gp.impl.GPConfiguration;
 import org.jgap.gp.impl.ProgramChromosome;
 
-public class MoveTowards extends CommandGene {
+public final class MoveTowards extends CommandGene {
 	
 	public MoveTowards(final GPConfiguration conf, final Class<?> returnType)
 			throws InvalidConfigurationException {
 		super(conf, 2, returnType);
-		// TODO Auto-generated constructor stub
+		
 	}
 	
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return "MoveTo(&1,&2)";
 	}
 	
