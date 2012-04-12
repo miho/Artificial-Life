@@ -18,7 +18,7 @@ import org.jgap.IChromosome;
  * @author TC
  * @version 0.8
  * @since 31/01/2012
- *
+ * 
  */
 public abstract class AbstactLife extends ALife {
 
@@ -45,7 +45,7 @@ public abstract class AbstactLife extends ALife {
 
 	/**
 	 * Copy constructor.
-	 *
+	 * 
 	 * @param life
 	 *            to copy
 	 */
@@ -66,7 +66,7 @@ public abstract class AbstactLife extends ALife {
 
 	/**
 	 * Creates life, creates GP/GA brain, set orientaion to up.
-	 *
+	 * 
 	 * @param map
 	 *            Used by life/brain when looking for food etc.
 	 */
@@ -80,15 +80,15 @@ public abstract class AbstactLife extends ALife {
 
 	/**
 	 * Constructor using JGAP chromosome.
-	 *
+	 * 
 	 * Converts parameter into a list of integers. Also setups logger and some
 	 * basic variables.
-	 *
+	 * 
 	 * @param chrome
 	 *            used to create life from chromosone
 	 * @param map
 	 *            used for life for reference
-	 *
+	 * 
 	 */
 	public AbstactLife(final IChromosome chrome, final EnvironmentMap map) {
 		this.map = map;
@@ -98,7 +98,7 @@ public abstract class AbstactLife extends ALife {
 		final int len = chrome.getGenes().length;
 		genes = new int[len];
 
-		for ( int i = 0 ; i < len ; i++ ) {
+		for (int i = 0; i < len; i++) {
 			final Gene g = chrome.getGene(i);
 			genes[i] = (Integer) g.getAllele();
 		}
@@ -110,16 +110,16 @@ public abstract class AbstactLife extends ALife {
 
 	/**
 	 * Used to setup 'brain'.
-	 *
+	 * 
 	 * The decision making center is initiailised here.
 	 */
 	public abstract void initBrain();
 
 	/**
 	 * Constructor taking raw ints as gene values
-	 *
+	 * 
 	 * Sets up some variables such as logger.
-	 *
+	 * 
 	 * @param genes
 	 *            used to generate life from genes
 	 * @param map
@@ -139,7 +139,7 @@ public abstract class AbstactLife extends ALife {
 
 	/**
 	 * Create empty life instance.
-	 *
+	 * 
 	 * Used to copy life
 	 */
 	@Deprecated
@@ -157,7 +157,7 @@ public abstract class AbstactLife extends ALife {
 
 	/**
 	 * For future implementation.
-	 *
+	 * 
 	 * @Beta not yet used
 	 * @return false due to not being fully implemented
 	 */
@@ -191,8 +191,7 @@ public abstract class AbstactLife extends ALife {
 		if (moveValid) {
 			logger.trace(p);
 			logger.trace(getPosition());
-			setX(getX());
-			setY(getY());
+			setPosition(p);
 			energy -= ENERGY_LOSS_ON_CONSUME_FAIL;
 
 		} else {
@@ -287,7 +286,7 @@ public abstract class AbstactLife extends ALife {
 
 	/**
 	 * Returns image used to visualise life.
-	 *
+	 * 
 	 * @return image of ALife
 	 */
 	protected final Image getImage() {
@@ -338,20 +337,20 @@ public abstract class AbstactLife extends ALife {
 		moveCount++;
 
 		switch (orientation) {
-			case UP:
-				setOrientation(ORIENTATION.LEFT);
-				break;
-			case RIGHT:
-				setOrientation(ORIENTATION.UP);
-				break;
-			case DOWN:
-				setOrientation(ORIENTATION.RIGHT);
-				break;
-			case LEFT:
-				setOrientation(ORIENTATION.DOWN);
-				break;
-			default:
-				throw new IllegalStateException("Illegeal orientation");
+		case UP:
+			setOrientation(ORIENTATION.LEFT);
+			break;
+		case RIGHT:
+			setOrientation(ORIENTATION.UP);
+			break;
+		case DOWN:
+			setOrientation(ORIENTATION.RIGHT);
+			break;
+		case LEFT:
+			setOrientation(ORIENTATION.DOWN);
+			break;
+		default:
+			throw new IllegalStateException("Illegeal orientation");
 		}
 		decrementEnegery(4);
 
@@ -362,20 +361,20 @@ public abstract class AbstactLife extends ALife {
 		moveCount++;
 
 		switch (orientation) {
-			case UP:
-				setOrientation(ORIENTATION.RIGHT);
-				break;
-			case RIGHT:
-				setOrientation(ORIENTATION.DOWN);
-				break;
-			case DOWN:
-				setOrientation(ORIENTATION.LEFT);
-				break;
-			case LEFT:
-				setOrientation(ORIENTATION.UP);
-				break;
-			default:
-				throw new IllegalStateException("Illegeal orientation");
+		case UP:
+			setOrientation(ORIENTATION.RIGHT);
+			break;
+		case RIGHT:
+			setOrientation(ORIENTATION.DOWN);
+			break;
+		case DOWN:
+			setOrientation(ORIENTATION.LEFT);
+			break;
+		case LEFT:
+			setOrientation(ORIENTATION.UP);
+			break;
+		default:
+			throw new IllegalStateException("Illegeal orientation");
 		}
 		decrementEnegery(4);
 	}

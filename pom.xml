@@ -38,6 +38,34 @@
 					<reportPlugins>
 						<plugin>
 							<groupId>org.codehaus.mojo</groupId>
+							<artifactId>jdepend-maven-plugin</artifactId>
+						</plugin>
+						<plugin>
+							<groupId>org.codehaus.mojo</groupId>
+							<artifactId>javancss-maven-plugin</artifactId>
+							<version>2.0</version>
+						</plugin>
+						<plugin>
+							<groupId>org.codehaus.mojo</groupId>
+							<artifactId>jxr-maven-plugin</artifactId>
+							<configuration>
+								<javadocDir>${project.reporting.outputDirectory}/apidocs</javadocDir>
+
+							</configuration>
+						</plugin>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-pmd-plugin</artifactId>
+							<version>2.7.1</version>
+							<configuration>
+								<linkXref>true</linkXref>
+								<sourceEncoding>utf-8</sourceEncoding>
+								<minimumTokens>100</minimumTokens>
+								<targetJdk>1.6</targetJdk>
+							</configuration>
+						</plugin>
+						<plugin>
+							<groupId>org.codehaus.mojo</groupId>
 							<artifactId>findbugs-maven-plugin</artifactId>
 							<version>2.4.0</version>
 							<configuration>
