@@ -74,7 +74,7 @@ public final class TestBrain {
 		life2.setY(y2);
 		assertTrue(map.hasLife(life.getPosition()));
 		assertTrue(map.hasLife(life2.getPosition()));
-		
+
 		assertTrue(map.hasLife(new Point(x1, y1)));
 		assertTrue(map.hasLife(new Point(x2, y2)));
 		try {

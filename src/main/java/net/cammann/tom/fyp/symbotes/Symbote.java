@@ -28,35 +28,35 @@ import org.jgap.IChromosome;
 
 /**
  * Symbote that lays edible resource.
- * 
+ *
  * @author TC
- * 
+ *
  */
 public final class Symbote extends AbstactLife {
-	
+
 	static Logger logger = Logger.getLogger(Symbote.class);
 	private ResourceType consumable, droppable;
-	
+
 	public Symbote() {
-		
+
 	}
-	
+
 	public Symbote(final IChromosome chrome, final EnvironmentMap map,
 			final ResourceType c, final ResourceType d) {
 		super(chrome, map);
 		this.consumable = c;
 		this.droppable = d;
-		
+
 	}
-	
+
 	public Symbote(final int[] genes, final EnvironmentMap map,
 			final ResourceType c, final ResourceType d) {
 		super(genes, map);
 		this.consumable = c;
 		this.droppable = d;
-		
+
 	}
-	
+
 	@Override
 	public boolean dropResource() {
 		if (getMap().hasResource(getPosition())) {
@@ -66,28 +66,28 @@ public final class Symbote extends AbstactLife {
 			final Method addResource = AbstactMap.class.getDeclaredMethod(
 					"addResource", new Class<?>[] { Resource.class });
 			addResource.setAccessible(true);
-			
+
 			final Resource r = new SymbResource(getPosition(), droppable);
-			
+
 			final Object out = addResource.invoke(map, r);
-			
+
 			if (!(Boolean) out) {
 				logger.info("failed to drop resource, not sure why..");
 				return false;
 			}
-			
+
 			decrementEnegery(70);
 		} catch (final Exception e) {
 			logger.fatal("Could not use refelection to add resource: ", e);
 		}
 		return true;
 	}
-	
+
 	public Symbote(final int genes[], final EnvironmentMap map) {
 		super(genes, map);
-		
+
 	}
-	
+
 	@Override
 	public boolean canConsumeResource(final Resource r) {
 		if (r.getResourceType() == consumable) {
@@ -95,25 +95,25 @@ public final class Symbote extends AbstactLife {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public ALife clone() {
 		return new Symbote(genes, map, consumable, droppable);
 	}
-	
+
 	@Override
 	public void initBrain() {
 		setBrain(new BasicBrain(this));
-		
+
 	}
-	
+
 	@Override
 	public LifeCommand[] getCommandList() {
 		final LifeCommand doNothing = new LifeCommand("Nothing") {
-			
+
 			@Override
 			public void execute(final Commandable life) {
-				
+
 			}
 		};
 		final LifeCommand commands[] = {
@@ -160,18 +160,18 @@ public final class Symbote extends AbstactLife {
 						new RandomCommand("Turn Left or Right",
 								new TurnLeftCommand(), new TurnRightCommand(),
 								new ForwardCommand())) };
-		
+
 		return commands;
 	}
-	
+
 	@Override
 	public int getMemoryLength() {
 		return getGene(net.cammann.tom.fyp.core.GENE_TYPE.MEMORY_LENGTH);
 	}
-	
+
 	@Override
 	protected int getStartEnergy() {
 		return getGene(0);
 	}
-	
+
 }
