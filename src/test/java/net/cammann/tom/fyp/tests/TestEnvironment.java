@@ -8,7 +8,7 @@ import java.lang.reflect.Method;
 
 import junit.framework.Assert;
 import net.cammann.tom.fyp.core.ALife;
-import net.cammann.tom.fyp.core.AbstactMap;
+import net.cammann.tom.fyp.core.AbstractEnvironmentMap;
 import net.cammann.tom.fyp.core.Commandable;
 import net.cammann.tom.fyp.core.EnvironmentMap;
 import net.cammann.tom.fyp.core.MapObject;
@@ -61,19 +61,19 @@ public class TestEnvironment {
 			assertTrue(r.getPosition().equals(new Point(10, 30)));
 			assertTrue(r.getResourceType().equals(Resource.ResourceType.BASIC));
 
-			final Method removeResourceR = AbstactMap.class.getDeclaredMethod(
+			final Method removeResourceR = AbstractEnvironmentMap.class.getDeclaredMethod(
 					"removeResource", new Class<?>[] { Resource.class });
 			removeResourceR.setAccessible(true);
 
-			final Method removeResourceP = AbstactMap.class.getDeclaredMethod(
+			final Method removeResourceP = AbstractEnvironmentMap.class.getDeclaredMethod(
 					"removeResource", new Class<?>[] { Point.class });
 			removeResourceP.setAccessible(true);
 
-			final Method addResource = AbstactMap.class.getDeclaredMethod(
+			final Method addResource = AbstractEnvironmentMap.class.getDeclaredMethod(
 					"addResource", new Class<?>[] { Resource.class });
 			addResource.setAccessible(true);
 
-			final Method addObstacle = AbstactMap.class.getDeclaredMethod(
+			final Method addObstacle = AbstractEnvironmentMap.class.getDeclaredMethod(
 					"addObstacle", new Class<?>[] { Obstacle.class });
 			addObstacle.setAccessible(true);
 
@@ -130,10 +130,10 @@ public class TestEnvironment {
 	public final void obstacleTest() {
 		try {
 			// TODO remove 'magic numbers'
-			final AbstactMap map = (AbstactMap) TestUtils.getInstance()
+			final AbstractEnvironmentMap map = (AbstractEnvironmentMap) TestUtils.getInstance()
 					.getBlankMap(100, 200);
 
-			final Method addObstacle = AbstactMap.class.getDeclaredMethod(
+			final Method addObstacle = AbstractEnvironmentMap.class.getDeclaredMethod(
 					"addObstacle", new Class<?>[] { Obstacle.class });
 			addObstacle.setAccessible(true);
 
@@ -154,7 +154,7 @@ public class TestEnvironment {
 			final Resource r = new SimpleResource(new Point(80, 40));
 			final Obstacle o3 = new Obstacle(new Point(80, 40), 5);
 
-			final Method addResource = AbstactMap.class.getDeclaredMethod(
+			final Method addResource = AbstractEnvironmentMap.class.getDeclaredMethod(
 					"addResource", new Class<?>[] { Resource.class });
 			addResource.setAccessible(true);
 
@@ -164,13 +164,13 @@ public class TestEnvironment {
 			out = addObstacle.invoke(map, o3);
 			assertFalse((Boolean) out);
 
-			final Method removeObstacle1 = AbstactMap.class.getDeclaredMethod(
+			final Method removeObstacle1 = AbstractEnvironmentMap.class.getDeclaredMethod(
 					"removeObstacle", new Class<?>[] { Obstacle.class });
 			removeObstacle1.setAccessible(true);
-			final Method removeObstacle2 = AbstactMap.class.getDeclaredMethod(
+			final Method removeObstacle2 = AbstractEnvironmentMap.class.getDeclaredMethod(
 					"removeObstacle", new Class<?>[] { Point.class });
 			removeObstacle2.setAccessible(true);
-			final Method removeResource = AbstactMap.class.getDeclaredMethod(
+			final Method removeResource = AbstractEnvironmentMap.class.getDeclaredMethod(
 					"removeResource", new Class<?>[] { Resource.class });
 			removeResource.setAccessible(true);
 
@@ -259,7 +259,7 @@ public class TestEnvironment {
 		final Resource r = new SimpleResource(p);
 
 		try {
-			final Method addResource = AbstactMap.class.getDeclaredMethod(
+			final Method addResource = AbstractEnvironmentMap.class.getDeclaredMethod(
 					"addResource", new Class<?>[] { Resource.class });
 			addResource.setAccessible(true);
 

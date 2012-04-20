@@ -15,18 +15,20 @@ import org.jgap.Gene;
 import org.jgap.IChromosome;
 
 /**
- * <p>Abstract AbstactLife class.</p>
- *
+ * <p>
+ * Abstract AbstactLife class.
+ * </p>
+ * 
  * @author TC
  * @version 0.8
  * @since 31/01/2012
  */
-public abstract class AbstactLife extends ALife {
+public abstract class AbstractLife extends ALife {
 
 	/**
 	 * Logger.
 	 */
-	private static Logger logger = Logger.getLogger(AbstactLife.class);
+	private static Logger logger = Logger.getLogger(AbstractLife.class);
 
 	// TODO make uMC private
 	/**
@@ -46,11 +48,11 @@ public abstract class AbstactLife extends ALife {
 
 	/**
 	 * Copy constructor.
-	 *
+	 * 
 	 * @param life
 	 *            to copy
 	 */
-	public AbstactLife(final ALife life) {
+	public AbstractLife(final ALife life) {
 		this.map = life.map;
 		setPosition(new Point(0, 0));
 		initBrain();
@@ -67,11 +69,11 @@ public abstract class AbstactLife extends ALife {
 
 	/**
 	 * Creates life, creates GP/GA brain, set orientaion to up.
-	 *
+	 * 
 	 * @param map
 	 *            Used by life/brain when looking for food etc.
 	 */
-	public AbstactLife(final EnvironmentMap map) {
+	public AbstractLife(final EnvironmentMap map) {
 		this.map = map;
 		setPosition(new Point(0, 0));
 		initBrain();
@@ -81,16 +83,16 @@ public abstract class AbstactLife extends ALife {
 
 	/**
 	 * Constructor using JGAP chromosome.
-	 *
+	 * 
 	 * Converts parameter into a list of integers. Also setups logger and some
 	 * basic variables.
-	 *
+	 * 
 	 * @param chrome
 	 *            used to create life from chromosone
 	 * @param map
 	 *            used for life for reference
 	 */
-	public AbstactLife(final IChromosome chrome, final EnvironmentMap map) {
+	public AbstractLife(final IChromosome chrome, final EnvironmentMap map) {
 		this.map = map;
 		setPosition(new Point(0, 0));
 		initBrain();
@@ -110,22 +112,22 @@ public abstract class AbstactLife extends ALife {
 
 	/**
 	 * Used to setup 'brain'.
-	 *
+	 * 
 	 * The decision making center is initiailised here.
 	 */
 	public abstract void initBrain();
 
 	/**
 	 * Constructor taking raw ints as gene values
-	 *
+	 * 
 	 * Sets up some variables such as logger.
-	 *
+	 * 
 	 * @param genes
 	 *            used to generate life from genes
 	 * @param map
 	 *            used as reference for life
 	 */
-	public AbstactLife(final int[] genes, final EnvironmentMap map) {
+	public AbstractLife(final int[] genes, final EnvironmentMap map) {
 		setPosition(new Point(0, 0));
 		initBrain();
 		this.map = map;
@@ -139,11 +141,11 @@ public abstract class AbstactLife extends ALife {
 
 	/**
 	 * Create empty life instance.
-	 *
+	 * 
 	 * Used to copy life
 	 */
 	@Deprecated
-	protected AbstactLife() {
+	protected AbstractLife() {
 
 	}
 
@@ -158,8 +160,9 @@ public abstract class AbstactLife extends ALife {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * For future implementation.
+	 * 
 	 * @Beta not yet used
 	 */
 	@Override
@@ -210,13 +213,13 @@ public abstract class AbstactLife extends ALife {
 	@Override
 	public final Point getPositionAhead() {
 		if (getOrientation() == ORIENTATION.UP) {
-			return new Point(getX(), getY() - SimpleMap.STEP_SIZE);
+			return new Point(getX(), getY() - AbstractEnvironmentMap.STEP_SIZE);
 		} else if (getOrientation() == ORIENTATION.RIGHT) {
-			return new Point(getX() + SimpleMap.STEP_SIZE, getY());
+			return new Point(getX() + AbstractEnvironmentMap.STEP_SIZE, getY());
 		} else if (getOrientation() == ORIENTATION.DOWN) {
-			return new Point(getX(), getY() + SimpleMap.STEP_SIZE);
+			return new Point(getX(), getY() + AbstractEnvironmentMap.STEP_SIZE);
 		} else {
-			return new Point(getX() - SimpleMap.STEP_SIZE, getY());
+			return new Point(getX() - AbstractEnvironmentMap.STEP_SIZE, getY());
 
 		}
 	}
@@ -225,13 +228,17 @@ public abstract class AbstactLife extends ALife {
 	@Override
 	public final Point getPositionAhead(final int steps) {
 		if (getOrientation() == ORIENTATION.UP) {
-			return new Point(getX(), getY() - SimpleMap.STEP_SIZE * steps);
+			return new Point(getX(), getY() - AbstractEnvironmentMap.STEP_SIZE
+					* steps);
 		} else if (getOrientation() == ORIENTATION.RIGHT) {
-			return new Point(getX() + SimpleMap.STEP_SIZE * steps, getY());
+			return new Point(getX() + AbstractEnvironmentMap.STEP_SIZE * steps,
+					getY());
 		} else if (getOrientation() == ORIENTATION.DOWN) {
-			return new Point(getX(), getY() + SimpleMap.STEP_SIZE * steps);
+			return new Point(getX(), getY() + AbstractEnvironmentMap.STEP_SIZE
+					* steps);
 		} else {
-			return new Point(getX() - SimpleMap.STEP_SIZE * steps, getY());
+			return new Point(getX() - AbstractEnvironmentMap.STEP_SIZE * steps,
+					getY());
 		}
 	}
 
@@ -295,7 +302,7 @@ public abstract class AbstactLife extends ALife {
 
 	/**
 	 * Returns image used to visualise life.
-	 *
+	 * 
 	 * @return image of ALife
 	 */
 	protected final Image getImage() {

@@ -2,8 +2,8 @@ package net.cammann.tom.fyp.tests;
 
 import net.cammann.tom.fyp.commands.LifeCommand;
 import net.cammann.tom.fyp.core.ALife;
-import net.cammann.tom.fyp.core.AbstactLife;
-import net.cammann.tom.fyp.core.AbstactMap;
+import net.cammann.tom.fyp.core.AbstractLife;
+import net.cammann.tom.fyp.core.AbstractEnvironmentMap;
 import net.cammann.tom.fyp.core.EnvironmentMap;
 import net.cammann.tom.fyp.core.Resource;
 
@@ -55,7 +55,7 @@ public final class TestUtils {
 	 * Does not init any resources
 	 * 
 	 */
-	private final class BlankMap extends AbstactMap {
+	private final class BlankMap extends AbstractEnvironmentMap {
 
 		/**
 		 * Just calls super constructor.
@@ -98,7 +98,7 @@ public final class TestUtils {
 	 * 
 	 * Does not init any commands.
 	 */
-	private final class BlankLife extends AbstactLife {
+	private final class BlankLife extends AbstractLife {
 
 		/**
 		 * Just calls super constructor.

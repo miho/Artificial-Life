@@ -1,16 +1,16 @@
 package net.cammann.tom.fyp.basicLife;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import net.cammann.tom.fyp.core.ALife;
-import net.cammann.tom.fyp.core.AbstactMap;
+import net.cammann.tom.fyp.core.AbstractEnvironmentMap;
 import net.cammann.tom.fyp.core.EnvironmentMap;
 import net.cammann.tom.fyp.core.Resource;
 import net.cammann.tom.fyp.core.Resource.ResourceType;
 import net.cammann.tom.fyp.core.ResourceFactory;
-import net.cammann.tom.fyp.core.SimpleMap;
 
 /**
  * <p>
@@ -20,7 +20,7 @@ import net.cammann.tom.fyp.core.SimpleMap;
  * @author tc
  * @version $Id: $
  */
-public final class StaticMap extends AbstactMap {
+public final class StaticMap extends AbstractEnvironmentMap {
 
 	/** Constant <code>RESOURCE_LIST</code> */
 	public static List<Resource> RESOURCE_LIST;
@@ -76,11 +76,11 @@ public final class StaticMap extends AbstactMap {
 	public void placeLife(final ALife life) {
 		if (x == -1) {
 			x = new Random().nextInt((life.getMap().getWidth() + 1)
-					/ SimpleMap.STEP_SIZE)
-					* SimpleMap.STEP_SIZE;
+					/ AbstractEnvironmentMap.STEP_SIZE)
+					* AbstractEnvironmentMap.STEP_SIZE;
 			y = new Random().nextInt((life.getMap().getHeight() + 1)
-					/ SimpleMap.STEP_SIZE)
-					* SimpleMap.STEP_SIZE;
+					/ AbstractEnvironmentMap.STEP_SIZE)
+					* AbstractEnvironmentMap.STEP_SIZE;
 		}
 		life.setX(x);
 		life.setY(y);

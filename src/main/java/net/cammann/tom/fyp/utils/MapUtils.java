@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import net.cammann.tom.fyp.core.AbstactMap;
+import net.cammann.tom.fyp.core.AbstractEnvironmentMap;
 import net.cammann.tom.fyp.core.Beta;
 import net.cammann.tom.fyp.core.EnvironmentMap;
 import net.cammann.tom.fyp.core.MapObject;
@@ -92,7 +92,7 @@ public final class MapUtils {
 	 */
 	@Beta
 	public static EnvironmentMap loadMap(final File file) {
-		AbstactMap map = null;
+		AbstractEnvironmentMap map = null;
 		final List<Resource> rList = new ArrayList<Resource>();
 		final List<Obstacle> oList = new ArrayList<Obstacle>();
 		/**
@@ -101,7 +101,7 @@ public final class MapUtils {
 		 * @author TC
 		 * 
 		 */
-		class QuickMap extends AbstactMap {
+		class QuickMap extends AbstractEnvironmentMap {
 
 			/**
 			 * straight to super.

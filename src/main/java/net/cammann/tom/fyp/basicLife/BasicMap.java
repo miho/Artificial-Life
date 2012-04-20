@@ -1,6 +1,6 @@
 package net.cammann.tom.fyp.basicLife;
 
-import net.cammann.tom.fyp.core.AbstactMap;
+import net.cammann.tom.fyp.core.AbstractEnvironmentMap;
 import net.cammann.tom.fyp.core.Obstacle;
 import net.cammann.tom.fyp.core.ObstacleFactory;
 import net.cammann.tom.fyp.core.Resource;
@@ -17,7 +17,7 @@ import org.apache.log4j.Logger;
  * @author tc
  * @version $Id: $
  */
-public class BasicMap extends AbstactMap {
+public class BasicMap extends AbstractEnvironmentMap {
 
 	static Logger logger = Logger.getLogger(BasicMap.class);
 	private final int numResource;

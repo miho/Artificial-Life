@@ -7,54 +7,61 @@ import java.util.List;
 import java.util.Set;
 
 import net.cammann.tom.fyp.core.ALife;
+import net.cammann.tom.fyp.core.AbstractEnvironmentMap;
 import net.cammann.tom.fyp.core.Brain;
 import net.cammann.tom.fyp.core.GENE_TYPE;
-import net.cammann.tom.fyp.core.SimpleMap;
 
 import org.apache.log4j.Logger;
 
 /**
- * <p>BasicBrain class.</p>
- *
+ * <p>
+ * BasicBrain class.
+ * </p>
+ * 
  * @author TC
  * @version 0.8
  * @since 31/01/2012
  */
 public final class BasicBrain extends Brain {
-	
+
 	static Logger logger = Logger.getLogger(BasicBrain.class);
-	
+
 	/**
-	 * <p>Constructor for BasicBrain.</p>
-	 *
-	 * @param life a {@link net.cammann.tom.fyp.core.ALife} object.
+	 * <p>
+	 * Constructor for BasicBrain.
+	 * </p>
+	 * 
+	 * @param life
+	 *            a {@link net.cammann.tom.fyp.core.ALife} object.
 	 */
 	public BasicBrain(final ALife life) {
 		super(life);
 		// commands = life
 	}
-	
+
 	private List<Point> resourcesInRange(final int range) {
-		
+
 		final int x = life.getX();
 		final int y = life.getY();
 		final List<Point> rList = new ArrayList<Point>();
-		
-		for ( int i = -(range / 2) ; i < (range / 2) ; i++ ) {
-			for ( int j = -(range / 2) ; j < (range / 2) ; j++ ) {
-				
-				if (life.getMap().hasResource(x + i * SimpleMap.STEP_SIZE,
-						y + i * SimpleMap.STEP_SIZE)) {
-					rList.add(new Point(x + i * SimpleMap.STEP_SIZE, y + i
-							* SimpleMap.STEP_SIZE));
-					
+
+		for (int i = -(range / 2); i < (range / 2); i++) {
+			for (int j = -(range / 2); j < (range / 2); j++) {
+
+				if (life.getMap().hasResource(
+						x + i * AbstractEnvironmentMap.STEP_SIZE,
+						y + i * AbstractEnvironmentMap.STEP_SIZE)) {
+					rList.add(new Point(x + i
+							* AbstractEnvironmentMap.STEP_SIZE, y + i
+							* AbstractEnvironmentMap.STEP_SIZE));
+
 				}
-				
+
 			}
 		}
 		return rList;
 	}
-	
+
 	// private List<Point> consumableResourcesInRange(int range) {
 	//
 	// int x = life.getX();
@@ -70,12 +77,12 @@ public final class BasicBrain extends Brain {
 	// }
 	// return rList;
 	// }
-	
+
 	private boolean canSeeLife() {
-		
+
 		final int lifeRange = life.getGene(GENE_TYPE.SEE_LIFE_RANGE);
-		
-		for ( int i = 1 ; i < lifeRange + 1 ; i++ ) {
+
+		for (int i = 1; i < lifeRange + 1; i++) {
 			final Point p = life.getPositionAhead(i);
 			if (life.getMap().hasLife(p)) {
 				logger.trace("Life at: " + p);
@@ -84,81 +91,81 @@ public final class BasicBrain extends Brain {
 		}
 		return false;
 	}
-	
+
 	private boolean canSeeObstacle() {
-		
+
 		final int wallRange = life.getGene(GENE_TYPE.SEE_WALL_RANGE);
-		
-		for ( int i = 1 ; i < wallRange + 1 ; i++ ) {
+
+		for (int i = 1; i < wallRange + 1; i++) {
 			final Point p = new Point(life.getPositionAhead(i));
 			logger.trace("Position ahead: " + p);
 			if (!life.getMap().validPosition(p)) {
 				logger.trace("has obstacle at: " + p);
 				return true;
-				
+
 			}
 		}
-		
+
 		return false;
-		
+
 	}
-	
+
 	/**
 	 * Check whether resource is in front.
 	 * 
 	 * @return true if resource is in range in front of life
 	 */
 	private boolean canSeeResource() {
-		
+
 		final int foodRange = life.getGene(GENE_TYPE.SEE_FOOD_RANGE);
 		// int foodRange = 5;
 		logger.trace("Checking for resources");
-		for ( int i = 1 ; i < foodRange + 1 ; i++ ) {
+		for (int i = 1; i < foodRange + 1; i++) {
 			final Point p = life.getPositionAhead(i);
-			
+
 			if (life.getMap().hasResource(p)) {
 				logger.trace("Resource at: " + p);
 				return true;
 			}
-			
+
 		}
 		return false;
-		
+
 	}
-	
+
 	// public List<LifeCommand> getCommandList() {
-	
+
 	private int moveByNum(final int n) {
 		life.getCommandList()[n].execute(life);
 		logger.trace("Move: " + n);
 		return 0;
 	}
-	
+
 	/** {@inheritDoc} */
 	@Override
 	public int think() {
-		
+
 		if (life.getMap().hasResource(life.getPosition())) {
 			logger.trace("Move - on food");
 			return moveByNum(life.getGene(GENE_TYPE.ON_FOOD_ACTION));
 			// life.consume();
-			
+
 		} else if (canSeeResource()) {
 			logger.trace("Move - can see food");
 			return moveByNum(life.getGene(GENE_TYPE.SEE_FOOD_ACTION));
 			// life.moveForward();
-			
+
 		} else if (resourcesInRange(life.getGene(GENE_TYPE.FOOD_NEARBY_RANGE))
 				.size() > 0) {
 			logger.trace("Move - food nearby");
 			return moveByNum(life.getGene(GENE_TYPE.FOOD_NEARBY_ACTION));
 			// life.turnLeft();
-			
+
 		} else if (canSeeObstacle()) {
 			logger.trace("Move - can see obstacle");
-			
+
 			return moveByNum(life.getGene(GENE_TYPE.SEE_WALL_ACTION));
-			
+
 		} else if (canSeeLife()) {
 			logger.trace("Move - can see life");
 			return moveByNum(life.getGene(GENE_TYPE.SEE_LIFE_ACTION));
@@ -167,7 +174,7 @@ public final class BasicBrain extends Brain {
 			// SEE NOTHING
 			// if move in memory?
 			// //
-			
+
 			/*
 			 * THIS IS BAD! - at least it looks horrible
 			 * 
@@ -183,7 +190,7 @@ public final class BasicBrain extends Brain {
 			// these random move genes.
 			final int gRef = 12;
 			final Set<Integer> a = new HashSet<Integer>();
-			for ( int i = 0 ; i < 4 ; i++ ) {
+			for (int i = 0; i < 4; i++) {
 				if (isMoveInMemory(i)) {
 					a.add(i);
 				}
@@ -193,7 +200,7 @@ public final class BasicBrain extends Brain {
 			}
 			final List<Set<Integer>> s2List = new ArrayList<Set<Integer>>();
 			final List<Set<Integer>> s3List = new ArrayList<Set<Integer>>();
-			
+
 			@SuppressWarnings("unused")
 			final int[][] s1 = { { 0 }, { 1 }, { 2 }, { 3 } };
 			final int[][] s2 = { { 0, 1 }, { 0, 2 }, { 0, 3 }, { 1, 2 },
@@ -202,22 +209,22 @@ public final class BasicBrain extends Brain {
 					{ 1, 2, 3 } };
 			@SuppressWarnings("unused")
 			final int[][] s4 = { { 1, 2, 3, 4 } };
-			
-			for ( int i = 0 ; i < 6 ; i++ ) {
+
+			for (int i = 0; i < 6; i++) {
 				final Set<Integer> s = new HashSet<Integer>();
 				s.add(s2[i][0]);
 				s.add(s2[i][1]);
 				s2List.add(s);
 			}
-			
-			for ( int i = 0 ; i < 4 ; i++ ) {
+
+			for (int i = 0; i < 4; i++) {
 				final Set<Integer> s = new HashSet<Integer>();
 				s.add(s3[i][0]);
 				s.add(s3[i][1]);
 				s.add(s3[i][2]);
 				s3List.add(s);
 			}
-			
+
 			if (a.size() == 1) {
 				final int k = a.iterator().next();
 				return moveByNum(life.getGene(gRef + k));
@@ -232,17 +239,17 @@ public final class BasicBrain extends Brain {
 			} else {
 				return moveByNum(life.getGene(gRef + 15));
 			}
-			
+
 		}
-		
+
 		// return moveByNum(4);
-		
+
 	}
-	
+
 	private boolean moveInMemory(final Point p) {
 		return life.getMoveMemory().contains(p);
 	}
-	
+
 	// @SuppressWarnings("unused")
 	// private void moveMemCheck() {
 	//
@@ -258,48 +265,52 @@ public final class BasicBrain extends Brain {
 	// // 1 x 0
 	// // - 1
 	// }
-	
+
 	private boolean isMoveInMemory(final int n) {
 		final int x = life.getX();
 		final int y = life.getY();
-		
+
 		if (n == 0) {
 			return life.getMoveMemory().contains(
-					new Point(x, y - SimpleMap.STEP_SIZE));
+					new Point(x, y - AbstractEnvironmentMap.STEP_SIZE));
 		} else if (n == 1) {
 			return life.getMoveMemory().contains(
-					new Point(x + SimpleMap.STEP_SIZE, y));
+					new Point(x + AbstractEnvironmentMap.STEP_SIZE, y));
 		} else if (n == 2) {
 			return life.getMoveMemory().contains(
-					new Point(x, y + SimpleMap.STEP_SIZE));
+					new Point(x, y + AbstractEnvironmentMap.STEP_SIZE));
 		} else if (n == 3) {
 			return life.getMoveMemory().contains(
-					new Point(x - SimpleMap.STEP_SIZE, y));
+					new Point(x - AbstractEnvironmentMap.STEP_SIZE, y));
 		} else {
 			throw new IllegalArgumentException("CANT CHOOSE: " + n);
 		}
 	}
-	
+
 	@SuppressWarnings("unused")
 	private List<Integer> movesAvaiable() {
 		final List<Integer> iList = new ArrayList<Integer>();
 		final int x = life.getX();
 		final int y = life.getY();
-		
-		if (life.getMap().validPosition(x, y - SimpleMap.STEP_SIZE)) {
-			
+
+		if (life.getMap()
+				.validPosition(x, y - AbstractEnvironmentMap.STEP_SIZE)) {
+
 			iList.add(0);
 		}
-		if (life.getMap().validPosition(x + SimpleMap.STEP_SIZE, y)) {
+		if (life.getMap()
+				.validPosition(x + AbstractEnvironmentMap.STEP_SIZE, y)) {
 			iList.add(1);
 		}
-		if (life.getMap().validPosition(x, y + SimpleMap.STEP_SIZE)) {
+		if (life.getMap()
+				.validPosition(x, y + AbstractEnvironmentMap.STEP_SIZE)) {
 			iList.add(2);
 		}
-		if (life.getMap().validPosition(x - SimpleMap.STEP_SIZE, y)) {
+		if (life.getMap()
+				.validPosition(x - AbstractEnvironmentMap.STEP_SIZE, y)) {
 			iList.add(3);
 		}
 		return iList;
 	}
-	
+
 }

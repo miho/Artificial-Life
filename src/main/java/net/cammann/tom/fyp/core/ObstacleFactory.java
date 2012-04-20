@@ -29,9 +29,9 @@ public class ObstacleFactory {
 	 */
 	public Obstacle randomObstacle() {
 		return new Obstacle((double) rand.nextInt((map.getWidth())
-				/ SimpleMap.STEP_SIZE)
-				* SimpleMap.STEP_SIZE, rand.nextInt(map.getHeight()
-				/ SimpleMap.STEP_SIZE)
-				* SimpleMap.STEP_SIZE, 5);
+				/ AbstractEnvironmentMap.STEP_SIZE)
+				* AbstractEnvironmentMap.STEP_SIZE, rand.nextInt(map.getHeight()
+				/ AbstractEnvironmentMap.STEP_SIZE)
+				* AbstractEnvironmentMap.STEP_SIZE, 5);
 	}
 }

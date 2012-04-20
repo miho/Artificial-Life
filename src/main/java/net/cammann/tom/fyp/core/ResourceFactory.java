@@ -52,10 +52,10 @@ public final class ResourceFactory {
 		final Random r = new Random();
 		switch (rt) {
 			case BASIC:
-				final int x = r.nextInt((map.getWidth()) / SimpleMap.STEP_SIZE)
-						* SimpleMap.STEP_SIZE;
-				final int y = r.nextInt(map.getHeight() / SimpleMap.STEP_SIZE)
-						* SimpleMap.STEP_SIZE;
+				final int x = r.nextInt((map.getWidth()) / AbstractEnvironmentMap.STEP_SIZE)
+						* AbstractEnvironmentMap.STEP_SIZE;
+				final int y = r.nextInt(map.getHeight() / AbstractEnvironmentMap.STEP_SIZE)
+						* AbstractEnvironmentMap.STEP_SIZE;
 				if (x > map.getWidth() || x < 0 || y > map.getHeight() || y < 0) {
 					throw new IllegalStateException("Bad resource position X: "
 							+ x + "Y: " + y);
@@ -68,17 +68,17 @@ public final class ResourceFactory {
 				
 			case S1:
 				return new SymbResource(r.nextInt((map.getWidth())
-						/ SimpleMap.STEP_SIZE)
-						* SimpleMap.STEP_SIZE, r.nextInt(map.getHeight()
-						/ SimpleMap.STEP_SIZE)
-						* SimpleMap.STEP_SIZE, rt);
+						/ AbstractEnvironmentMap.STEP_SIZE)
+						* AbstractEnvironmentMap.STEP_SIZE, r.nextInt(map.getHeight()
+						/ AbstractEnvironmentMap.STEP_SIZE)
+						* AbstractEnvironmentMap.STEP_SIZE, rt);
 				
 			case S2:
 				return new SymbResource(r.nextInt((map.getWidth())
-						/ SimpleMap.STEP_SIZE)
-						* SimpleMap.STEP_SIZE, r.nextInt(map.getHeight()
-						/ SimpleMap.STEP_SIZE)
-						* SimpleMap.STEP_SIZE, rt);
+						/ AbstractEnvironmentMap.STEP_SIZE)
+						* AbstractEnvironmentMap.STEP_SIZE, r.nextInt(map.getHeight()
+						/ AbstractEnvironmentMap.STEP_SIZE)
+						* AbstractEnvironmentMap.STEP_SIZE, rt);
 			default:
 				throw new IllegalArgumentException("Bad resource type given");
 				

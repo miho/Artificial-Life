@@ -18,12 +18,12 @@ import org.apache.log4j.Logger;
  * @version 0.8
  * @since 31/01/2012
  */
-public abstract class AbstactMap implements EnvironmentMap {
+public abstract class AbstractEnvironmentMap implements EnvironmentMap {
 
 	/**
 	 * Logger.
 	 */
-	private static Logger logger = Logger.getLogger(AbstactMap.class);
+	private static Logger logger = Logger.getLogger(AbstractEnvironmentMap.class);
 
 	/**
 	 * Step size.
@@ -66,7 +66,7 @@ public abstract class AbstactMap implements EnvironmentMap {
 	 * @param height
 	 *            a int.
 	 */
-	public AbstactMap(final int width, final int height) {
+	public AbstractEnvironmentMap(final int width, final int height) {
 		this.height = height;
 		this.width = width;
 		resourceList = new MapObjectMap();

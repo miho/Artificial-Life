@@ -11,7 +11,7 @@ import net.cammann.tom.fyp.commands.RandomCommand;
 import net.cammann.tom.fyp.commands.TurnLeftCommand;
 import net.cammann.tom.fyp.commands.TurnRightCommand;
 import net.cammann.tom.fyp.core.ALife;
-import net.cammann.tom.fyp.core.AbstactLife;
+import net.cammann.tom.fyp.core.AbstractLife;
 import net.cammann.tom.fyp.core.Commandable;
 import net.cammann.tom.fyp.core.EnvironmentMap;
 import net.cammann.tom.fyp.core.GENE_TYPE;
@@ -25,7 +25,7 @@ import org.jgap.IChromosome;
  * @author TC
  * @version $Id: $
  */
-public final class BasicLife extends AbstactLife {
+public final class BasicLife extends AbstractLife {
 	
 	/**
 	 * <p>Constructor for BasicLife.</p>

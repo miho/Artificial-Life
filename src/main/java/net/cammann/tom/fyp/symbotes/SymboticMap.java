@@ -1,6 +1,6 @@
 package net.cammann.tom.fyp.symbotes;
 
-import net.cammann.tom.fyp.core.AbstactMap;
+import net.cammann.tom.fyp.core.AbstractEnvironmentMap;
 
 /**
  * <p>
@@ -10,7 +10,7 @@ import net.cammann.tom.fyp.core.AbstactMap;
  * @author tc
  * @version $Id: $
  */
-public class SymboticMap extends AbstactMap {
+public class SymboticMap extends AbstractEnvironmentMap {
 
 	/**
 	 * <p>

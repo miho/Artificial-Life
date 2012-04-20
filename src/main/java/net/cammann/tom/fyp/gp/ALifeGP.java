@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import net.cammann.tom.fyp.commands.LifeCommand;
 import net.cammann.tom.fyp.core.ALife;
-import net.cammann.tom.fyp.core.AbstactLife;
+import net.cammann.tom.fyp.core.AbstractLife;
 import net.cammann.tom.fyp.core.Beta;
 import net.cammann.tom.fyp.core.Brain;
 import net.cammann.tom.fyp.core.EnvironmentMap;
@@ -22,7 +22,7 @@ import org.jgap.gp.IGPProgram;
  * @author TC
  * @version $Id: $
  */
-public final class ALifeGP extends AbstactLife {
+public final class ALifeGP extends AbstractLife {
 	
 	/**
 	 * Logger.

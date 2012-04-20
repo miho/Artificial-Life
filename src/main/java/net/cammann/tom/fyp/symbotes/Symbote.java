@@ -16,8 +16,8 @@ import net.cammann.tom.fyp.commands.SubProgram;
 import net.cammann.tom.fyp.commands.TurnLeftCommand;
 import net.cammann.tom.fyp.commands.TurnRightCommand;
 import net.cammann.tom.fyp.core.ALife;
-import net.cammann.tom.fyp.core.AbstactLife;
-import net.cammann.tom.fyp.core.AbstactMap;
+import net.cammann.tom.fyp.core.AbstractLife;
+import net.cammann.tom.fyp.core.AbstractEnvironmentMap;
 import net.cammann.tom.fyp.core.Commandable;
 import net.cammann.tom.fyp.core.EnvironmentMap;
 import net.cammann.tom.fyp.core.Resource;
@@ -32,7 +32,7 @@ import org.jgap.IChromosome;
  * @author TC
  * @version $Id: $
  */
-public final class Symbote extends AbstactLife {
+public final class Symbote extends AbstractLife {
 
 	static Logger logger = Logger.getLogger(Symbote.class);
 	private ResourceType consumable, droppable;
@@ -83,7 +83,7 @@ public final class Symbote extends AbstactLife {
 			return false;
 		}
 		try {
-			final Method addResource = AbstactMap.class.getDeclaredMethod(
+			final Method addResource = AbstractEnvironmentMap.class.getDeclaredMethod(
 					"addResource", new Class<?>[] { Resource.class });
 			addResource.setAccessible(true);
 

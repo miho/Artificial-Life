@@ -1,6 +1,6 @@
 package net.cammann.tom.fyp.basicLife;
 
-import net.cammann.tom.fyp.core.AbstactMap;
+import net.cammann.tom.fyp.core.AbstractEnvironmentMap;
 import net.cammann.tom.fyp.core.Resource.ResourceType;
 import net.cammann.tom.fyp.core.ResourceFactory;
 
@@ -12,7 +12,7 @@ import net.cammann.tom.fyp.core.ResourceFactory;
  * @author tc
  * @version $Id: $
  */
-public class HeavyAndFewMap extends AbstactMap {
+public class HeavyAndFewMap extends AbstractEnvironmentMap {
 
 	private static final int CALORIE_VALUE = 2000;
 	private final int numResources;
