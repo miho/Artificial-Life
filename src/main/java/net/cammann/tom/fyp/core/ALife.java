@@ -6,10 +6,11 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 /**
+ * <p>Abstract ALife class.</p>
+ *
  * @author TC
  * @version 0.8
  * @since 31/01/2012
- *
  */
 public abstract class ALife extends AbstractMapObject implements Cloneable,
 		Commandable, Paintable, Consumer {
@@ -61,11 +62,11 @@ public abstract class ALife extends AbstractMapObject implements Cloneable,
 	 *
 	 * Interface for the life to have its 'turn', most likely delegated to a
 	 * brain or more complex system.
-	 *
 	 */
 	public abstract void doMove();
 
 	/**
+	 * <p>isHoldingResource.</p>
 	 *
 	 * @return true if holding resource
 	 */
@@ -73,6 +74,7 @@ public abstract class ALife extends AbstractMapObject implements Cloneable,
 	public abstract boolean isHoldingResource();
 
 	/**
+	 * <p>hasMoveInMemory.</p>
 	 *
 	 * @param position
 	 *            to check for in memory
@@ -81,6 +83,7 @@ public abstract class ALife extends AbstractMapObject implements Cloneable,
 	public abstract boolean hasMoveInMemory(Point position);
 
 	/**
+	 * <p>Getter for the field <code>moveMemory</code>.</p>
 	 *
 	 * @return whole memory list.
 	 */
@@ -99,12 +102,14 @@ public abstract class ALife extends AbstractMapObject implements Cloneable,
 	public abstract void addMoveToMemory(Point position);
 
 	/**
+	 * <p>getPositionAhead.</p>
 	 *
 	 * @return using orientation get position one step ahead of life
 	 */
 	public abstract Point getPositionAhead();
 
 	/**
+	 * <p>getPositionAhead.</p>
 	 *
 	 * @param steps
 	 *            how many steps ahead to get position of
@@ -123,6 +128,7 @@ public abstract class ALife extends AbstractMapObject implements Cloneable,
 	}
 
 	/**
+	 * <p>Getter for the field <code>brain</code>.</p>
 	 *
 	 * @return brain in use.
 	 */
@@ -131,18 +137,21 @@ public abstract class ALife extends AbstractMapObject implements Cloneable,
 	}
 
 	/**
+	 * <p>getStartEnergy.</p>
 	 *
 	 * @return gives the start energy for the life form
 	 */
 	protected abstract int getStartEnergy();
 
 	/**
+	 * <p>getMemoryLength.</p>
 	 *
 	 * @return get memory length. Return -1 if no limit.
 	 */
 	public abstract int getMemoryLength();
 
 	/**
+	 * <p>getGene.</p>
 	 *
 	 * @param gene
 	 *            ordinal of gene position
@@ -153,6 +162,7 @@ public abstract class ALife extends AbstractMapObject implements Cloneable,
 	}
 
 	/**
+	 * <p>getGene.</p>
 	 *
 	 * @param gene
 	 *            type
@@ -163,6 +173,8 @@ public abstract class ALife extends AbstractMapObject implements Cloneable,
 	}
 
 	/**
+	 * <p>Setter for the field <code>energy</code>.</p>
+	 *
 	 * @param energy
 	 *            to set
 	 */
@@ -170,9 +182,7 @@ public abstract class ALife extends AbstractMapObject implements Cloneable,
 		this.energy = energy;
 	}
 
-	/**
-	 * @return Energy level
-	 */
+	/** {@inheritDoc} */
 	@Override
 	public final int getEnergy() {
 		return energy;
@@ -199,6 +209,7 @@ public abstract class ALife extends AbstractMapObject implements Cloneable,
 	}
 
 	/**
+	 * <p>Getter for the field <code>genes</code>.</p>
 	 *
 	 * @return full array of abstracted genes
 	 */
@@ -207,6 +218,8 @@ public abstract class ALife extends AbstractMapObject implements Cloneable,
 	}
 
 	/**
+	 * <p>Setter for the field <code>orientation</code>.</p>
+	 *
 	 * @param orientation
 	 *            set new
 	 */
@@ -228,34 +241,35 @@ public abstract class ALife extends AbstractMapObject implements Cloneable,
 		this.orientation = ORIENTATION.values()[o];
 	}
 
-	/**
-	 * @return orientation current life facing direction
-	 */
+	/** {@inheritDoc} */
 	@Override
 	public final ORIENTATION getOrientation() {
 		return orientation;
 	}
 
 	/**
+	 * {@inheritDoc}
+	 *
 	 * Turns the life form left.
 	 *
 	 * Will rotate the the life form to the left, respective to where it is
 	 * looking forward.
-	 *
 	 */
 	@Override
 	public abstract void turnLeft();
 
 	/**
+	 * {@inheritDoc}
+	 *
 	 * Turns the life form right.
 	 *
 	 * Will rotate the the life form to the right, respective to where it is
 	 * looking forward.
-	 *
 	 */
 	@Override
 	public abstract void turnRight();
 
+	/** {@inheritDoc} */
 	@Override
 	public final EnvironmentMap getMap() {
 		return map;
@@ -268,9 +282,11 @@ public abstract class ALife extends AbstractMapObject implements Cloneable,
 	 */
 	public abstract void reset();
 
+	/** {@inheritDoc} */
 	@Override
 	public abstract ALife clone();
 
+	/** {@inheritDoc} */
 	@Override
 	public final boolean consume() {
 		return map.consumeResource(this);

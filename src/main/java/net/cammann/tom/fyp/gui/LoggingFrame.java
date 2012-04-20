@@ -18,6 +18,12 @@ import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.Logger;
 import org.apache.log4j.spi.LoggingEvent;
 
+/**
+ * <p>LoggingFrame class.</p>
+ *
+ * @author tc
+ * @version $Id: $
+ */
 public class LoggingFrame extends JFrame {
 	
 	JTextArea textArea;
@@ -25,6 +31,11 @@ public class LoggingFrame extends JFrame {
 	
 	private final SimulationFrame simFrame;
 	
+	/**
+	 * <p>Constructor for LoggingFrame.</p>
+	 *
+	 * @param sf a {@link net.cammann.tom.fyp.gui.SimulationFrame} object.
+	 */
 	public LoggingFrame(final SimulationFrame sf) {
 		simFrame = sf;
 		final JPanel jpanel = new JPanel();
@@ -83,6 +94,11 @@ public class LoggingFrame extends JFrame {
 		return jtb;
 	}
 	
+	/**
+	 * <p>appendLine.</p>
+	 *
+	 * @param line a {@link java.lang.String} object.
+	 */
 	public void appendLine(final String line) {
 		textArea.append(line + "\n");
 		textArea.scrollRectToVisible(new Rectangle(0, textArea.getHeight() - 2,
@@ -90,6 +106,11 @@ public class LoggingFrame extends JFrame {
 		
 	}
 	
+	/**
+	 * <p>appendLine.</p>
+	 *
+	 * @param obj a {@link java.lang.Object} object.
+	 */
 	public void appendLine(final Object obj) {
 		appendLine(obj.toString());
 	}

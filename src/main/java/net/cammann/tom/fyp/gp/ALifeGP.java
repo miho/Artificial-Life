@@ -16,11 +16,11 @@ import org.jgap.gp.IGPProgram;
 
 /**
  * This class is used for creating the GP ALife.
- * 
+ *
  * Takes in IGPProgram from JGAP and converts it into ALife
- * 
+ *
  * @author TC
- * 
+ * @version $Id: $
  */
 public final class ALifeGP extends AbstactLife {
 	
@@ -46,9 +46,9 @@ public final class ALifeGP extends AbstactLife {
 	
 	/**
 	 * Create ALife from IGPProgram.
-	 * 
+	 *
 	 * Uses JGAP GPProgram to create life
-	 * 
+	 *
 	 * @param igp
 	 *            from JGAP
 	 * @param map
@@ -67,12 +67,14 @@ public final class ALifeGP extends AbstactLife {
 		
 	}
 	
+	/** {@inheritDoc} */
 	@Override
 	public LifeCommand[] getCommandList() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
+	/** {@inheritDoc} */
 	@Override
 	public void initBrain() {
 		logger.trace("Init brain");
@@ -97,29 +99,34 @@ public final class ALifeGP extends AbstactLife {
 		
 	}
 	
+	/** {@inheritDoc} */
 	@Override
 	public ALife clone() {
 		return new ALifeGP(gp, getMap());
 	}
 	
+	/** {@inheritDoc} */
 	@Override
 	public int getMemoryLength() {
 		// TODO add limit in genes?
 		return MEMORY_LENGTH;
 	}
 	
+	/** {@inheritDoc} */
 	@Override
 	@Beta
 	public boolean dropResource() {
 		return false;
 	}
 	
+	/** {@inheritDoc} */
 	@Override
 	public boolean canConsumeResource(final Resource r) {
 		// Eat anything
 		return true;
 	}
 	
+	/** {@inheritDoc} */
 	@Override
 	protected int getStartEnergy() {
 		// TODO Auto-generated method stub

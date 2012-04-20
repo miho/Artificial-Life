@@ -9,8 +9,21 @@ import java.awt.image.BufferedImage;
 
 import net.cammann.tom.fyp.core.SimpleResource;
 
+/**
+ * <p>SymbResource class.</p>
+ *
+ * @author tc
+ * @version $Id: $
+ */
 public final class SymbResource extends SimpleResource {
 	
+	/**
+	 * <p>Constructor for SymbResource.</p>
+	 *
+	 * @param x a int.
+	 * @param y a int.
+	 * @param r a ResourceType object.
+	 */
 	public SymbResource(final int x, final int y, final ResourceType r) {
 		super(x, y);
 		type = r;
@@ -18,17 +31,29 @@ public final class SymbResource extends SimpleResource {
 		img = null;
 	}
 	
+	/**
+	 * <p>Constructor for SymbResource.</p>
+	 *
+	 * @param p a {@link java.awt.Point} object.
+	 * @param r a ResourceType object.
+	 */
 	public SymbResource(final Point p, final ResourceType r) {
 		super(p);
 		type = r;
 		setCalories(80);
 	}
 	
+	/** {@inheritDoc} */
 	@Override
 	public ResourceType getResourceType() {
 		return type;
 	}
 	
+	/**
+	 * <p>getImage.</p>
+	 *
+	 * @return a {@link java.awt.Image} object.
+	 */
 	protected Image getImage() {
 		if (img == null) {
 			

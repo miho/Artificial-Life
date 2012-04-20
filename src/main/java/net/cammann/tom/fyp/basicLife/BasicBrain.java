@@ -14,15 +14,21 @@ import net.cammann.tom.fyp.core.SimpleMap;
 import org.apache.log4j.Logger;
 
 /**
+ * <p>BasicBrain class.</p>
+ *
  * @author TC
  * @version 0.8
  * @since 31/01/2012
- * 
  */
 public final class BasicBrain extends Brain {
 	
 	static Logger logger = Logger.getLogger(BasicBrain.class);
 	
+	/**
+	 * <p>Constructor for BasicBrain.</p>
+	 *
+	 * @param life a {@link net.cammann.tom.fyp.core.ALife} object.
+	 */
 	public BasicBrain(final ALife life) {
 		super(life);
 		// commands = life
@@ -128,6 +134,7 @@ public final class BasicBrain extends Brain {
 		return 0;
 	}
 	
+	/** {@inheritDoc} */
 	@Override
 	public int think() {
 		

@@ -15,10 +15,11 @@ import org.jgap.Gene;
 import org.jgap.IChromosome;
 
 /**
+ * <p>Abstract AbstactLife class.</p>
+ *
  * @author TC
  * @version 0.8
  * @since 31/01/2012
- * 
  */
 public abstract class AbstactLife extends ALife {
 
@@ -45,7 +46,7 @@ public abstract class AbstactLife extends ALife {
 
 	/**
 	 * Copy constructor.
-	 * 
+	 *
 	 * @param life
 	 *            to copy
 	 */
@@ -66,7 +67,7 @@ public abstract class AbstactLife extends ALife {
 
 	/**
 	 * Creates life, creates GP/GA brain, set orientaion to up.
-	 * 
+	 *
 	 * @param map
 	 *            Used by life/brain when looking for food etc.
 	 */
@@ -80,15 +81,14 @@ public abstract class AbstactLife extends ALife {
 
 	/**
 	 * Constructor using JGAP chromosome.
-	 * 
+	 *
 	 * Converts parameter into a list of integers. Also setups logger and some
 	 * basic variables.
-	 * 
+	 *
 	 * @param chrome
 	 *            used to create life from chromosone
 	 * @param map
 	 *            used for life for reference
-	 * 
 	 */
 	public AbstactLife(final IChromosome chrome, final EnvironmentMap map) {
 		this.map = map;
@@ -110,16 +110,16 @@ public abstract class AbstactLife extends ALife {
 
 	/**
 	 * Used to setup 'brain'.
-	 * 
+	 *
 	 * The decision making center is initiailised here.
 	 */
 	public abstract void initBrain();
 
 	/**
 	 * Constructor taking raw ints as gene values
-	 * 
+	 *
 	 * Sets up some variables such as logger.
-	 * 
+	 *
 	 * @param genes
 	 *            used to generate life from genes
 	 * @param map
@@ -139,7 +139,7 @@ public abstract class AbstactLife extends ALife {
 
 	/**
 	 * Create empty life instance.
-	 * 
+	 *
 	 * Used to copy life
 	 */
 	@Deprecated
@@ -147,6 +147,7 @@ public abstract class AbstactLife extends ALife {
 
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public final void reset() {
 		setEnergy(getStartEnergy());
@@ -156,10 +157,10 @@ public abstract class AbstactLife extends ALife {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 *
 	 * For future implementation.
-	 * 
 	 * @Beta not yet used
-	 * @return false due to not being fully implemented
 	 */
 	@Override
 	@Beta
@@ -168,6 +169,7 @@ public abstract class AbstactLife extends ALife {
 
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public final void addMoveToMemory(final Point p) {
 
@@ -178,6 +180,7 @@ public abstract class AbstactLife extends ALife {
 
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public final void moveForward() {
 
@@ -203,6 +206,7 @@ public abstract class AbstactLife extends ALife {
 		addMoveToMemory(getPosition());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public final Point getPositionAhead() {
 		if (getOrientation() == ORIENTATION.UP) {
@@ -217,6 +221,7 @@ public abstract class AbstactLife extends ALife {
 		}
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public final Point getPositionAhead(final int steps) {
 		if (getOrientation() == ORIENTATION.UP) {
@@ -242,6 +247,7 @@ public abstract class AbstactLife extends ALife {
 	// return false;
 	// }
 
+	/** {@inheritDoc} */
 	@Override
 	public final void doMove() {
 		if (energy > 0) {
@@ -256,6 +262,7 @@ public abstract class AbstactLife extends ALife {
 
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public final boolean consumeResource(final Resource r) {
 		if (r == null) {
@@ -270,6 +277,7 @@ public abstract class AbstactLife extends ALife {
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public final boolean hasMoveInMemory(final Point position) {
 		if (moveMemory.contains(position)) {
@@ -278,6 +286,7 @@ public abstract class AbstactLife extends ALife {
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	@Deprecated
 	public final List<Point> getMoveMemory() {
@@ -286,7 +295,7 @@ public abstract class AbstactLife extends ALife {
 
 	/**
 	 * Returns image used to visualise life.
-	 * 
+	 *
 	 * @return image of ALife
 	 */
 	protected final Image getImage() {
@@ -332,6 +341,7 @@ public abstract class AbstactLife extends ALife {
 
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public final void turnLeft() {
 		moveCount++;
@@ -356,6 +366,7 @@ public abstract class AbstactLife extends ALife {
 
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public final void turnRight() {
 		moveCount++;
@@ -379,11 +390,13 @@ public abstract class AbstactLife extends ALife {
 		decrementEnegery(4);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public final boolean isHoldingResource() {
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public final void draw(final Graphics2D g2) {
 		g2.drawImage(getImage(), getX(), getY(), null);

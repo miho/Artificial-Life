@@ -1,4 +1,4 @@
-package net.cammann.tom.fyp.gp;
+package net.cammann.tom.fyp.core;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,17 +7,26 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import net.cammann.tom.fyp.core.EnvironmentMap;
-import net.cammann.tom.fyp.core.EvolutionFactory;
-import net.cammann.tom.fyp.core.EvolutionModule;
 import net.cammann.tom.fyp.gui.SimulationFrame;
 
+/**
+ * <p>BestLifeLauncher class.</p>
+ *
+ * @author tc
+ * @version $Id: $
+ */
 public class BestLifeLauncher extends JFrame {
 	
 	private final EvolutionModule evoLab;
 	
 	// private final EvolutionFactory factory;
 	
+	/**
+	 * <p>Constructor for BestLifeLauncher.</p>
+	 *
+	 * @param evoLab a {@link net.cammann.tom.fyp.core.EvolutionModule} object.
+	 * @param factory a {@link net.cammann.tom.fyp.core.EvolutionFactory} object.
+	 */
 	public BestLifeLauncher(final EvolutionModule evoLab,
 			final EvolutionFactory factory) {
 		this.evoLab = evoLab;
@@ -59,6 +68,9 @@ public class BestLifeLauncher extends JFrame {
 		
 	}
 	
+	/**
+	 * <p>createAndShowGui.</p>
+	 */
 	public void createAndShowGui() {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			

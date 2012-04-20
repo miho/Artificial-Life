@@ -17,19 +17,26 @@ import net.cammann.tom.fyp.core.MapObject;
 import net.cammann.tom.fyp.core.Resource;
 
 /**
+ * <p>MapPanel class.</p>
+ *
  * @author TC
  * @version 0.8
  * @since 31/01/2012
- * 
  */
 public final class MapPanel extends JPanel {
 	
 	private final EnvironmentMap map;
 	
+	/**
+	 * <p>Constructor for MapPanel.</p>
+	 *
+	 * @param map a {@link net.cammann.tom.fyp.core.EnvironmentMap} object.
+	 */
 	public MapPanel(final EnvironmentMap map) {
 		this.map = map;
 	}
 	
+	/** {@inheritDoc} */
 	@Override
 	// CHECKSTYLE.OFF: MagicNumber
 	public void paint(final Graphics g) {

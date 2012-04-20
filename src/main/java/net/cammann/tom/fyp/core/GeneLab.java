@@ -17,10 +17,11 @@ import org.jgap.impl.DefaultConfiguration;
 import org.jgap.impl.IntegerGene;
 
 /**
+ * <p>GeneLab class.</p>
+ *
  * @author TC
  * @version 0.8
  * @since 31/01/2012
- * 
  */
 public final class GeneLab implements EvolutionModule {
 	
@@ -51,6 +52,11 @@ public final class GeneLab implements EvolutionModule {
 	private Genotype population;
 	private final List<EvolutionCycleListener> cycleListeners;
 	
+	/**
+	 * <p>Constructor for GeneLab.</p>
+	 *
+	 * @param factory a {@link net.cammann.tom.fyp.core.EvolutionFactory} object.
+	 */
 	public GeneLab(final EvolutionFactory factory) {
 		this.factory = factory;
 		popSize = 100;
@@ -82,6 +88,11 @@ public final class GeneLab implements EvolutionModule {
 		
 	}
 	
+	/**
+	 * <p>setPopulationSize.</p>
+	 *
+	 * @param popSize a int.
+	 */
 	public void setPopulationSize(final int popSize) {
 		this.popSize = popSize;
 		try {
@@ -93,6 +104,11 @@ public final class GeneLab implements EvolutionModule {
 		}
 	}
 	
+	/**
+	 * <p>getPopulationSize.</p>
+	 *
+	 * @return a int.
+	 */
 	public int getPopulationSize() {
 		return conf.getPopulationSize() == popSize ? popSize : conf
 				.getPopulationSize();
@@ -136,27 +152,55 @@ public final class GeneLab implements EvolutionModule {
 		throw new IllegalStateException("Could not configure gene array");
 	}
 	
+	/**
+	 * <p>getBestSolutionSoFar.</p>
+	 *
+	 * @return a {@link org.jgap.IChromosome} object.
+	 */
 	public IChromosome getBestSolutionSoFar() {
 		return population.getFittestChromosome();
 	}
 	
+	/**
+	 * <p>Getter for the field <code>evolutions</code>.</p>
+	 *
+	 * @return a int.
+	 */
 	public int getEvolutions() {
 		return evolutions;
 	}
 	
+	/**
+	 * <p>Setter for the field <code>evolutions</code>.</p>
+	 *
+	 * @param evolutions a int.
+	 */
 	public void setEvolutions(final int evolutions) {
 		this.evolutions = evolutions;
 	}
 	
+	/**
+	 * <p>addEvolutionCycleListener.</p>
+	 *
+	 * @param ecl a {@link net.cammann.tom.fyp.core.EvolutionCycleListener} object.
+	 */
 	public void addEvolutionCycleListener(final EvolutionCycleListener ecl) {
 		cycleListeners.add(ecl);
 		
 	}
 	
+	/**
+	 * <p>removeEvolutionCycleListener.</p>
+	 *
+	 * @param ecl a {@link net.cammann.tom.fyp.core.EvolutionCycleListener} object.
+	 */
 	public void removeEvolutionCycleListener(final EvolutionCycleListener ecl) {
 		cycleListeners.remove(ecl);
 	}
 	
+	/**
+	 * <p>start.</p>
+	 */
 	public void start() {
 		genNum = 0;
 		for ( int i = 0 ; i < evolutions ; i++ ) {
@@ -175,6 +219,7 @@ public final class GeneLab implements EvolutionModule {
 		
 	}
 	
+	/** {@inheritDoc} */
 	@Override
 	public ALife getFittestLife() {
 		if (getBestSolutionSoFar() == null) {

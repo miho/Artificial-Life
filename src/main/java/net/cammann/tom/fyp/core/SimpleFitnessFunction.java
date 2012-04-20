@@ -7,16 +7,33 @@ import org.apache.log4j.Logger;
 import org.jgap.FitnessFunction;
 import org.jgap.IChromosome;
 
+/**
+ * <p>Abstract SimpleFitnessFunction class.</p>
+ *
+ * @author tc
+ * @version $Id: $
+ */
 public abstract class SimpleFitnessFunction extends FitnessFunction {
 	
 	private final EvolutionFactory factory;
 	static Logger logger = Logger.getLogger(SimpleFitnessFunction.class);
 	
+	/**
+	 * <p>Constructor for SimpleFitnessFunction.</p>
+	 *
+	 * @param fact a {@link net.cammann.tom.fyp.core.EvolutionFactory} object.
+	 */
 	public SimpleFitnessFunction(final EvolutionFactory fact) {
 		this.factory = fact;
 		
 	}
 	
+	/**
+	 * <p>run.</p>
+	 *
+	 * @param chromo a {@link org.jgap.IChromosome} object.
+	 * @return a double.
+	 */
 	protected double run(final IChromosome chromo) {
 		
 		double fitness = 0;
@@ -51,6 +68,7 @@ public abstract class SimpleFitnessFunction extends FitnessFunction {
 		
 	}
 	
+	/** {@inheritDoc} */
 	@Override
 	protected double evaluate(final IChromosome chromo) {
 		
@@ -64,5 +82,11 @@ public abstract class SimpleFitnessFunction extends FitnessFunction {
 		return fitness / num_runs;
 	}
 	
+	/**
+	 * <p>computeRawFitness.</p>
+	 *
+	 * @param life a {@link net.cammann.tom.fyp.core.ALife} object.
+	 * @return a double.
+	 */
 	public abstract double computeRawFitness(ALife life);
 }

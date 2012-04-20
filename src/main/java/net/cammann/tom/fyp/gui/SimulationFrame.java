@@ -31,10 +31,11 @@ import net.cammann.tom.fyp.utils.MapUtils;
 import org.apache.log4j.Logger;
 
 /**
+ * <p>SimulationFrame class.</p>
+ *
  * @author TC
  * @version 0.8
  * @since 31/01/2012
- * 
  */
 public class SimulationFrame {
 	
@@ -79,8 +80,14 @@ public class SimulationFrame {
 	private int simulationRate;
 	
 	private final JFrame mainFrame;
+	/** Constant <code>loggingFrame</code> */
 	public static LoggingFrame loggingFrame = null;
 	
+	/**
+	 * <p>Constructor for SimulationFrame.</p>
+	 *
+	 * @param map a {@link net.cammann.tom.fyp.core.EnvironmentMap} object.
+	 */
 	public SimulationFrame(final EnvironmentMap map) {
 		this.map = map;
 		
@@ -405,16 +412,25 @@ public class SimulationFrame {
 		}
 	}
 	
+	/**
+	 * <p>hideLogFrame.</p>
+	 */
 	public void hideLogFrame() {
 		loggingFrame.setVisible(false);
 		showLoggingFrame.setSelected(false);
 	}
 	
+	/**
+	 * <p>showLogFrame.</p>
+	 */
 	public void showLogFrame() {
 		loggingFrame.setVisible(true);
 		showLoggingFrame.setSelected(true);
 	}
 	
+	/**
+	 * <p>setTimerListener.</p>
+	 */
 	public void setTimerListener() {
 		
 		timer = new Timer(1000, new ActionListener() {
@@ -434,22 +450,39 @@ public class SimulationFrame {
 		
 	}
 	
+	/**
+	 * <p>isStopped.</p>
+	 *
+	 * @return a boolean.
+	 */
 	public boolean isStopped() {
 		return !timer.isRunning();
 	}
 	
+	/**
+	 * <p>moveOnce.</p>
+	 */
 	public void moveOnce() {
 		map.incrementTimeFrame();
 	}
 	
+	/**
+	 * <p>start.</p>
+	 */
 	public void start() {
 		timer.start();
 	}
 	
+	/**
+	 * <p>pause.</p>
+	 */
 	public void pause() {
 		timer.stop();
 	}
 	
+	/**
+	 * <p>stop.</p>
+	 */
 	public void stop() {
 		logger.trace("current timeframeNo: " + getMoveCount());
 		timer.stop();
@@ -461,16 +494,29 @@ public class SimulationFrame {
 		setTimerListener();
 	}
 	
+	/**
+	 * <p>reset.</p>
+	 */
 	public void reset() {
 		stop();
 		
 		start();
 	}
 	
+	/**
+	 * <p>getMoveCount.</p>
+	 *
+	 * @return a int.
+	 */
 	public int getMoveCount() {
 		return map.getTimeFrameNo();
 	}
 	
+	/**
+	 * <p>Setter for the field <code>simulationRate</code>.</p>
+	 *
+	 * @param rate a int.
+	 */
 	public void setSimulationRate(final int rate) {
 		this.simulationRate = rate;
 		if (timer.isRunning()) {
@@ -483,15 +529,30 @@ public class SimulationFrame {
 		
 	}
 	
+	/**
+	 * <p>Getter for the field <code>simulationRate</code>.</p>
+	 *
+	 * @return a int.
+	 */
 	public int getSimulationRate() {
 		return simulationRate;
 	}
 	
+	/**
+	 * <p>setVisible.</p>
+	 *
+	 * @param b a boolean.
+	 */
 	public void setVisible(final boolean b) {
 		mainFrame.setVisible(true);
 		
 	}
 	
+	/**
+	 * <p>createAndShowGUI.</p>
+	 *
+	 * @param frame a {@link net.cammann.tom.fyp.gui.SimulationFrame} object.
+	 */
 	public static void createAndShowGUI(final SimulationFrame frame) {
 		frame.setVisible(true);
 		frame.start();

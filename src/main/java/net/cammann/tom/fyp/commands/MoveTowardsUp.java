@@ -2,12 +2,22 @@ package net.cammann.tom.fyp.commands;
 
 import net.cammann.tom.fyp.core.Commandable;
 
+/**
+ * <p>MoveTowardsUp class.</p>
+ *
+ * @author tc
+ * @version $Id: $
+ */
 public final class MoveTowardsUp extends LifeCommand {
 	
+	/**
+	 * <p>Constructor for MoveTowardsUp.</p>
+	 */
 	public MoveTowardsUp() {
 		super("Move Towards Up");
 	}
 	
+	/** {@inheritDoc} */
 	@Override
 	public void execute(final Commandable life) {
 		switch (life.getOrientation()) {

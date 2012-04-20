@@ -8,12 +8,12 @@ import java.util.Map;
 
 /**
  * A specialised list used for counting occurences of items.
- * 
+ *
  * Derived name from bucket sort.
- * 
+ *
  * @author TC
- * 
  * @param <E>
+ * @version $Id: $
  */
 public final class BucketList<E> extends ArrayList<E> {
 	
@@ -23,9 +23,9 @@ public final class BucketList<E> extends ArrayList<E> {
 	private final Map<E, Integer> count = new HashMap<E, Integer>();
 	
 	/**
+	 * {@inheritDoc}
+	 *
 	 * Override list add to update count on every add.
-	 * 
-	 * @return if added already false. True if new item.
 	 */
 	@Override
 	public boolean add(final E element) {
@@ -41,7 +41,7 @@ public final class BucketList<E> extends ArrayList<E> {
 	
 	/**
 	 * Return number of occurences of E in list.
-	 * 
+	 *
 	 * @param element
 	 *            to find
 	 * @return number of occurences

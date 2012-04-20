@@ -8,9 +8,9 @@ import net.cammann.tom.fyp.symbotes.SymbResource;
 
 /**
  * Factory object for producing resources.
- * 
+ *
  * @author TC
- * 
+ * @version $Id: $
  */
 public final class ResourceFactory {
 	
@@ -26,9 +26,9 @@ public final class ResourceFactory {
 	
 	/**
 	 * Create resource factory for this map size.
-	 * 
+	 *
 	 * Uses size to initialise position of resource
-	 * 
+	 *
 	 * @param map
 	 *            Map size to use.
 	 */
@@ -40,10 +40,10 @@ public final class ResourceFactory {
 	
 	/**
 	 * Create a resource for the map.
-	 * 
+	 *
 	 * Does not add to the map, only uses size given by map to initialize
 	 * positon of resource.
-	 * 
+	 *
 	 * @param rt
 	 *            resource type to create.
 	 * @return new type of resource with random position on map.
@@ -88,7 +88,7 @@ public final class ResourceFactory {
 	
 	/**
 	 * Set minimum calories for resource creation.
-	 * 
+	 *
 	 * @param maxCals
 	 *            to set as max
 	 */
@@ -99,10 +99,9 @@ public final class ResourceFactory {
 	
 	/**
 	 * Set minimum calories for resource creation.
-	 * 
+	 *
 	 * @param minCals
 	 *            to set as min
-	 * 
 	 */
 	public void setMinCalories(final int minCals) {
 		if (minCals > maxCalories) {

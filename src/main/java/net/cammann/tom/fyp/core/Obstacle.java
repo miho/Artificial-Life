@@ -7,15 +7,34 @@ import java.awt.Point;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 
+/**
+ * <p>Obstacle class.</p>
+ *
+ * @author tc
+ * @version $Id: $
+ */
 public class Obstacle extends AbstractMapObject {
 
 	private static Image img = null;
 
+	/**
+	 * <p>Constructor for Obstacle.</p>
+	 *
+	 * @param p a {@link java.awt.Point} object.
+	 * @param radius a double.
+	 */
 	public Obstacle(final Point p, final double radius) {
 		setPosition(p);
 		this.radius = radius;
 	}
 
+	/**
+	 * <p>Constructor for Obstacle.</p>
+	 *
+	 * @param x a double.
+	 * @param y a double.
+	 * @param radius a double.
+	 */
 	public Obstacle(final double x, final double y, final double radius) {
 
 		setPosition((int) x, (int) y);
@@ -42,6 +61,11 @@ public class Obstacle extends AbstractMapObject {
 
 	}
 
+	/**
+	 * <p>draw.</p>
+	 *
+	 * @param g2 a {@link java.awt.Graphics2D} object.
+	 */
 	public void draw(final Graphics2D g2) {
 
 		g2.drawImage(getObstacleImage(), getX(), getY(), null);

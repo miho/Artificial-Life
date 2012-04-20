@@ -16,11 +16,11 @@ import org.jgap.gp.IGPProgram;
 
 /**
  * Factory to produce basic map, basic life and fitness function.
- * 
+ *
  * Used by gene lab to create lifes!!
- * 
+ *
  * @author TC
- * 
+ * @version $Id: $
  */
 public final class BasicLifeFactory extends AbstractEvolutionFactory {
 	
@@ -29,36 +29,43 @@ public final class BasicLifeFactory extends AbstractEvolutionFactory {
 	 */
 	private static Logger logger = Logger.getLogger(BasicLife.class);
 	
+	/** {@inheritDoc} */
 	@Override
 	public ALife createLife(final int[] genes, final EnvironmentMap map) {
 		return new BasicLife(genes, map);
 	}
 	
+	/** {@inheritDoc} */
 	@Override
 	public ALife createLife(final IChromosome chromo, final EnvironmentMap map) {
 		return new BasicLife(chromo, map);
 	}
 	
+	/** {@inheritDoc} */
 	@Override
 	public FitnessFunction getFitnessFunction() {
 		return new BasicFitnessFunction(this);
 	}
 	
+	/** {@inheritDoc} */
 	@Override
 	public ALife createLife(final IGPProgram gp, final EnvironmentMap map) {
 		return new ALifeGP(gp, map);
 	}
 	
+	/** {@inheritDoc} */
 	@Override
 	public EnvironmentMap createMap() {
 		return new BasicMap(mapWidth, mapHeight, numOfResources, numOfObstacles);
 	}
 	
+	/** {@inheritDoc} */
 	@Override
 	public GPFitnessFunction getGPFitnessFunction() {
 		return new GPLifeFitFunc(this);
 	}
 	
+	/** {@inheritDoc} */
 	@Override
 	public ALife createLife(final ALife life, final EnvironmentMap map) {
 		final ALife secondLife = life.clone();
@@ -77,6 +84,7 @@ public final class BasicLifeFactory extends AbstractEvolutionFactory {
 		return secondLife;
 	}
 	
+	/** {@inheritDoc} */
 	@Override
 	public ALife nullInstance() {
 		return new BasicLife();

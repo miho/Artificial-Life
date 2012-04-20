@@ -10,14 +10,31 @@ import net.cammann.tom.fyp.core.EvolutionFactory;
 import org.jgap.gp.GPFitnessFunction;
 import org.jgap.gp.IGPProgram;
 
+/**
+ * <p>GPLifeFitFunc class.</p>
+ *
+ * @author tc
+ * @version $Id: $
+ */
 public class GPLifeFitFunc extends GPFitnessFunction {
 	
 	private final EvolutionFactory factory;
 	
+	/**
+	 * <p>Constructor for GPLifeFitFunc.</p>
+	 *
+	 * @param factory a {@link net.cammann.tom.fyp.core.EvolutionFactory} object.
+	 */
 	public GPLifeFitFunc(final EvolutionFactory factory) {
 		this.factory = factory;
 	}
 	
+	/**
+	 * <p>run.</p>
+	 *
+	 * @param gp a {@link org.jgap.gp.IGPProgram} object.
+	 * @return a double.
+	 */
 	public double run(final IGPProgram gp) {
 		double fitness = 0;
 		
@@ -52,6 +69,8 @@ public class GPLifeFitFunc extends GPFitnessFunction {
 	}
 	
 	/**
+	 * {@inheritDoc}
+	 *
 	 * Lower fitness is better here
 	 */
 	@Override
@@ -68,11 +87,10 @@ public class GPLifeFitFunc extends GPFitnessFunction {
 	
 	/**
 	 * Higher fitness equals fitter here.
-	 * 
-	 * @param life
-	 * @return
+	 *
+	 * @param life a {@link net.cammann.tom.fyp.core.ALife} object.
+	 * @return a double.
 	 */
-	
 	public double computeRawFitness(final ALife life) {
 		return (life.getEnergy());
 	}

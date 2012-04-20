@@ -11,19 +11,34 @@ import org.jgap.gp.CommandGene;
 import org.jgap.gp.impl.GPConfiguration;
 import org.jgap.gp.impl.ProgramChromosome;
 
+/**
+ * <p>MoveTowards class.</p>
+ *
+ * @author tc
+ * @version $Id: $
+ */
 public final class MoveTowards extends CommandGene {
 	
+	/**
+	 * <p>Constructor for MoveTowards.</p>
+	 *
+	 * @param conf a {@link org.jgap.gp.impl.GPConfiguration} object.
+	 * @param returnType a {@link java.lang.Class} object.
+	 * @throws org.jgap.InvalidConfigurationException if any.
+	 */
 	public MoveTowards(final GPConfiguration conf, final Class<?> returnType)
 			throws InvalidConfigurationException {
 		super(conf, 2, returnType);
 		
 	}
 	
+	/** {@inheritDoc} */
 	@Override
 	public String toString() {
 		return "MoveTo(&1,&2)";
 	}
 	
+	/** {@inheritDoc} */
 	@Override
 	public double execute_double(final ProgramChromosome c, final int n,
 			final Object[] args) {
@@ -36,6 +51,13 @@ public final class MoveTowards extends CommandGene {
 		return 1;
 	}
 	
+	/**
+	 * <p>execute.</p>
+	 *
+	 * @param life a {@link net.cammann.tom.fyp.core.Commandable} object.
+	 * @param x a double.
+	 * @param y a double.
+	 */
 	public void execute(final Commandable life, final double x, final double y) {
 		final int dx = (int) x - life.getPosition().x;
 		final int dy = ((int) y) - life.getPosition().y;

@@ -14,10 +14,11 @@ import javax.imageio.ImageIO;
 import org.apache.log4j.Logger;
 
 /**
+ * <p>SimpleResource class.</p>
+ *
  * @author TC
  * @version 0.8
  * @since 31/01/2012
- *
  */
 public class SimpleResource extends Resource {
 
@@ -32,12 +33,24 @@ public class SimpleResource extends Resource {
 	public int MIN_CALORIES = 100;
 	protected ResourceType type;
 
+	/** Constant <code>log</code> */
 	public static Logger log = Logger.getLogger(Resource.class);
 
+	/**
+	 * <p>Constructor for SimpleResource.</p>
+	 *
+	 * @param p a {@link java.awt.Point} object.
+	 */
 	public SimpleResource(final Point p) {
 		this(p.x, p.y);
 	}
 
+	/**
+	 * <p>Constructor for SimpleResource.</p>
+	 *
+	 * @param x a int.
+	 * @param y a int.
+	 */
 	public SimpleResource(final int x, final int y) {
 		setPosition(x, y);
 
@@ -46,6 +59,14 @@ public class SimpleResource extends Resource {
 		isCarried = false;
 	}
 
+	/**
+	 * <p>Constructor for SimpleResource.</p>
+	 *
+	 * @param x a int.
+	 * @param y a int.
+	 * @param min_cals a int.
+	 * @param max_cals a int.
+	 */
 	public SimpleResource(final int x, final int y, final int min_cals,
 			final int max_cals) {
 
@@ -57,16 +78,19 @@ public class SimpleResource extends Resource {
 		isCarried = false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void setCalories(final int calories) {
 		this.calories = calories;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public double getCalories() {
 		return calories;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public ResourceType getResourceType() {
 		return ResourceType.BASIC;
@@ -109,16 +133,19 @@ public class SimpleResource extends Resource {
 
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean canBeCarried() {
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isCarried() {
 		return isCarried;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void draw(final Graphics2D g2) {
 		g2.drawImage(getImage(), getX(), getY(), null);

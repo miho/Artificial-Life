@@ -14,18 +14,18 @@ import net.cammann.tom.fyp.core.Resource;
  * 
  */
 public final class TestUtils {
-	
+
 	/**
 	 * Singleton instance.
 	 */
 	private static TestUtils utils = new TestUtils();
-	
+
 	/**
 	 * Empty private constructor.
 	 */
 	private TestUtils() {
 	}
-	
+
 	/**
 	 * d Gets singleton instance of TestUtils.
 	 * 
@@ -34,7 +34,7 @@ public final class TestUtils {
 	public static TestUtils getInstance() {
 		return utils;
 	}
-	
+
 	/**
 	 * Creates map.
 	 * 
@@ -45,10 +45,10 @@ public final class TestUtils {
 	 * @return map
 	 */
 	public EnvironmentMap getBlankMap(final int width, final int height) {
-		
+
 		return new BlankMap(width, height);
 	}
-	
+
 	/**
 	 * Class used for testing.
 	 * 
@@ -56,7 +56,7 @@ public final class TestUtils {
 	 * 
 	 */
 	private final class BlankMap extends AbstactMap {
-		
+
 		/**
 		 * Just calls super constructor.
 		 * 
@@ -68,14 +68,20 @@ public final class TestUtils {
 		private BlankMap(final int w, final int h) {
 			super(w, h);
 		}
-		
+
 		@Override
 		public void initResources() {
-			
+
 		}
-		
+
+		@Override
+		protected void initObstacles() {
+			// TODO Auto-generated method stub
+
+		}
+
 	}
-	
+
 	/**
 	 * Gets empty life.
 	 * 
@@ -86,14 +92,14 @@ public final class TestUtils {
 	public ALife getBlankLife(final EnvironmentMap map) {
 		return new BlankLife(map);
 	}
-	
+
 	/**
 	 * Simple class for testing ALife objects
 	 * 
 	 * Does not init any commands.
 	 */
 	private final class BlankLife extends AbstactLife {
-		
+
 		/**
 		 * Just calls super constructor.
 		 * 
@@ -103,37 +109,37 @@ public final class TestUtils {
 		private BlankLife(final EnvironmentMap map) {
 			super(map);
 		}
-		
+
 		@Override
 		public LifeCommand[] getCommandList() {
 			return new LifeCommand[] {};
 		}
-		
+
 		@Override
 		public ALife clone() {
 			return new BlankLife(map);
 		}
-		
+
 		@Override
 		public void initBrain() {
-			
+
 		}
-		
+
 		@Override
 		public int getMemoryLength() {
 			return 10;
 		}
-		
+
 		@Override
 		public boolean canConsumeResource(final Resource r) {
 			return true;
 		}
-		
+
 		@Override
 		protected int getStartEnergy() {
 			return 100;
 		}
-		
+
 		@Override
 		public boolean dropResource() {
 			return false;

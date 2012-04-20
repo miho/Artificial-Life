@@ -9,19 +9,20 @@ import org.jgap.gp.impl.ProgramChromosome;
 
 /**
  * Consume resource command.
- * 
+ *
  * @author TC
- * 
+ * @version $Id: $
  */
 public final class Consume extends CommandGene {
 	
 	/**
-	 * 
+	 * <p>Constructor for Consume.</p>
+	 *
 	 * @param conf
 	 *            jgap config
 	 * @param returnType
 	 *            return type from gp
-	 * @throws InvalidConfigurationException
+	 * @throws org.jgap.InvalidConfigurationException
 	 *             bad config
 	 */
 	public Consume(final GPConfiguration conf, final Class<?> returnType)
@@ -29,12 +30,14 @@ public final class Consume extends CommandGene {
 		super(conf, 0, returnType);
 	}
 	
+	/** {@inheritDoc} */
 	@Override
 	public String toString() {
 		return "Cosume";
 	}
 	
 	// CHECKSTYLE.OFF: MethodName
+	/** {@inheritDoc} */
 	@Override
 	public boolean execute_boolean(final ProgramChromosome c, final int n,
 			final Object[] args) {
@@ -42,6 +45,7 @@ public final class Consume extends CommandGene {
 		return ((Commandable) args[0]).consume();
 	}
 	
+	/** {@inheritDoc} */
 	@Override
 	public double execute_double(final ProgramChromosome c, final int n,
 			final Object[] args) {

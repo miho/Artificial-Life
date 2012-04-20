@@ -30,17 +30,28 @@ import org.jgap.IChromosome;
  * Symbote that lays edible resource.
  *
  * @author TC
- *
+ * @version $Id: $
  */
 public final class Symbote extends AbstactLife {
 
 	static Logger logger = Logger.getLogger(Symbote.class);
 	private ResourceType consumable, droppable;
 
+	/**
+	 * <p>Constructor for Symbote.</p>
+	 */
 	public Symbote() {
 
 	}
 
+	/**
+	 * <p>Constructor for Symbote.</p>
+	 *
+	 * @param chrome a {@link org.jgap.IChromosome} object.
+	 * @param map a {@link net.cammann.tom.fyp.core.EnvironmentMap} object.
+	 * @param c a {@link net.cammann.tom.fyp.core.Resource.ResourceType} object.
+	 * @param d a {@link net.cammann.tom.fyp.core.Resource.ResourceType} object.
+	 */
 	public Symbote(final IChromosome chrome, final EnvironmentMap map,
 			final ResourceType c, final ResourceType d) {
 		super(chrome, map);
@@ -49,6 +60,14 @@ public final class Symbote extends AbstactLife {
 
 	}
 
+	/**
+	 * <p>Constructor for Symbote.</p>
+	 *
+	 * @param genes an array of int.
+	 * @param map a {@link net.cammann.tom.fyp.core.EnvironmentMap} object.
+	 * @param c a {@link net.cammann.tom.fyp.core.Resource.ResourceType} object.
+	 * @param d a {@link net.cammann.tom.fyp.core.Resource.ResourceType} object.
+	 */
 	public Symbote(final int[] genes, final EnvironmentMap map,
 			final ResourceType c, final ResourceType d) {
 		super(genes, map);
@@ -57,6 +76,7 @@ public final class Symbote extends AbstactLife {
 
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean dropResource() {
 		if (getMap().hasResource(getPosition())) {
@@ -83,11 +103,18 @@ public final class Symbote extends AbstactLife {
 		return true;
 	}
 
+	/**
+	 * <p>Constructor for Symbote.</p>
+	 *
+	 * @param genes an array of int.
+	 * @param map a {@link net.cammann.tom.fyp.core.EnvironmentMap} object.
+	 */
 	public Symbote(final int genes[], final EnvironmentMap map) {
 		super(genes, map);
 
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean canConsumeResource(final Resource r) {
 		if (r.getResourceType() == consumable) {
@@ -96,17 +123,20 @@ public final class Symbote extends AbstactLife {
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public ALife clone() {
 		return new Symbote(genes, map, consumable, droppable);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void initBrain() {
 		setBrain(new BasicBrain(this));
 
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LifeCommand[] getCommandList() {
 		final LifeCommand doNothing = new LifeCommand("Nothing") {
@@ -164,11 +194,13 @@ public final class Symbote extends AbstactLife {
 		return commands;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public int getMemoryLength() {
 		return getGene(net.cammann.tom.fyp.core.GENE_TYPE.MEMORY_LENGTH);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected int getStartEnergy() {
 		return getGene(0);

@@ -15,6 +15,7 @@ import java.util.List;
 
 import net.cammann.tom.fyp.basicLife.BasicLifeFactory;
 import net.cammann.tom.fyp.core.ALife;
+import net.cammann.tom.fyp.core.BestLifeLauncher;
 import net.cammann.tom.fyp.core.EnvironmentMap;
 import net.cammann.tom.fyp.core.EvolutionCycleEvent;
 import net.cammann.tom.fyp.core.EvolutionCycleListener;
@@ -53,6 +54,12 @@ import org.jgap.gp.terminal.Terminal;
 import org.jgap.util.NumberKit;
 import org.jgap.util.SystemKit;
 
+/**
+ * <p>GeneticProgramFrame class.</p>
+ *
+ * @author tc
+ * @version $Id: $
+ */
 public final class GeneticProgramFrame extends GPProblem implements
 		EvolutionModule {
 	
@@ -116,22 +123,42 @@ public final class GeneticProgramFrame extends GPProblem implements
 	
 	// CHECKSTYLE.ON: MagicNumber
 	
+	/**
+	 * <p>addEvolutionCycleListener.</p>
+	 *
+	 * @param ecl a {@link net.cammann.tom.fyp.core.EvolutionCycleListener} object.
+	 */
 	public void addEvolutionCycleListener(final EvolutionCycleListener ecl) {
 		cycleListeners.add(ecl);
 		
 	}
 	
+	/**
+	 * <p>removeEvolutionCycleListener.</p>
+	 *
+	 * @param ecl a {@link net.cammann.tom.fyp.core.EvolutionCycleListener} object.
+	 */
 	public void removeEvolutionCycleListener(final EvolutionCycleListener ecl) {
 		cycleListeners.remove(ecl);
 	}
 	
 	private final EvolutionFactory factory;
 	
+	/**
+	 * <p>Constructor for GeneticProgramFrame.</p>
+	 *
+	 * @param factory a {@link net.cammann.tom.fyp.core.EvolutionFactory} object.
+	 */
 	public GeneticProgramFrame(final EvolutionFactory factory) {
 		cycleListeners = new ArrayList<EvolutionCycleListener>();
 		this.factory = factory;
 	}
 	
+	/**
+	 * <p>main.</p>
+	 *
+	 * @param args an array of {@link java.lang.String} objects.
+	 */
 	public static void main(final String args[]) {
 		
 		final EvolutionFactory factory = new BasicLifeFactory();
@@ -164,11 +191,10 @@ public final class GeneticProgramFrame extends GPProblem implements
 	}
 	
 	/**
+	 * {@inheritDoc}
+	 *
 	 * This method is used for setting up the commands and terminals that can be
 	 * used to solve the problem.
-	 * 
-	 * @return GPGenotype
-	 * @throws InvalidConfigurationException
 	 */
 	@Override
 	public GPGenotype create() throws InvalidConfigurationException {
@@ -246,10 +272,21 @@ public final class GeneticProgramFrame extends GPProblem implements
 	 * ------------------------------------------------------------
 	 */
 
+	/**
+	 * <p>Getter for the field <code>fittest</code>.</p>
+	 *
+	 * @return a {@link org.jgap.gp.IGPProgram} object.
+	 */
 	public IGPProgram getFittest() {
 		return fittest;
 	}
 	
+	/**
+	 * <p>initConfig.</p>
+	 *
+	 * @param config a {@link org.jgap.gp.impl.GPConfiguration} object.
+	 * @throws org.jgap.InvalidConfigurationException if any.
+	 */
 	public void initConfig(final GPConfiguration config)
 			throws InvalidConfigurationException {
 		
@@ -320,6 +357,9 @@ public final class GeneticProgramFrame extends GPProblem implements
 		config.setProgramCreationMaxTries(programCreationMaxTries);
 	}
 	
+	/**
+	 * <p>run.</p>
+	 */
 	public void run() {
 		GPGenotype gp = null;
 		try {
@@ -510,14 +550,14 @@ public final class GeneticProgramFrame extends GPProblem implements
 	
 	/**
 	 * Outputs the best solution until now at standard output.
-	 * 
+	 *
 	 * This is stolen (and somewhat edited) from GPGenotype.outputSolution which
 	 * used log4j.
-	 * 
+	 *
 	 * @param a_best
 	 *            the fittest ProgramChromosome
-	 * 
 	 * @author Hakan Kjellerstrand (originally by Klaus Meffert)
+	 * @param gen a int.
 	 */
 	public void myOutputSolution(final IGPProgram a_best, final int gen) {
 		final String freeMB = SystemKit.niceMemory(SystemKit.getFreeMemoryMB());
@@ -550,6 +590,7 @@ public final class GeneticProgramFrame extends GPProblem implements
 		}
 	}
 	
+	/** {@inheritDoc} */
 	@Override
 	public ALife getFittestLife() {
 		if (getFittest() == null) {

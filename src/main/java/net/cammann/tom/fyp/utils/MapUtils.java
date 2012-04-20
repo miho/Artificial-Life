@@ -8,28 +8,32 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import net.cammann.tom.fyp.core.AbstactMap;
 import net.cammann.tom.fyp.core.Beta;
 import net.cammann.tom.fyp.core.EnvironmentMap;
+import net.cammann.tom.fyp.core.MapObject;
+import net.cammann.tom.fyp.core.Obstacle;
 import net.cammann.tom.fyp.core.Resource;
+import net.cammann.tom.fyp.core.SimpleResource;
 
 /**
  * Utility class for exporting /importing maps.
  * 
  * @author TC
- * 
+ * @version $Id: $
  */
 public final class MapUtils {
-	
+
 	/**
 	 * Hide constructor for utility class.
 	 */
 	private MapUtils() {
-		
+
 	}
-	
+
 	/**
 	 * Method to save map to a file.
 	 * 
@@ -44,25 +48,37 @@ public final class MapUtils {
 		try {
 			// TODO fix
 			final BufferedWriter br = new BufferedWriter(new FileWriter(file));
-			
+
 			br.write("" + map.getWidth());
 			br.write("\n");
 			br.write("" + map.getHeight());
 			br.write("\n");
-			//
-			// for (Resource r : map.getResourceList()) {
-			// br.write(r.getX() + " " + r.getY() + " " + r.getCalories());
-			// br.write("\n");
-			// }
-			
+			br.write("Resources\n");
+			// Write each resource
+			Resource r = null;
+			for (Iterator<MapObject> it = map.getResourceIterator(); it
+					.hasNext(); r = (Resource) it.next()) {
+
+				br.write(r.getX() + " " + r.getY() + " " + r.getCalories());
+				br.write("\n");
+			}
+			br.write("Obstacles\n");
+			Obstacle o = null;
+			// write each obstacle
+			for (Iterator<MapObject> it = map.getObstacleIterator(); it
+					.hasNext(); o = (Obstacle) it.next()) {
+				br.write(o.getX() + " " + o.getY() + " " + o.getRadius());
+				br.write("\n");
+			}
+
 			br.flush();
 			br.close();
-			// write each resource
+
 		} catch (final IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Method to load map from file.
 	 * 
@@ -70,16 +86,15 @@ public final class MapUtils {
 	 * 
 	 * @param file
 	 *            save location.
-	 * 
 	 * @return If map is successfully loaded return EnvironmentMap, otherwise
 	 *         return null
-	 * 
 	 * @Beta - NOT FINISHED OR WORKING
 	 */
 	@Beta
 	public static EnvironmentMap loadMap(final File file) {
 		AbstactMap map = null;
 		final List<Resource> rList = new ArrayList<Resource>();
+		final List<Obstacle> oList = new ArrayList<Obstacle>();
 		/**
 		 * Small class to create map from.
 		 * 
@@ -87,7 +102,7 @@ public final class MapUtils {
 		 * 
 		 */
 		class QuickMap extends AbstactMap {
-			
+
 			/**
 			 * straight to super.
 			 * 
@@ -99,39 +114,62 @@ public final class MapUtils {
 			public QuickMap(final int width, final int height) {
 				super(width, height);
 			}
-			
+
 			@Override
 			public void initResources() {
-				for ( final Resource r : rList ) {
+				for (final Resource r : rList) {
 					addResource(r);
 				}
-				
+
 			}
-			
+
+			@Override
+			protected void initObstacles() {
+				for (final Obstacle o : oList) {
+					addObstacle(o);
+				}
+			}
+
 		}
-		
+
 		try {
 			final BufferedReader br = new BufferedReader(new FileReader(file));
-			
+
 			final int width = Integer.valueOf(br.readLine());
 			final int height = Integer.valueOf(br.readLine());
-			
+
 			map = new QuickMap(width, height);
 			String line = "";
 			while ((line = br.readLine()) != null) {
-				// final String[] split = line.split(" ");
-				// TODO fix
-				// Resource r = new SimpleResource(map,
-				// Integer.valueOf(split[0]),
-				// Integer.valueOf(split[1]));
-				// r.setCalories(Integer.valueOf(split[2]));
-				// rList.add(r);
+				if (line.equals("Obstacles")) {
+					break;
+				}
+				if (line.equals("Resource")) {
+					continue;
+				}
+
+				final String[] split = line.split(" ");
+				Resource r = new SimpleResource(Integer.valueOf(split[0]),
+						Integer.valueOf(split[1]));
+				r.setCalories(Integer.valueOf(split[2]));
+				rList.add(r);
 			}
-			
+
+			if (line.equals("Obstacles")) {
+				while ((line = br.readLine()) != null) {
+
+					final String[] split = line.split(" ");
+					Obstacle o = new Obstacle(Integer.valueOf(split[0]),
+							Integer.valueOf(split[1]),
+							Integer.valueOf(split[2]));
+					oList.add(o);
+				}
+			}
+
 			br.close();
-			
+
 		} catch (final FileNotFoundException e) {
-			
+
 			e.printStackTrace();
 			return null;
 		} catch (final IOException e) {
@@ -139,7 +177,7 @@ public final class MapUtils {
 			e.printStackTrace();
 			return null;
 		}
-		
+
 		return map;
 	}
 }

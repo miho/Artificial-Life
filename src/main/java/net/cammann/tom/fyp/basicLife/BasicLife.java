@@ -21,30 +21,47 @@ import org.jgap.IChromosome;
 
 /**
  * Life form that uses basic brain as thinking module.
- * 
+ *
  * @author TC
- * 
+ * @version $Id: $
  */
 public final class BasicLife extends AbstactLife {
 	
+	/**
+	 * <p>Constructor for BasicLife.</p>
+	 *
+	 * @param chrome a {@link org.jgap.IChromosome} object.
+	 * @param map a {@link net.cammann.tom.fyp.core.EnvironmentMap} object.
+	 */
 	public BasicLife(final IChromosome chrome, final EnvironmentMap map) {
 		super(chrome, map);
 	}
 	
+	/**
+	 * <p>Constructor for BasicLife.</p>
+	 *
+	 * @param genes an array of int.
+	 * @param map a {@link net.cammann.tom.fyp.core.EnvironmentMap} object.
+	 */
 	public BasicLife(final int[] genes, final EnvironmentMap map) {
 		super(genes, map);
 	}
 	
+	/**
+	 * <p>Constructor for BasicLife.</p>
+	 */
 	public BasicLife() {
 		// null instance
 		//
 	}
 	
+	/** {@inheritDoc} */
 	@Override
 	public ALife clone() {
 		return new BasicLife(genes, map);
 	}
 	
+	/** {@inheritDoc} */
 	@Override
 	public LifeCommand[] getCommandList() {
 		
@@ -94,28 +111,33 @@ public final class BasicLife extends AbstactLife {
 		return commands;
 	}
 	
+	/** {@inheritDoc} */
 	@Override
 	public void initBrain() {
 		setBrain(new BasicBrain(this));
 		
 	}
 	
+	/** {@inheritDoc} */
 	@Override
 	public int getMemoryLength() {
 		return getGene(GENE_TYPE.MEMORY_LENGTH);
 	}
 	
+	/** {@inheritDoc} */
 	@Override
 	public boolean dropResource() {
 		return false;
 	}
 	
+	/** {@inheritDoc} */
 	@Override
 	public boolean canConsumeResource(final Resource r) {
 		// TODO Auto-generated method stub
 		return true;
 	}
 	
+	/** {@inheritDoc} */
 	@Override
 	protected int getStartEnergy() {
 		return getGene(0);
