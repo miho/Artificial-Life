@@ -23,10 +23,10 @@ import org.junit.Test;
 
 /**
  * Test the basics of the EnvironmentMap class.
- * 
+ *
  * @see EnvironmentMap
  * @author TC
- * 
+ *
  */
 public class TestEnvironment {
 
@@ -45,7 +45,7 @@ public class TestEnvironment {
 
 	/**
 	 * Simple test to assure resources are correctly placed
-	 * 
+	 *
 	 * Checks resources are correctly placed on the map. Checks their type,
 	 * checks that they can be accessed Makes sure duplicate resources cannot be
 	 * added Checks resource cannot be added off the map.
@@ -123,7 +123,7 @@ public class TestEnvironment {
 
 	/**
 	 * Test validity when adding an obstacle.
-	 * 
+	 *
 	 * no duplicate positions, not off map,not on top of resource
 	 */
 	@Test
@@ -196,7 +196,7 @@ public class TestEnvironment {
 
 	/**
 	 * Test validity of Life object.
-	 * 
+	 *
 	 */
 	@Test
 	public final void lifeTest() {
