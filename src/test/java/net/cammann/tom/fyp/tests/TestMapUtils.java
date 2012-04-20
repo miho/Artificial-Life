@@ -20,6 +20,8 @@ import net.cammann.tom.fyp.core.SimpleResource;
 import net.cammann.tom.fyp.utils.MapUtils;
 
 import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -34,6 +36,14 @@ public class TestMapUtils {
 	 * Logger.
 	 */
 	private static final Logger logger = Logger.getLogger(TestMapUtils.class);
+
+	/**
+	 * Used to setup logger in test mode.
+	 */
+	@BeforeClass
+	public static void before() {
+		PropertyConfigurator.configure("src/test/resources/log4j.properties");
+	}
 
 	/**
 	 * Test for correct export and import of custom map;

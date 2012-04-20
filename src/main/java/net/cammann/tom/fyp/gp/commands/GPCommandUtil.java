@@ -24,7 +24,11 @@ public class GPCommandUtil {
 	 * @param c
 	 *            a {@link net.cammann.tom.fyp.core.Commandable} object.
 	 * @return a {@link java.awt.Point} object.
+	 * 
+	 * @Deprecated This functionality is now in
+	 *             {@link net.cammann.tom.fyp.core.ALife}
 	 */
+	@Deprecated
 	public static Point getPositionAhead(final Commandable c) {
 		if (c.getOrientation() == ORIENTATION.UP) {
 			return new Point(c.getX(), c.getY()
@@ -51,7 +55,11 @@ public class GPCommandUtil {
 	 * @param steps
 	 *            a int.
 	 * @return a {@link java.awt.Point} object.
+	 * 
+	 * @Deprecated This functionality is now in
+	 *             {@link net.cammann.tom.fyp.core.ALife}
 	 */
+	@Deprecated
 	public static Point getPositionAhead(final Commandable c, final int steps) {
 		if (c.getOrientation() == ORIENTATION.UP) {
 			return new Point(c.getX(), c.getY()

@@ -15,7 +15,6 @@ import java.util.List;
 
 import net.cammann.tom.fyp.basicLife.BasicLifeFactory;
 import net.cammann.tom.fyp.core.ALife;
-import net.cammann.tom.fyp.core.BestLifeLauncher;
 import net.cammann.tom.fyp.core.EnvironmentMap;
 import net.cammann.tom.fyp.core.EvolutionCycleEvent;
 import net.cammann.tom.fyp.core.EvolutionCycleListener;
@@ -27,6 +26,7 @@ import net.cammann.tom.fyp.gp.commands.OnResource;
 import net.cammann.tom.fyp.gp.commands.Orientation;
 import net.cammann.tom.fyp.gp.commands.SmellResource;
 import net.cammann.tom.fyp.gp.commands.WallAhead;
+import net.cammann.tom.fyp.gui.BestLifeLauncher;
 import net.cammann.tom.fyp.gui.SimulationFrame;
 import net.cammann.tom.fyp.stats.StatsPackage;
 

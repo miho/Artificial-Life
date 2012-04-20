@@ -277,9 +277,14 @@ public class SimulationFrame {
 			@Override
 			public void itemStateChanged(final ItemEvent e) {
 				if (e.getStateChange() == ItemEvent.DESELECTED) {
-					hideLogFrame();
+					if (loggingFrame.isVisible()) {
+						hideLogFrame();
+					}
 				} else {
-					showLogFrame();
+					if (!loggingFrame.isVisible()) {
+						showLogFrame();
+					}
+
 				}
 			}
 		});
@@ -439,7 +444,7 @@ public class SimulationFrame {
 	 * </p>
 	 */
 	public void hideLogFrame() {
-		loggingFrame.setVisible(false);
+		loggingFrame.setVisible("hideLogFrame", false);
 		showLoggingFrame.setSelected(false);
 	}
 
@@ -449,7 +454,7 @@ public class SimulationFrame {
 	 * </p>
 	 */
 	public void showLogFrame() {
-		loggingFrame.setVisible(true);
+		loggingFrame.setVisible("simFrame", true);
 		showLoggingFrame.setSelected(true);
 	}
 

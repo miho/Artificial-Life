@@ -1,6 +1,8 @@
 package net.cammann.tom.fyp.core;
 
 import net.cammann.tom.fyp.basicLife.BasicLifeFactory;
+import net.cammann.tom.fyp.gui.BestLifeLauncher;
+import net.cammann.tom.fyp.gui.LoggingFrame;
 import net.cammann.tom.fyp.gui.SimulationFrame;
 import net.cammann.tom.fyp.stats.StatsPackage;
 
@@ -47,6 +49,9 @@ public class SimulationContext {
 		final EvolutionFactory lf = new BasicLifeFactory();
 
 		final GeneLab g = new GeneLab(lf);
+
+		LoggingFrame.getInstance().setVisible("simCOn", true);
+
 		g.setEvolutions(10);
 		// g.setPopulationSize(100);
 		final BestLifeLauncher bll = new BestLifeLauncher(g, lf);
