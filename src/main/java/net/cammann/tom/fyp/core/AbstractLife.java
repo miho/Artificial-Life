@@ -18,7 +18,7 @@ import org.jgap.IChromosome;
  * <p>
  * Abstract AbstactLife class.
  * </p>
- *
+ * 
  * @author TC
  * @version 0.8
  * @since 31/01/2012
@@ -48,7 +48,7 @@ public abstract class AbstractLife extends ALife {
 
 	/**
 	 * Copy constructor.
-	 *
+	 * 
 	 * @param life
 	 *            to copy
 	 */
@@ -69,7 +69,7 @@ public abstract class AbstractLife extends ALife {
 
 	/**
 	 * Creates life, creates GP/GA brain, set orientaion to up.
-	 *
+	 * 
 	 * @param map
 	 *            Used by life/brain when looking for food etc.
 	 */
@@ -83,10 +83,10 @@ public abstract class AbstractLife extends ALife {
 
 	/**
 	 * Constructor using JGAP chromosome.
-	 *
+	 * 
 	 * Converts parameter into a list of integers. Also setups logger and some
 	 * basic variables.
-	 *
+	 * 
 	 * @param chrome
 	 *            used to create life from chromosone
 	 * @param map
@@ -112,16 +112,16 @@ public abstract class AbstractLife extends ALife {
 
 	/**
 	 * Used to setup 'brain'.
-	 *
+	 * 
 	 * The decision making center is initiailised here.
 	 */
 	public abstract void initBrain();
 
 	/**
 	 * Constructor taking raw ints as gene values
-	 *
+	 * 
 	 * Sets up some variables such as logger.
-	 *
+	 * 
 	 * @param genes
 	 *            used to generate life from genes
 	 * @param map
@@ -141,7 +141,7 @@ public abstract class AbstractLife extends ALife {
 
 	/**
 	 * Create empty life instance.
-	 *
+	 * 
 	 * Used to copy life
 	 */
 	@Deprecated
@@ -160,9 +160,9 @@ public abstract class AbstractLife extends ALife {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * For future implementation.
-	 *
+	 * 
 	 * @Beta not yet used
 	 */
 	@Override
@@ -302,7 +302,7 @@ public abstract class AbstractLife extends ALife {
 
 	/**
 	 * Returns image used to visualise life.
-	 *
+	 * 
 	 * @return image of ALife
 	 */
 	protected final Image getImage() {

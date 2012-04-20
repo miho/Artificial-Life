@@ -6,8 +6,10 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 /**
- * <p>Abstract ALife class.</p>
- *
+ * <p>
+ * Abstract ALife class.
+ * </p>
+ * 
  * @author TC
  * @version 0.8
  * @since 31/01/2012
@@ -52,30 +54,34 @@ public abstract class ALife extends AbstractMapObject implements Cloneable,
 	protected Resource holding;
 	/**
 	 * Orienation of ALife on map. (UP,LEFT,RIGHT,DOWN)
-	 *
+	 * 
 	 * @see ORIENTATION
 	 */
 	protected ORIENTATION orientation;
 
 	/**
 	 * Tells the life to make its move for that turn.
-	 *
+	 * 
 	 * Interface for the life to have its 'turn', most likely delegated to a
 	 * brain or more complex system.
 	 */
 	public abstract void doMove();
 
 	/**
-	 * <p>isHoldingResource.</p>
-	 *
+	 * <p>
+	 * isHoldingResource.
+	 * </p>
+	 * 
 	 * @return true if holding resource
 	 */
 	@Beta
 	public abstract boolean isHoldingResource();
 
 	/**
-	 * <p>hasMoveInMemory.</p>
-	 *
+	 * <p>
+	 * hasMoveInMemory.
+	 * </p>
+	 * 
 	 * @param position
 	 *            to check for in memory
 	 * @return true if is in memory. (Memory often has range)
@@ -83,8 +89,10 @@ public abstract class ALife extends AbstractMapObject implements Cloneable,
 	public abstract boolean hasMoveInMemory(Point position);
 
 	/**
-	 * <p>Getter for the field <code>moveMemory</code>.</p>
-	 *
+	 * <p>
+	 * Getter for the field <code>moveMemory</code>.
+	 * </p>
+	 * 
 	 * @return whole memory list.
 	 */
 	// TODO should this be abstract
@@ -92,25 +100,29 @@ public abstract class ALife extends AbstractMapObject implements Cloneable,
 
 	/**
 	 * Append move to memory.
-	 *
+	 * 
 	 * If memory is limited could cut off oldest position. Uses queue syste.
 	 * FIFO.
-	 *
+	 * 
 	 * @param position
 	 *            point to add
 	 */
 	public abstract void addMoveToMemory(Point position);
 
 	/**
-	 * <p>getPositionAhead.</p>
-	 *
+	 * <p>
+	 * getPositionAhead.
+	 * </p>
+	 * 
 	 * @return using orientation get position one step ahead of life
 	 */
 	public abstract Point getPositionAhead();
 
 	/**
-	 * <p>getPositionAhead.</p>
-	 *
+	 * <p>
+	 * getPositionAhead.
+	 * </p>
+	 * 
 	 * @param steps
 	 *            how many steps ahead to get position of
 	 * @return using orientation get position 'x' steps ahead
@@ -119,7 +131,7 @@ public abstract class ALife extends AbstractMapObject implements Cloneable,
 
 	/**
 	 * Set the brain!!
-	 *
+	 * 
 	 * @param brain
 	 *            to set
 	 */
@@ -128,8 +140,10 @@ public abstract class ALife extends AbstractMapObject implements Cloneable,
 	}
 
 	/**
-	 * <p>Getter for the field <code>brain</code>.</p>
-	 *
+	 * <p>
+	 * Getter for the field <code>brain</code>.
+	 * </p>
+	 * 
 	 * @return brain in use.
 	 */
 	public final Brain getBrain() {
@@ -137,22 +151,28 @@ public abstract class ALife extends AbstractMapObject implements Cloneable,
 	}
 
 	/**
-	 * <p>getStartEnergy.</p>
-	 *
+	 * <p>
+	 * getStartEnergy.
+	 * </p>
+	 * 
 	 * @return gives the start energy for the life form
 	 */
 	protected abstract int getStartEnergy();
 
 	/**
-	 * <p>getMemoryLength.</p>
-	 *
+	 * <p>
+	 * getMemoryLength.
+	 * </p>
+	 * 
 	 * @return get memory length. Return -1 if no limit.
 	 */
 	public abstract int getMemoryLength();
 
 	/**
-	 * <p>getGene.</p>
-	 *
+	 * <p>
+	 * getGene.
+	 * </p>
+	 * 
 	 * @param gene
 	 *            ordinal of gene position
 	 * @return value associated with this ordinal value
@@ -162,8 +182,10 @@ public abstract class ALife extends AbstractMapObject implements Cloneable,
 	}
 
 	/**
-	 * <p>getGene.</p>
-	 *
+	 * <p>
+	 * getGene.
+	 * </p>
+	 * 
 	 * @param gene
 	 *            type
 	 * @return get value associated with gene type
@@ -173,8 +195,10 @@ public abstract class ALife extends AbstractMapObject implements Cloneable,
 	}
 
 	/**
-	 * <p>Setter for the field <code>energy</code>.</p>
-	 *
+	 * <p>
+	 * Setter for the field <code>energy</code>.
+	 * </p>
+	 * 
 	 * @param energy
 	 *            to set
 	 */
@@ -189,7 +213,7 @@ public abstract class ALife extends AbstractMapObject implements Cloneable,
 	}
 
 	/**
-	 *
+	 * 
 	 * @param p
 	 *            point
 	 */
@@ -197,9 +221,9 @@ public abstract class ALife extends AbstractMapObject implements Cloneable,
 
 	/**
 	 * Saved me time.
-	 *
+	 * 
 	 * this.energy -= decrementBy;
-	 *
+	 * 
 	 * @param decrementBy
 	 *            amount to remove off of energy.
 	 */
@@ -209,8 +233,10 @@ public abstract class ALife extends AbstractMapObject implements Cloneable,
 	}
 
 	/**
-	 * <p>Getter for the field <code>genes</code>.</p>
-	 *
+	 * <p>
+	 * Getter for the field <code>genes</code>.
+	 * </p>
+	 * 
 	 * @return full array of abstracted genes
 	 */
 	public final int[] getGenes() {
@@ -218,8 +244,10 @@ public abstract class ALife extends AbstractMapObject implements Cloneable,
 	}
 
 	/**
-	 * <p>Setter for the field <code>orientation</code>.</p>
-	 *
+	 * <p>
+	 * Setter for the field <code>orientation</code>.
+	 * </p>
+	 * 
 	 * @param orientation
 	 *            set new
 	 */
@@ -229,7 +257,7 @@ public abstract class ALife extends AbstractMapObject implements Cloneable,
 
 	/**
 	 * Alters orienation on map.
-	 *
+	 * 
 	 * @param o
 	 *            direction to change orientation too.
 	 */
@@ -249,9 +277,9 @@ public abstract class ALife extends AbstractMapObject implements Cloneable,
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * Turns the life form left.
-	 *
+	 * 
 	 * Will rotate the the life form to the left, respective to where it is
 	 * looking forward.
 	 */
@@ -260,9 +288,9 @@ public abstract class ALife extends AbstractMapObject implements Cloneable,
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * Turns the life form right.
-	 *
+	 * 
 	 * Will rotate the the life form to the right, respective to where it is
 	 * looking forward.
 	 */
@@ -277,7 +305,7 @@ public abstract class ALife extends AbstractMapObject implements Cloneable,
 
 	/**
 	 * Reset the life form values, ie memory, energy.
-	 *
+	 * 
 	 * Does not reset position.
 	 */
 	public abstract void reset();
@@ -294,9 +322,9 @@ public abstract class ALife extends AbstractMapObject implements Cloneable,
 
 	/**
 	 * Helper method.
-	 *
+	 * 
 	 * energy += i;
-	 *
+	 * 
 	 * @param i
 	 *            to add on to energy.
 	 */

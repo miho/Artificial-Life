@@ -19,6 +19,8 @@ import net.cammann.tom.fyp.core.Obstacle;
 import net.cammann.tom.fyp.core.Resource;
 import net.cammann.tom.fyp.core.SimpleResource;
 
+import org.apache.log4j.Logger;
+
 /**
  * Utility class for exporting /importing maps.
  * 
@@ -26,6 +28,11 @@ import net.cammann.tom.fyp.core.SimpleResource;
  * @version $Id: $
  */
 public final class MapUtils {
+
+	/**
+	 * Logger.
+	 */
+	private static final Logger logger = Logger.getLogger(MapUtils.class);
 
 	/**
 	 * Hide constructor for utility class.
@@ -57,17 +64,19 @@ public final class MapUtils {
 			// Write each resource
 			Resource r = null;
 			for (Iterator<MapObject> it = map.getResourceIterator(); it
-					.hasNext(); r = (Resource) it.next()) {
-
-				br.write(r.getX() + " " + r.getY() + " " + r.getCalories());
+					.hasNext();) {
+				r = (Resource) it.next();
+				br.write(r.getX() + " " + r.getY() + " "
+						+ (int) r.getCalories());
 				br.write("\n");
 			}
 			br.write("Obstacles\n");
 			Obstacle o = null;
 			// write each obstacle
 			for (Iterator<MapObject> it = map.getObstacleIterator(); it
-					.hasNext(); o = (Obstacle) it.next()) {
-				br.write(o.getX() + " " + o.getY() + " " + o.getRadius());
+					.hasNext();) {
+				o = (Obstacle) it.next();
+				br.write(o.getX() + " " + o.getY() + " " + (int) o.getRadius());
 				br.write("\n");
 			}
 
@@ -144,10 +153,10 @@ public final class MapUtils {
 				if (line.equals("Obstacles")) {
 					break;
 				}
-				if (line.equals("Resource")) {
+				if (line.equals("Resources")) {
 					continue;
 				}
-
+				logger.trace(line);
 				final String[] split = line.split(" ");
 				Resource r = new SimpleResource(Integer.valueOf(split[0]),
 						Integer.valueOf(split[1]));

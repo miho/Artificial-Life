@@ -8,7 +8,7 @@ import java.awt.Point;
  * @author TC
  * @version $Id: $
  */
-public class AbstractMapObject implements MapObject {
+public class AbstractMapObject implements MapObject, Comparable<MapObject> {
 
 	/**
 	 * Location of object.
@@ -91,5 +91,52 @@ public class AbstractMapObject implements MapObject {
 	 */
 	public final void setY(final int y) {
 		p.y = y;
+	}
+
+	@Override
+	public int compareTo(MapObject o) {
+		if (o == null) {
+			return 1;
+		}
+
+		if (p.x < o.getX()) {
+			return -1;
+		}
+		if (p.x > o.getX()) {
+			return 1;
+		}
+		if (p.y < o.getY()) {
+			return -1;
+		}
+		if (p.y > o.getY()) {
+			return 1;
+		}
+		if (radius < o.getRadius()) {
+			return -1;
+		}
+		if (radius > o.getRadius()) {
+			return 1;
+		}
+		return 0;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == null && this != null) {
+			return true;
+		}
+
+		if (o == null) {
+			return true;
+		}
+
+		if (o instanceof MapObject) {
+
+			if (compareTo((MapObject) o) == 0) {
+				return true;
+			}
+
+		}
+		return false;
 	}
 }

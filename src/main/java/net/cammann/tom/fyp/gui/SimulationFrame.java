@@ -27,6 +27,8 @@ import net.cammann.tom.fyp.core.AbstractEnvironmentMap;
 import net.cammann.tom.fyp.core.Beta;
 import net.cammann.tom.fyp.core.EnvironmentMap;
 import net.cammann.tom.fyp.utils.MapUtils;
+import net.cammann.tom.fyp.utils.VisibilityEvent;
+import net.cammann.tom.fyp.utils.VisibilityListener;
 
 import org.apache.log4j.Logger;
 
@@ -82,8 +84,9 @@ public class SimulationFrame {
 	private int simulationRate;
 
 	private final JFrame mainFrame;
+
 	/** Constant <code>loggingFrame</code> */
-	public static LoggingFrame loggingFrame = null;
+	public static LoggingFrame loggingFrame = LoggingFrame.getInstance();
 
 	/**
 	 * <p>
@@ -113,7 +116,6 @@ public class SimulationFrame {
 		mainFrame.setLocationByPlatform(true);
 		mainFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-		loggingFrame = new LoggingFrame(this);
 		mainFrame.addKeyListener(new KeyAdapter() {
 
 			@Override
@@ -256,6 +258,20 @@ public class SimulationFrame {
 
 		showLoggingFrame = new JCheckBoxMenuItem("Show Logger");
 		showLoggingFrame.setSelected(false);
+
+		loggingFrame.addVisibilityListener(new VisibilityListener() {
+
+			@Override
+			public void VisibilityChanged(VisibilityEvent e) {
+				if (e.isVisible()) {
+					showLoggingFrame.setSelected(true);
+				} else {
+					showLoggingFrame.setSelected(false);
+				}
+
+			}
+		});
+
 		showLoggingFrame.addItemListener(new ItemListener() {
 
 			@Override
