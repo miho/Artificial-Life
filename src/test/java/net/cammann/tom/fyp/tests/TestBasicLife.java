@@ -2,6 +2,7 @@ package net.cammann.tom.fyp.tests;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
 import java.util.Iterator;
 
 import junit.framework.Assert;
@@ -103,7 +104,15 @@ public final class TestBasicLife {
 				.getBlankMap(400, 400);
 		ALife life = new BasicLife(genes, map);
 
-		assertTrue(life.getGenes().equals(genes));
+		for (int i = 0; i < genes.length; i++) {
+			logger.debug("Compare gene " + i + " - " + genes[i] + " and "
+					+ life.getGenes()[i]);
+		}
+
+		logger.debug("Orig genes len: " + genes.length);
+		logger.debug("Copied genes len: " + life.getGenes().length);
+
+		assertTrue(Arrays.equals(life.getGenes(), genes));
 
 		for (int i = 0; i < genes.length; i++) {
 			assertTrue(life.getGene(i) == i);

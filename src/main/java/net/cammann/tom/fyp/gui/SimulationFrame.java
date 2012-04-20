@@ -392,7 +392,7 @@ public class SimulationFrame {
 
 			@Override
 			public void actionPerformed(final ActionEvent e) {
-				final ALife clone = life.clone();
+				final ALife clone = (ALife) life.clone();
 				clone.setX(new Random().nextInt((map.getWidth() + 1)
 						/ AbstractEnvironmentMap.STEP_SIZE)
 						* AbstractEnvironmentMap.STEP_SIZE);

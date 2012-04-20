@@ -23,7 +23,8 @@ public abstract class AbstractEnvironmentMap implements EnvironmentMap {
 	/**
 	 * Logger.
 	 */
-	private static Logger logger = Logger.getLogger(AbstractEnvironmentMap.class);
+	private static Logger logger = Logger
+			.getLogger(AbstractEnvironmentMap.class);
 
 	/**
 	 * Step size.
@@ -303,10 +304,10 @@ public abstract class AbstractEnvironmentMap implements EnvironmentMap {
 		if (hasResource(p)) {
 			final Resource r = (Resource) resourceList.getObject(p);
 			resourceList.removeObject(r);
-			life.energy += r.getCalories();
+			life.incrementEnergy((int) r.getCalories());
 			return true;
 		}
-		life.energy -= 5;
+		life.decrementEnegery(5);
 		return false;
 	}
 

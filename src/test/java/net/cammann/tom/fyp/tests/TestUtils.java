@@ -2,8 +2,8 @@ package net.cammann.tom.fyp.tests;
 
 import net.cammann.tom.fyp.commands.LifeCommand;
 import net.cammann.tom.fyp.core.ALife;
-import net.cammann.tom.fyp.core.AbstractLife;
 import net.cammann.tom.fyp.core.AbstractEnvironmentMap;
+import net.cammann.tom.fyp.core.AbstractLife;
 import net.cammann.tom.fyp.core.EnvironmentMap;
 import net.cammann.tom.fyp.core.Resource;
 
@@ -136,7 +136,7 @@ public final class TestUtils {
 		}
 
 		@Override
-		protected int getStartEnergy() {
+		public int getStartEnergy() {
 			return 100;
 		}
 

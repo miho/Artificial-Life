@@ -7,6 +7,7 @@ import java.awt.Point;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -23,14 +24,51 @@ import org.jgap.IChromosome;
  * @version 0.8
  * @since 31/01/2012
  */
-public abstract class AbstractLife extends ALife {
+public abstract class AbstractLife extends AbstractMapObject implements ALife {
 
 	/**
 	 * Logger.
 	 */
 	private static Logger logger = Logger.getLogger(AbstractLife.class);
 
-	// TODO make uMC private
+	@Beta
+	protected Resource holding;
+	/**
+	 * Orienation of ALife on map. (UP,LEFT,RIGHT,DOWN)
+	 * 
+	 * @see ORIENTATION
+	 */
+	protected ORIENTATION orientation;
+
+	/**
+	 * Move counter. After each move increment.
+	 */
+	public int moveCount = 0;
+
+	/**
+	 * Energy level of life.
+	 */
+	protected int energy;
+	/**
+	 * List of previous moves.
+	 */
+	protected List<Point> moveMemory;
+	/**
+	 * Extracted gene array.
+	 */
+	protected int[] genes;
+	/**
+	 * Brain object, that does thinking for ALife.
+	 */
+	protected Brain brain;
+	/**
+	 * Map object for referencing, sight, smell etc.
+	 */
+	protected EnvironmentMap map;
+	/**
+	 * Currently not used, could be used to hold a resource and move it.
+	 */
+
 	/**
 	 * Tracks number of moves which are 'unique', moves that have are not in the
 	 * move memory. Used in fitness function
@@ -53,7 +91,7 @@ public abstract class AbstractLife extends ALife {
 	 *            to copy
 	 */
 	public AbstractLife(final ALife life) {
-		this.map = life.map;
+		this.map = life.getMap();
 		setPosition(new Point(0, 0));
 		initBrain();
 
@@ -117,6 +155,14 @@ public abstract class AbstractLife extends ALife {
 	 */
 	public abstract void initBrain();
 
+	public final void setBrain(final Brain brain) {
+		this.brain = brain;
+	}
+
+	public final Brain getBrain() {
+		return brain;
+	}
+
 	/**
 	 * Constructor taking raw ints as gene values
 	 * 
@@ -149,6 +195,9 @@ public abstract class AbstractLife extends ALife {
 
 	}
 
+	@Override
+	public abstract Object clone();
+
 	/** {@inheritDoc} */
 	@Override
 	public final void reset() {
@@ -170,6 +219,92 @@ public abstract class AbstractLife extends ALife {
 	public final boolean pickUpResource() {
 		return false;
 
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public final int getGene(final int gene) {
+		return genes[gene];
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public final int getGene(final GENE_TYPE gene) {
+		return getGene(gene.ordinal());
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public final EnvironmentMap getMap() {
+		return map;
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public final boolean consume() {
+		return map.consumeResource(this);
+	}
+
+	/** {@inheritDoc} */
+	public final void incrementEnergy(final int i) {
+		energy += i;
+
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public final void setEnergy(final int energy) {
+		this.energy = energy;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public final void decrementEnegery(final int decrementBy) {
+		this.energy -= decrementBy;
+
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public final int[] getGenes() {
+		return Arrays.copyOf(genes, genes.length);
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public final ORIENTATION getOrientation() {
+		return orientation;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public final void setOrientation(final int o) {
+		if (o < 0 || o > ORIENTATION.values().length - 1) {
+			throw new IllegalArgumentException("Cannot set orientation to: "
+					+ o);
+		}
+		this.orientation = ORIENTATION.values()[o];
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public final void setOrientation(final ORIENTATION orientation) {
+		this.orientation = orientation;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public final int getEnergy() {
+		return energy;
 	}
 
 	/** {@inheritDoc} */
@@ -407,6 +542,13 @@ public abstract class AbstractLife extends ALife {
 	@Override
 	public final void draw(final Graphics2D g2) {
 		g2.drawImage(getImage(), getX(), getY(), null);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public int getMoveCount() {
+		return moveCount;
 	}
 
 }

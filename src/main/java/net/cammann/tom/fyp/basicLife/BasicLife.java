@@ -21,64 +21,74 @@ import org.jgap.IChromosome;
 
 /**
  * Life form that uses basic brain as thinking module.
- *
+ * 
  * @author TC
  * @version $Id: $
  */
 public final class BasicLife extends AbstractLife {
-	
+
 	/**
-	 * <p>Constructor for BasicLife.</p>
-	 *
-	 * @param chrome a {@link org.jgap.IChromosome} object.
-	 * @param map a {@link net.cammann.tom.fyp.core.EnvironmentMap} object.
+	 * <p>
+	 * Constructor for BasicLife.
+	 * </p>
+	 * 
+	 * @param chrome
+	 *            a {@link org.jgap.IChromosome} object.
+	 * @param map
+	 *            a {@link net.cammann.tom.fyp.core.EnvironmentMap} object.
 	 */
 	public BasicLife(final IChromosome chrome, final EnvironmentMap map) {
 		super(chrome, map);
 	}
-	
+
 	/**
-	 * <p>Constructor for BasicLife.</p>
-	 *
-	 * @param genes an array of int.
-	 * @param map a {@link net.cammann.tom.fyp.core.EnvironmentMap} object.
+	 * <p>
+	 * Constructor for BasicLife.
+	 * </p>
+	 * 
+	 * @param genes
+	 *            an array of int.
+	 * @param map
+	 *            a {@link net.cammann.tom.fyp.core.EnvironmentMap} object.
 	 */
 	public BasicLife(final int[] genes, final EnvironmentMap map) {
 		super(genes, map);
 	}
-	
+
 	/**
-	 * <p>Constructor for BasicLife.</p>
+	 * <p>
+	 * Constructor for BasicLife.
+	 * </p>
 	 */
 	public BasicLife() {
 		// null instance
 		//
 	}
-	
+
 	/** {@inheritDoc} */
 	@Override
 	public ALife clone() {
 		return new BasicLife(genes, map);
 	}
-	
+
 	/** {@inheritDoc} */
 	@Override
 	public LifeCommand[] getCommandList() {
-		
+
 		final LifeCommand doNothing = new LifeCommand("Nothing") {
-			
+
 			@Override
 			public void execute(final Commandable life) {
-				
+
 			}
 		};
-		
+
 		final LifeCommand[] commands = {
 				new ConsumeCommand(),
 				new ForwardCommand(),
 				new TurnLeftCommand(),
 				new TurnRightCommand(),
-				
+
 				new MoveTowardsUp(),
 				new MoveTowardsRight(),
 				new MoveTowardsDown(),
@@ -107,39 +117,39 @@ public final class BasicLife extends AbstractLife {
 						new MoveTowardsRight(), new MoveTowardsUp()),
 				new RandomCommand("Not Left and Not Right",
 						new MoveTowardsUp(), new MoveTowardsDown()) };
-		
+
 		return commands;
 	}
-	
+
 	/** {@inheritDoc} */
 	@Override
 	public void initBrain() {
 		setBrain(new BasicBrain(this));
-		
+
 	}
-	
+
 	/** {@inheritDoc} */
 	@Override
 	public int getMemoryLength() {
 		return getGene(GENE_TYPE.MEMORY_LENGTH);
 	}
-	
+
 	/** {@inheritDoc} */
 	@Override
 	public boolean dropResource() {
 		return false;
 	}
-	
+
 	/** {@inheritDoc} */
 	@Override
 	public boolean canConsumeResource(final Resource r) {
 		// TODO Auto-generated method stub
 		return true;
 	}
-	
+
 	/** {@inheritDoc} */
 	@Override
-	protected int getStartEnergy() {
+	public int getStartEnergy() {
 		return getGene(0);
 	}
 }
