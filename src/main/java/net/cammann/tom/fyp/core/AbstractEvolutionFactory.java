@@ -13,13 +13,13 @@ import org.jgap.gp.IGPProgram;
  */
 public abstract class AbstractEvolutionFactory implements EvolutionFactory {
 	
-	protected int num_fit_func_cycles = 1;
+	protected int num_fit_func_cycles = 3;
 	protected int num_fit_func_alife_clones = 1;
-	protected int fit_func_run_len = 100;
-	protected int numOfResources = 100;
+	protected int fit_func_run_len = 400;
+	protected int numOfResources = 200;
 	protected int numOfObstacles = 0;
-	protected int mapWidth = 400;
-	protected int mapHeight = 200;
+	protected int mapWidth = 600;
+	protected int mapHeight = 400;
 	
 	/** {@inheritDoc} */
 	@Override

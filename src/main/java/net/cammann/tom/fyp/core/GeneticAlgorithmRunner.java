@@ -74,7 +74,7 @@ public final class GeneticAlgorithmRunner implements EvolutionModule {
 	 */
 	public GeneticAlgorithmRunner(final EvolutionFactory factory) {
 		this.factory = factory;
-		popSize = 100;
+		popSize = 1000;
 		
 		generations = 60;
 		

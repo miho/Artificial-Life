@@ -79,7 +79,7 @@ public final class SimulationLauncher {
 		
 		LoggingFrame.getInstance().setVisible("simCon", true);
 		
-		evolutionModule.setMaxGenerations(10);
+		evolutionModule.setMaxGenerations(60);
 		// g.setPopulationSize(100);
 		
 		bll.createAndShowGui();

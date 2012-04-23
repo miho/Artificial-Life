@@ -23,7 +23,7 @@ public interface EnvironmentMap {
 	 * 
 	 * @return map height
 	 */
-	public int getHeight();
+	int getHeight();
 	
 	/**
 	 * <p>
@@ -32,7 +32,7 @@ public interface EnvironmentMap {
 	 * 
 	 * @return map width
 	 */
-	public int getWidth();
+	int getWidth();
 	
 	/**
 	 * <p>
@@ -41,17 +41,17 @@ public interface EnvironmentMap {
 	 * 
 	 * @return size of map
 	 */
-	public Dimension getDimension();
+	Dimension getDimension();
 	
 	/**
-	 * Check positions validity
+	 * Check positions validity.
 	 * 
 	 * @return true if the position does not contain an obstacle or is off the
 	 *         map. False if on top of a obstacle or off the map.
 	 * @param p
 	 *            a {@link java.awt.Point} object.
 	 */
-	public boolean validPosition(Point p);
+	boolean validPosition(Point p);
 	
 	/**
 	 * Check positions validity.
@@ -84,11 +84,11 @@ public interface EnvironmentMap {
 	Iterator<MapObject> getObstacleIterator();
 	
 	/**
-	 * Provides an iterator for listing ALife currently on the map
+	 * Provides an iterator for listing ALife currently on the map.
 	 * 
 	 * @return a {@link java.util.Iterator} object.
 	 */
-	public Iterator<ALife> getLifeIterator();
+	Iterator<ALife> getLifeIterator();
 	
 	/**
 	 * <p>
@@ -101,7 +101,7 @@ public interface EnvironmentMap {
 	 *            a int.
 	 * @return true if position contains a resource
 	 */
-	public boolean hasResource(int x, int y);
+	boolean hasResource(int x, int y);
 	
 	/**
 	 * <p>
@@ -112,16 +112,16 @@ public interface EnvironmentMap {
 	 *            arbitary position on map
 	 * @return true if position contains a resource
 	 */
-	public boolean hasResource(Point p);
+	boolean hasResource(Point p);
 	
 	/**
-	 * Checks position for life form
+	 * Checks position for life form.
 	 * 
 	 * @param p
 	 *            a {@link java.awt.Point} object.
 	 * @return true if position has life form
 	 */
-	public boolean hasLife(Point p);
+	boolean hasLife(Point p);
 	
 	/**
 	 * Uses life to consume resource
@@ -161,7 +161,7 @@ public interface EnvironmentMap {
 	boolean addLife(ALife life);
 	
 	/**
-	 * Removes life from the map
+	 * Removes life from the map.
 	 * 
 	 * Directly removes the ALife from the current map
 	 * 
@@ -173,7 +173,7 @@ public interface EnvironmentMap {
 	boolean removeLife(ALife life);
 	
 	/**
-	 * Removes life from the map
+	 * Removes life from the map.
 	 * 
 	 * Directly removes the ALife from the current map
 	 * 
@@ -182,7 +182,7 @@ public interface EnvironmentMap {
 	 *            a {@link java.awt.Point} object.
 	 */
 	@Deprecated
-	public boolean removeLife(Point p);
+	boolean removeLife(Point p);
 	
 	/**
 	 * <p>
@@ -191,14 +191,14 @@ public interface EnvironmentMap {
 	 * 
 	 * @return a int.
 	 */
-	public int getTimeFrameNo();
+	int getTimeFrameNo();
 	
 	/**
 	 * <p>
 	 * incrementTimeFrame.
 	 * </p>
 	 */
-	public void incrementTimeFrame();
+	void incrementTimeFrame();
 	
 	/**
 	 * <p>
@@ -207,7 +207,7 @@ public interface EnvironmentMap {
 	 * 
 	 * @return a {@link java.util.List} object.
 	 */
-	public List<Paintable> getLifePaintables();
+	List<Paintable> getLifePaintables();
 	
 	/**
 	 * <p>
@@ -216,7 +216,8 @@ public interface EnvironmentMap {
 	 * 
 	 * @return a {@link java.util.List} object.
 	 */
-	public List<Paintable> getObstaclePaintables();
+	
+	List<Paintable> getObstaclePaintables();
 	
 	/**
 	 * <p>
@@ -225,7 +226,8 @@ public interface EnvironmentMap {
 	 * 
 	 * @return a {@link java.util.List} object.
 	 */
-	public List<Paintable> getResourcePaintables();
+	
+	List<Paintable> getResourcePaintables();
 	
 	void placeLife(final ALife life);
 	

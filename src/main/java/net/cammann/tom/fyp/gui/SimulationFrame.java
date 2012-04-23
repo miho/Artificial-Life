@@ -465,7 +465,7 @@ public class SimulationFrame {
 	 */
 	public void setTimerListener() {
 		
-		timer = new Timer(1000, new ActionListener() {
+		timer = new Timer(simulationRate, new ActionListener() {
 			
 			@Override
 			public void actionPerformed(final ActionEvent arg0) {
