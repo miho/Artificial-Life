@@ -21,11 +21,11 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.Timer;
 
-import net.cammann.tom.fyp.basicLife.BasicLife;
 import net.cammann.tom.fyp.core.ALife;
 import net.cammann.tom.fyp.core.AbstractEnvironmentMap;
 import net.cammann.tom.fyp.core.Beta;
 import net.cammann.tom.fyp.core.EnvironmentMap;
+import net.cammann.tom.fyp.ga.BasicLife;
 import net.cammann.tom.fyp.utils.MapUtils;
 import net.cammann.tom.fyp.utils.VisibilityEvent;
 import net.cammann.tom.fyp.utils.VisibilityListener;
@@ -42,7 +42,7 @@ import org.apache.log4j.Logger;
  * @since 31/01/2012
  */
 public class SimulationFrame {
-
+	
 	private final EnvironmentMap map;
 	/**
 	 * Time frames per second for simulation in slow mode.
@@ -64,7 +64,7 @@ public class SimulationFrame {
 	 * Logger.
 	 */
 	private static Logger logger = Logger.getLogger(SimulationFrame.class);
-
+	
 	/**
 	 * Remove life menu.
 	 */
@@ -73,21 +73,21 @@ public class SimulationFrame {
 	 * Clone life menu.
 	 */
 	private final JMenu cloneLife = new JMenu("Clone Genotype");
-
+	
 	/**
 	 * Check box for whether logging frame is visibile or not.
 	 */
 	private JCheckBoxMenuItem showLoggingFrame;
-
+	
 	private Timer timer = null;
 	private JPanel mapPanel = null;
 	private int simulationRate;
-
+	
 	private final JFrame mainFrame;
-
+	
 	/** Constant <code>loggingFrame</code> */
 	public static LoggingFrame loggingFrame = LoggingFrame.getInstance();
-
+	
 	/**
 	 * <p>
 	 * Constructor for SimulationFrame.
@@ -98,16 +98,16 @@ public class SimulationFrame {
 	 */
 	public SimulationFrame(final EnvironmentMap map) {
 		this.map = map;
-
+		
 		try {
 			// UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (final Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-
+		
 		setTimerListener();
-
+		
 		mapPanel = new MapPanel(map);
 		mainFrame = new JFrame();
 		mainFrame.setJMenuBar(createJMenuBar());
@@ -115,9 +115,9 @@ public class SimulationFrame {
 		mainFrame.setSize(map.getWidth() + 200, map.getHeight() + 100);
 		mainFrame.setLocationByPlatform(true);
 		mainFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
+		
 		mainFrame.addKeyListener(new KeyAdapter() {
-
+			
 			@Override
 			public void keyPressed(final KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
@@ -126,7 +126,7 @@ public class SimulationFrame {
 					} else {
 						pause();
 					}
-
+					
 				}
 				if (e.getKeyCode() == KeyEvent.VK_F) {
 					moveOnce();
@@ -140,140 +140,140 @@ public class SimulationFrame {
 				if (e.getKeyCode() == KeyEvent.VK_X) {
 					mainFrame.dispose();
 				}
-
+				
 			}
 		});
 	}
-
+	
 	private JMenuBar createJMenuBar() {
 		final JMenuBar bar = new JMenuBar();
-
+		
 		JMenu menu = new JMenu("Simulation");
 		menu.setMnemonic(KeyEvent.VK_S);
-
+		
 		final JMenuItem start = new JMenuItem("Start");
-
+		
 		start.addActionListener(new ActionListener() {
-
+			
 			@Override
 			public void actionPerformed(final ActionEvent arg0) {
 				start();
-
+				
 			}
 		});
-
+		
 		menu.add(start);
 		final JMenuItem pause = new JMenuItem("Pause");
 		pause.addActionListener(new ActionListener() {
-
+			
 			@Override
 			public void actionPerformed(final ActionEvent arg0) {
 				pause();
-
+				
 			}
 		});
-
+		
 		menu.add(pause);
-
+		
 		final JMenuItem stop = new JMenuItem("Stop");
 		stop.addActionListener(new ActionListener() {
-
+			
 			@Override
 			public void actionPerformed(final ActionEvent arg0) {
 				stop();
-
+				
 			}
 		});
 		stop.setMnemonic(KeyEvent.VK_S);
 		menu.add(stop);
-
+		
 		menu.addSeparator();
-
+		
 		menu.add(new JLabel("Simulation Speed"));
-
+		
 		final ButtonGroup group = new ButtonGroup();
 		JRadioButtonMenuItem item = new JRadioButtonMenuItem("Super Fast");
 		item.addActionListener(new ActionListener() {
-
+			
 			@Override
 			public void actionPerformed(final ActionEvent arg0) {
 				setSimulationRate(V_FAST_SIMULATION_RATE);
 			}
 		});
-
+		
 		group.add(item);
 		menu.add(item);
 		item = new JRadioButtonMenuItem("Fast");
 		item.addActionListener(new ActionListener() {
-
+			
 			@Override
 			public void actionPerformed(final ActionEvent arg0) {
 				setSimulationRate(FAST_SIMULATION_RATE);
 			}
 		});
-
+		
 		group.add(item);
 		menu.add(item);
 		item = new JRadioButtonMenuItem("Normal");
 		item.addActionListener(new ActionListener() {
-
+			
 			@Override
 			public void actionPerformed(final ActionEvent arg0) {
 				setSimulationRate(MED_SIMULATION_RATE);
 			}
 		});
 		item.setSelected(true);
-
+		
 		group.add(item);
 		menu.add(item);
 		item = new JRadioButtonMenuItem("Slow");
 		item.addActionListener(new ActionListener() {
-
+			
 			@Override
 			public void actionPerformed(final ActionEvent arg0) {
 				setSimulationRate(SLOW_SIMULATION_RATE);
 			}
 		});
-
+		
 		group.add(item);
 		menu.add(item);
-
+		
 		menu.addSeparator();
 		final JMenuItem exit = new JMenuItem("Exit");
-
+		
 		exit.addActionListener(new ActionListener() {
-
+			
 			@Override
 			public void actionPerformed(final ActionEvent e) {
 				System.exit(0);
-
+				
 			}
 		});
-
+		
 		menu.add(exit);
-
+		
 		bar.add(menu);
-
+		
 		menu = new JMenu("View");
-
+		
 		showLoggingFrame = new JCheckBoxMenuItem("Show Logger");
 		showLoggingFrame.setSelected(false);
-
+		
 		loggingFrame.addVisibilityListener(new VisibilityListener() {
-
+			
 			@Override
-			public void VisibilityChanged(VisibilityEvent e) {
+			public void VisibilityChanged(final VisibilityEvent e) {
 				if (e.isVisible()) {
 					showLoggingFrame.setSelected(true);
 				} else {
 					showLoggingFrame.setSelected(false);
 				}
-
+				
 			}
 		});
-
+		
 		showLoggingFrame.addItemListener(new ItemListener() {
-
+			
 			@Override
 			public void itemStateChanged(final ItemEvent e) {
 				if (e.getStateChange() == ItemEvent.DESELECTED) {
@@ -284,31 +284,31 @@ public class SimulationFrame {
 					if (!loggingFrame.isVisible()) {
 						showLogFrame();
 					}
-
+					
 				}
 			}
 		});
 		menu.add(showLoggingFrame);
 		bar.add(menu);
-
+		
 		menu = new JMenu("Life");
-
+		
 		final JMenuItem exportItem = new JMenuItem("Export Geneotype");
-
+		
 		exportItem.addActionListener(new ActionListener() {
-
+			
 			@Override
 			public void actionPerformed(final ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				// Save to csv
 			}
 		});
-
+		
 		menu.add(exportItem);
-
+		
 		final JMenuItem addLifeItem = new JMenuItem("Add Geneotype");
 		addLifeItem.addActionListener(new ActionListener() {
-
+			
 			@Override
 			@Beta
 			public void actionPerformed(final ActionEvent e) {
@@ -319,7 +319,7 @@ public class SimulationFrame {
 				final int[] genes = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
 						13, 14, 15, 16, 17, 18, 19, 19, 19, 19, 19, 19, 19, 19,
 						19, 19 };
-
+				
 				final ALife life = new BasicLife(genes, map);
 				life.setX(new Random().nextInt((map.getWidth() + 1)
 						/ AbstractEnvironmentMap.STEP_SIZE)
@@ -329,27 +329,27 @@ public class SimulationFrame {
 						* AbstractEnvironmentMap.STEP_SIZE);
 				// map.addLife(life);
 				// TODO add back in.
-
+				
 				addLifeToMenu(life);
 			}
 		});
 		menu.add(addLifeItem);
-
+		
 		// TODO add back in
 		// for (final ALife i : sc.getLife()) {
 		// addLifeToMenu(i);
 		// }
-
+		
 		menu.add(cloneLife);
 		menu.add(removeLife);
-
+		
 		bar.add(menu);
-
+		
 		menu = new JMenu("Map");
-
+		
 		final JMenuItem exportMap = new JMenuItem("Export Map");
 		exportMap.addActionListener(new ActionListener() {
-
+			
 			@Override
 			public void actionPerformed(final ActionEvent arg0) {
 				final String home = System.getProperty("user.home");
@@ -361,11 +361,11 @@ public class SimulationFrame {
 				}
 			}
 		});
-
+		
 		menu.add(exportMap);
 		final JMenuItem importMap = new JMenuItem("Import Map");
 		importMap.addActionListener(new ActionListener() {
-
+			
 			@Override
 			public void actionPerformed(final ActionEvent arg0) {
 				final String home = System.getProperty("user.home");
@@ -382,19 +382,19 @@ public class SimulationFrame {
 		// final JMenuItem mapEdit = new JMenuItem("Edit Map");
 		// TODO implement this.
 		bar.add(menu);
-
+		
 		return bar;
-
+		
 	}
-
+	
 	private void addLifeToMenu(final ALife life) {
-
+		
 		final int numItems = removeLife.getItemCount();
 		final JMenuItem cloneItem = new JMenuItem("Life " + numItems);
 		final JMenuItem removeItem = new JMenuItem("Life " + numItems);
-
+		
 		cloneItem.addActionListener(new ActionListener() {
-
+			
 			@Override
 			public void actionPerformed(final ActionEvent e) {
 				final ALife clone = (ALife) life.clone();
@@ -414,16 +414,16 @@ public class SimulationFrame {
 			}
 		});
 		cloneLife.add(cloneItem);
-
+		
 		removeItem.addActionListener(new ActionListener() {
-
+			
 			@Override
 			public void actionPerformed(final ActionEvent e) {
 				// TODO add this back in
 				// sc.removeLife(life);
 				cloneLife.remove(cloneItem);
 				removeLife.remove(removeItem);
-
+				
 				if (removeLife.getItemCount() == 0) {
 					removeLife.setEnabled(false);
 					cloneLife.setEnabled(false);
@@ -431,13 +431,13 @@ public class SimulationFrame {
 			}
 		});
 		removeLife.add(removeItem);
-
+		
 		if (!removeLife.isEnabled()) {
 			cloneLife.setEnabled(true);
 			removeLife.setEnabled(true);
 		}
 	}
-
+	
 	/**
 	 * <p>
 	 * hideLogFrame.
@@ -447,7 +447,7 @@ public class SimulationFrame {
 		loggingFrame.setVisible("hideLogFrame", false);
 		showLoggingFrame.setSelected(false);
 	}
-
+	
 	/**
 	 * <p>
 	 * showLogFrame.
@@ -457,31 +457,31 @@ public class SimulationFrame {
 		loggingFrame.setVisible("simFrame", true);
 		showLoggingFrame.setSelected(true);
 	}
-
+	
 	/**
 	 * <p>
 	 * setTimerListener.
 	 * </p>
 	 */
 	public void setTimerListener() {
-
+		
 		timer = new Timer(1000, new ActionListener() {
-
+			
 			@Override
 			public void actionPerformed(final ActionEvent arg0) {
 				logger.trace("tick.");
-
+				
 				map.incrementTimeFrame();
-
+				
 				logger.trace("About to...");
 				mainFrame.repaint();
 				logger.trace("Repaint.");
-
+				
 			}
 		});
-
+		
 	}
-
+	
 	/**
 	 * <p>
 	 * isStopped.
@@ -492,7 +492,7 @@ public class SimulationFrame {
 	public boolean isStopped() {
 		return !timer.isRunning();
 	}
-
+	
 	/**
 	 * <p>
 	 * moveOnce.
@@ -501,7 +501,7 @@ public class SimulationFrame {
 	public void moveOnce() {
 		map.incrementTimeFrame();
 	}
-
+	
 	/**
 	 * <p>
 	 * start.
@@ -510,7 +510,7 @@ public class SimulationFrame {
 	public void start() {
 		timer.start();
 	}
-
+	
 	/**
 	 * <p>
 	 * pause.
@@ -519,7 +519,7 @@ public class SimulationFrame {
 	public void pause() {
 		timer.stop();
 	}
-
+	
 	/**
 	 * <p>
 	 * stop.
@@ -535,7 +535,7 @@ public class SimulationFrame {
 		mainFrame.repaint();
 		setTimerListener();
 	}
-
+	
 	/**
 	 * <p>
 	 * reset.
@@ -543,10 +543,10 @@ public class SimulationFrame {
 	 */
 	public void reset() {
 		stop();
-
+		
 		start();
 	}
-
+	
 	/**
 	 * <p>
 	 * getMoveCount.
@@ -557,7 +557,7 @@ public class SimulationFrame {
 	public int getMoveCount() {
 		return map.getTimeFrameNo();
 	}
-
+	
 	/**
 	 * <p>
 	 * Setter for the field <code>simulationRate</code>.
@@ -575,9 +575,9 @@ public class SimulationFrame {
 		} else {
 			setTimerListener();
 		}
-
+		
 	}
-
+	
 	/**
 	 * <p>
 	 * Getter for the field <code>simulationRate</code>.
@@ -588,7 +588,7 @@ public class SimulationFrame {
 	public int getSimulationRate() {
 		return simulationRate;
 	}
-
+	
 	/**
 	 * <p>
 	 * setVisible.
@@ -599,9 +599,9 @@ public class SimulationFrame {
 	 */
 	public void setVisible(final boolean b) {
 		mainFrame.setVisible(true);
-
+		
 	}
-
+	
 	/**
 	 * <p>
 	 * createAndShowGUI.
@@ -614,5 +614,5 @@ public class SimulationFrame {
 		frame.setVisible(true);
 		frame.start();
 	}
-
+	
 }

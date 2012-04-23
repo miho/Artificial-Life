@@ -1,4 +1,4 @@
-package net.cammann.tom.fyp.basicLife;
+package net.cammann.tom.fyp.ga;
 
 import java.awt.Point;
 import java.util.ArrayList;

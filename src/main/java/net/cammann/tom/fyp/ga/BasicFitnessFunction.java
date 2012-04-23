@@ -1,4 +1,4 @@
-package net.cammann.tom.fyp.basicLife;
+package net.cammann.tom.fyp.ga;
 
 import net.cammann.tom.fyp.core.ALife;
 import net.cammann.tom.fyp.core.AbstractLife;

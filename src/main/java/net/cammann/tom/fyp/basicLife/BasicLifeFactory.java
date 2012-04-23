@@ -6,6 +6,8 @@ import net.cammann.tom.fyp.core.ALife;
 import net.cammann.tom.fyp.core.AbstractEvolutionFactory;
 import net.cammann.tom.fyp.core.AbstractLife;
 import net.cammann.tom.fyp.core.EnvironmentMap;
+import net.cammann.tom.fyp.ga.BasicFitnessFunction;
+import net.cammann.tom.fyp.ga.BasicLife;
 import net.cammann.tom.fyp.gp.ALifeGP;
 import net.cammann.tom.fyp.gp.GPLifeFitFunc;
 
@@ -24,74 +26,74 @@ import org.jgap.gp.IGPProgram;
  * @version $Id: $
  */
 public final class BasicLifeFactory extends AbstractEvolutionFactory {
-
+	
 	/**
 	 * Logger.
 	 */
 	private static Logger logger = Logger.getLogger(BasicLife.class);
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public ALife createLife(final int[] genes, final EnvironmentMap map) {
 		return new BasicLife(genes, map);
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public ALife createLife(final IChromosome chromo, final EnvironmentMap map) {
 		return new BasicLife(chromo, map);
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public FitnessFunction getFitnessFunction() {
 		return new BasicFitnessFunction(this);
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public ALife createLife(final IGPProgram gp, final EnvironmentMap map) {
 		return new ALifeGP(gp, map);
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public EnvironmentMap createMap() {
 		return new BasicMap(mapWidth, mapHeight, numOfResources, numOfObstacles);
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public GPFitnessFunction getGPFitnessFunction() {
 		return new GPLifeFitFunc(this);
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public ALife createLife(final ALife life, final EnvironmentMap map) {
 		final ALife secondLife = (ALife) life.clone();
 		secondLife.reset();
-
+		
 		try {
-			Field mapField = AbstractLife.class.getDeclaredField("map");
+			final Field mapField = AbstractLife.class.getDeclaredField("map");
 			mapField.setAccessible(true);
-
+			
 			mapField.set(secondLife, map);
-
-		} catch (Exception e) {
+			
+		} catch (final Exception e) {
 			logger.error(e.getStackTrace(), e);
 			return null;
 		}
-
+		
 		map.addLife(secondLife);
-
+		
 		return secondLife;
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public ALife nullInstance() {
 		return new BasicLife();
 	}
-
+	
 }

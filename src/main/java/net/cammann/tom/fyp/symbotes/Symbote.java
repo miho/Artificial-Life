@@ -2,7 +2,6 @@ package net.cammann.tom.fyp.symbotes;
 
 import java.lang.reflect.Method;
 
-import net.cammann.tom.fyp.basicLife.BasicBrain;
 import net.cammann.tom.fyp.commands.ConsumeCommand;
 import net.cammann.tom.fyp.commands.DropResourceCommand;
 import net.cammann.tom.fyp.commands.ForwardCommand;
@@ -22,6 +21,7 @@ import net.cammann.tom.fyp.core.Commandable;
 import net.cammann.tom.fyp.core.EnvironmentMap;
 import net.cammann.tom.fyp.core.Resource;
 import net.cammann.tom.fyp.core.Resource.ResourceType;
+import net.cammann.tom.fyp.ga.BasicBrain;
 
 import org.apache.log4j.Logger;
 import org.jgap.IChromosome;
@@ -33,19 +33,19 @@ import org.jgap.IChromosome;
  * @version $Id: $
  */
 public final class Symbote extends AbstractLife {
-
+	
 	static Logger logger = Logger.getLogger(Symbote.class);
 	private ResourceType consumable, droppable;
-
+	
 	/**
 	 * <p>
 	 * Constructor for Symbote.
 	 * </p>
 	 */
 	public Symbote() {
-
+		
 	}
-
+	
 	/**
 	 * <p>
 	 * Constructor for Symbote.
@@ -67,9 +67,9 @@ public final class Symbote extends AbstractLife {
 		super(chrome, map);
 		this.consumable = c;
 		this.droppable = d;
-
+		
 	}
-
+	
 	/**
 	 * <p>
 	 * Constructor for Symbote.
@@ -91,9 +91,9 @@ public final class Symbote extends AbstractLife {
 		super(genes, map);
 		this.consumable = c;
 		this.droppable = d;
-
+		
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public boolean dropResource() {
@@ -105,23 +105,23 @@ public final class Symbote extends AbstractLife {
 					.getDeclaredMethod("addResource",
 							new Class<?>[] { Resource.class });
 			addResource.setAccessible(true);
-
+			
 			final Resource r = new SymbResource(getPosition(), droppable);
-
+			
 			final Object out = addResource.invoke(map, r);
-
+			
 			if (!(Boolean) out) {
 				logger.info("failed to drop resource, not sure why..");
 				return false;
 			}
-
+			
 			decrementEnegery(70);
 		} catch (final Exception e) {
 			logger.fatal("Could not use refelection to add resource: ", e);
 		}
 		return true;
 	}
-
+	
 	/**
 	 * <p>
 	 * Constructor for Symbote.
@@ -134,9 +134,9 @@ public final class Symbote extends AbstractLife {
 	 */
 	public Symbote(final int genes[], final EnvironmentMap map) {
 		super(genes, map);
-
+		
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public boolean canConsumeResource(final Resource r) {
@@ -145,28 +145,28 @@ public final class Symbote extends AbstractLife {
 		}
 		return false;
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public ALife clone() {
 		return new Symbote(genes, map, consumable, droppable);
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public void initBrain() {
 		setBrain(new BasicBrain(this));
-
+		
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public LifeCommand[] getCommandList() {
 		final LifeCommand doNothing = new LifeCommand("Nothing") {
-
+			
 			@Override
 			public void execute(final Commandable life) {
-
+				
 			}
 		};
 		final LifeCommand commands[] = {
@@ -213,20 +213,20 @@ public final class Symbote extends AbstractLife {
 						new RandomCommand("Turn Left or Right",
 								new TurnLeftCommand(), new TurnRightCommand(),
 								new ForwardCommand())) };
-
+		
 		return commands;
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public int getMemoryLength() {
 		return getGene(net.cammann.tom.fyp.core.GENE_TYPE.MEMORY_LENGTH);
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public int getStartEnergy() {
 		return getGene(0);
 	}
-
+	
 }

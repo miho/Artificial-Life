@@ -8,8 +8,10 @@ import org.jgap.FitnessFunction;
 import org.jgap.IChromosome;
 
 /**
- * <p>Abstract SimpleFitnessFunction class.</p>
- *
+ * <p>
+ * Abstract SimpleFitnessFunction class.
+ * </p>
+ * 
  * @author tc
  * @version $Id: $
  */
@@ -19,9 +21,12 @@ public abstract class SimpleFitnessFunction extends FitnessFunction {
 	static Logger logger = Logger.getLogger(SimpleFitnessFunction.class);
 	
 	/**
-	 * <p>Constructor for SimpleFitnessFunction.</p>
-	 *
-	 * @param fact a {@link net.cammann.tom.fyp.core.EvolutionFactory} object.
+	 * <p>
+	 * Constructor for SimpleFitnessFunction.
+	 * </p>
+	 * 
+	 * @param fact
+	 *            a {@link net.cammann.tom.fyp.core.EvolutionFactory} object.
 	 */
 	public SimpleFitnessFunction(final EvolutionFactory fact) {
 		this.factory = fact;
@@ -29,9 +34,12 @@ public abstract class SimpleFitnessFunction extends FitnessFunction {
 	}
 	
 	/**
-	 * <p>run.</p>
-	 *
-	 * @param chromo a {@link org.jgap.IChromosome} object.
+	 * <p>
+	 * run.
+	 * </p>
+	 * 
+	 * @param chromo
+	 *            a {@link org.jgap.IChromosome} object.
 	 * @return a double.
 	 */
 	protected double run(final IChromosome chromo) {
@@ -45,22 +53,25 @@ public abstract class SimpleFitnessFunction extends FitnessFunction {
 		final EnvironmentMap map = factory.createMap();
 		final List<ALife> lifeList = new ArrayList<ALife>();
 		
-		for (int j = 0; j < num_clones; j++) {
+		for ( int j = 0 ; j < num_clones ; j++ ) {
 			// sc.addLife(fact.createLife(chromo, map));
 			final ALife life = factory.createLife(chromo, map);
 			lifeList.add(life);
-			map.addLife(life);
+			map.placeLife(life);
+			if (!map.addLife(life)) {
+				logger.error("Failed to add life");
+			}
 			logger.trace("Start nrg: " + life.getEnergy());
 		}
 		
-		for (int i = 0; i < factory.getLenOfFitFuncRun(); i++) {
+		for ( int i = 0 ; i < factory.getLenOfFitFuncRun() ; i++ ) {
 			map.incrementTimeFrame();
 		}
-		for (final ALife i : lifeList) {
+		for ( final ALife i : lifeList ) {
 			logger.trace("End nrg: " + i.getEnergy());
 		}
 		
-		for (final ALife life : lifeList) {
+		for ( final ALife life : lifeList ) {
 			fitness += computeRawFitness(life);
 		}
 		
@@ -75,7 +86,7 @@ public abstract class SimpleFitnessFunction extends FitnessFunction {
 		double fitness = 0;
 		
 		final int num_runs = factory.getFitnessFunctionRuns();
-		for (int i = 0; i < num_runs; i++) {
+		for ( int i = 0 ; i < num_runs ; i++ ) {
 			fitness += run(chromo);
 		}
 		logger.trace("Fitness at end of run: " + fitness);
@@ -83,9 +94,12 @@ public abstract class SimpleFitnessFunction extends FitnessFunction {
 	}
 	
 	/**
-	 * <p>computeRawFitness.</p>
-	 *
-	 * @param life a {@link net.cammann.tom.fyp.core.ALife} object.
+	 * <p>
+	 * computeRawFitness.
+	 * </p>
+	 * 
+	 * @param life
+	 *            a {@link net.cammann.tom.fyp.core.ALife} object.
 	 * @return a double.
 	 */
 	public abstract double computeRawFitness(ALife life);

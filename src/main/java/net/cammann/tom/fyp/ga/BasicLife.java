@@ -1,4 +1,4 @@
-package net.cammann.tom.fyp.basicLife;
+package net.cammann.tom.fyp.ga;
 
 import net.cammann.tom.fyp.commands.ConsumeCommand;
 import net.cammann.tom.fyp.commands.ForwardCommand;

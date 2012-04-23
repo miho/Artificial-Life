@@ -10,7 +10,6 @@
 package net.cammann.tom.fyp.gp;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import net.cammann.tom.fyp.basicLife.BasicLifeFactory;
@@ -22,9 +21,12 @@ import net.cammann.tom.fyp.core.EvolutionFactory;
 import net.cammann.tom.fyp.core.EvolutionModule;
 import net.cammann.tom.fyp.gp.commands.Consume;
 import net.cammann.tom.fyp.gp.commands.FoodAhead;
+import net.cammann.tom.fyp.gp.commands.MoveForward;
 import net.cammann.tom.fyp.gp.commands.OnResource;
 import net.cammann.tom.fyp.gp.commands.Orientation;
 import net.cammann.tom.fyp.gp.commands.SmellResource;
+import net.cammann.tom.fyp.gp.commands.TurnLeft;
+import net.cammann.tom.fyp.gp.commands.TurnRight;
 import net.cammann.tom.fyp.gp.commands.WallAhead;
 import net.cammann.tom.fyp.gui.BestLifeLauncher;
 import net.cammann.tom.fyp.gui.SimulationFrame;
@@ -37,14 +39,9 @@ import org.jgap.gp.GPProblem;
 import org.jgap.gp.IGPProgram;
 import org.jgap.gp.function.Add;
 import org.jgap.gp.function.Equals;
-import org.jgap.gp.function.GreaterThan;
-import org.jgap.gp.function.If;
-import org.jgap.gp.function.IfElse;
-import org.jgap.gp.function.LesserThan;
 import org.jgap.gp.function.Multiply;
 import org.jgap.gp.function.SubProgram;
 import org.jgap.gp.function.Subtract;
-import org.jgap.gp.impl.DeltaGPFitnessEvaluator;
 import org.jgap.gp.impl.GPConfiguration;
 import org.jgap.gp.impl.GPGenotype;
 import org.jgap.gp.impl.GPPopulation;
@@ -55,115 +52,164 @@ import org.jgap.util.NumberKit;
 import org.jgap.util.SystemKit;
 
 /**
- * <p>GeneticProgramFrame class.</p>
- *
+ * <p>
+ * GeneticProgramFrame class.
+ * </p>
+ * 
  * @author tc
  * @version $Id: $
  */
-public final class GeneticProgramFrame extends GPProblem implements
+public final class GeneticProgramRunner extends GPProblem implements
 		EvolutionModule {
 	
 	/**
 	 * Logger.
 	 */
-	private final Logger logger = Logger.getLogger(GeneticProgramFrame.class);
+	private final Logger logger = Logger.getLogger(GeneticProgramRunner.class);
 	
-	/*
-	 * public variables which may be changed by configuration file
+	/**
+	 * Save fittest of run to here.
 	 */
 	private IGPProgram fittest;
 	// number of variables to use (output variable is excluded)
 	private int numInputVariables;
 	
 	// CHECKSTYLE.OFF: MagicNumber
-	// standard GP parameters
+	/**
+	 * Minimum Depth of initial gp tree.
+	 */
 	private final int minInitDepth = 2;
 	
+	/**
+	 * Maximum Depth of initial gp tree.
+	 */
 	private final int maxInitDepth = 10;
 	
-	private final int populationSize = 1000;
+	/**
+	 * Population Size of run.
+	 */
+	private final int populationSize = 10000;
 	
+	/**
+	 * Maximum cross over depth of run.
+	 */
 	private final int maxCrossoverDepth = 10;
 	
+	/**
+	 * Initial program creation tries.
+	 */
 	private final int programCreationMaxTries = 5;
 	
-	private final int numEvolutions = 500;
+	/**
+	 * Number of generations to iterate through.
+	 */
+	private final int numGenerations = 500;
 	
+	/**
+	 * Verbose output?
+	 */
 	private final boolean verboseOutput = true;
 	
-	private final int maxNodes = 3000;
+	/**
+	 * Max number of nodes in gp tree.
+	 */
+	private final int maxNodes = 1000;
 	
+	/**
+	 * Probabilty of using a function as node.
+	 */
 	private final double functionProb = 0.8d;
 	
-	private final float reproductionProb = 0.1f; // float
+	/**
+	 * Chance to reproduce.
+	 */
+	private final float reproductionProb = 0.1f;
 	
-	private float mutationProb = 0.06f; // float
+	/**
+	 * Chance a gp tree will mutate in a generation.
+	 */
+	private float mutationProb = 0.06f;
 	
+	/**
+	 * Chance that crossover will occur on gp trees.
+	 */
 	private final double crossoverProb = 0.9d;
-	
-	private final float dynamizeArityProb = 0.08f; // float
 	
 	private final double newChromsPercent = 0.1d;
 	
 	private final int tournamentSelectorSize = 0;
 	
-	// timing
+	/**
+	 * Used for timing run.
+	 */
 	private long startTime;
 	
+	/**
+	 * Used for timing run.
+	 */
 	private long endTime;
 	
-	// if > 0.0d -> stop if the fitness is below or equal
-	// this value. TODO!
-	private final double stopCriteria = -1.0d;
+	// private final boolean showPopulation = false;
 	
-	private final boolean showPopulation = false;
+	// private final boolean showSimiliar = false;
 	
-	private final boolean showSimiliar = false;
+	/**
+	 * Used to keep evolution cycle listeners.
+	 * 
+	 * Will fire an event to the listeners when a generation begins or starts.
+	 */
 	private final List<EvolutionCycleListener> cycleListeners;
 	
 	// CHECKSTYLE.ON: MagicNumber
 	
 	/**
-	 * <p>addEvolutionCycleListener.</p>
-	 *
-	 * @param ecl a {@link net.cammann.tom.fyp.core.EvolutionCycleListener} object.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public void addEvolutionCycleListener(final EvolutionCycleListener ecl) {
 		cycleListeners.add(ecl);
 		
 	}
 	
 	/**
-	 * <p>removeEvolutionCycleListener.</p>
-	 *
-	 * @param ecl a {@link net.cammann.tom.fyp.core.EvolutionCycleListener} object.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public void removeEvolutionCycleListener(final EvolutionCycleListener ecl) {
 		cycleListeners.remove(ecl);
 	}
 	
+	/**
+	 * This factory generates the life and maps for the run.
+	 */
 	private final EvolutionFactory factory;
 	
 	/**
-	 * <p>Constructor for GeneticProgramFrame.</p>
-	 *
-	 * @param factory a {@link net.cammann.tom.fyp.core.EvolutionFactory} object.
+	 * <p>
+	 * Constructor for GeneticProgramFrame.
+	 * </p>
+	 * 
+	 * @param factory
+	 *            a {@link net.cammann.tom.fyp.core.EvolutionFactory} object.
 	 */
-	public GeneticProgramFrame(final EvolutionFactory factory) {
+	public GeneticProgramRunner(final EvolutionFactory factory) {
 		cycleListeners = new ArrayList<EvolutionCycleListener>();
 		this.factory = factory;
 	}
 	
 	/**
-	 * <p>main.</p>
-	 *
-	 * @param args an array of {@link java.lang.String} objects.
+	 * <p>
+	 * main.
+	 * </p>
+	 * 
+	 * @param args
+	 *            an array of {@link java.lang.String} objects.
 	 */
-	public static void main(final String args[]) {
+	public static void main(final String[] args) {
 		
 		final EvolutionFactory factory = new BasicLifeFactory();
 		
-		final GeneticProgramFrame gpf = new GeneticProgramFrame(factory);
+		final GeneticProgramRunner gpf = new GeneticProgramRunner(factory);
 		
 		final BestLifeLauncher launcherFrame = new BestLifeLauncher(gpf,
 				factory);
@@ -187,12 +233,12 @@ public final class GeneticProgramFrame extends GPProblem implements
 		
 		stats.startFitnessGraph();
 		
-		gpf.run();
+		gpf.start();
 	}
 	
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * This method is used for setting up the commands and terminals that can be
 	 * used to solve the problem.
 	 */
@@ -207,25 +253,22 @@ public final class GeneticProgramFrame extends GPProblem implements
 		types = new Class[] { CommandGene.DoubleClass };
 		argTypes = new Class[][] { {} };
 		
-		// Next, we define the set of available GP commands and terminals to
-		// use.
-		// Please see package org.jgap.gp.function and org.jgap.gp.terminal
-		// You can easily add commands and terminals of your own.
-		// ----------------------------------------------------------------------
-		
+		/**
+		 * Assign the available GP terminals and commands.
+		 */
 		final CommandGene[] commands = {
 				new Consume(conf, CommandGene.DoubleClass),
-				// new MoveForward(conf, CommandGene.DoubleClass),
-				// new TurnLeft(conf, CommandGene.DoubleClass),
-				// new TurnRight(conf, CommandGene.DoubleClass),
+				new MoveForward(conf, CommandGene.DoubleClass),
+				new TurnLeft(conf, CommandGene.DoubleClass),
+				new TurnRight(conf, CommandGene.DoubleClass),
 				new Add(conf, CommandGene.DoubleClass),
 				new Subtract(conf, CommandGene.DoubleClass),
 				new Multiply(conf, CommandGene.DoubleClass),
 				new OnResource(conf, CommandGene.DoubleClass),
-				new If(conf, CommandGene.DoubleClass),
-				new IfElse(conf, CommandGene.DoubleClass),
-				new LesserThan(conf, CommandGene.DoubleClass),
-				new GreaterThan(conf, CommandGene.DoubleClass),
+				// new If(conf, CommandGene.DoubleClass),
+				// new IfElse(conf, CommandGene.DoubleClass),
+				// new LesserThan(conf, CommandGene.DoubleClass),
+				// new GreaterThan(conf, CommandGene.DoubleClass),
 				new Terminal(conf, CommandGene.DoubleClass, 3, 3),
 				new Terminal(conf, CommandGene.DoubleClass, 1, 1),
 				new Terminal(conf, CommandGene.DoubleClass, 0, 0),
@@ -239,12 +282,12 @@ public final class GeneticProgramFrame extends GPProblem implements
 				new SmellResource(conf, CommandGene.DoubleClass),
 				// new SubProgram(conf, 5, CommandGene.DoubleClass),
 				// new SubProgram(conf, 4, CommandGene.DoubleClass),
-				new SubProgram(conf, 3, CommandGene.DoubleClass),
+				// new SubProgram(conf, 3, CommandGene.DoubleClass),
 				new SubProgram(conf, 2, CommandGene.DoubleClass), };
 		// Create the node sets
-		final int command_len = commands.length;
+		final int commandLen = commands.length;
 		final CommandGene[][] nodeSets = new CommandGene[1][numInputVariables
-				+ command_len];
+				+ commandLen];
 		// the variables:
 		// 1) in the nodeSets matrix
 		// 2) as variables (to be used for fitness checking)
@@ -252,7 +295,7 @@ public final class GeneticProgramFrame extends GPProblem implements
 		
 		// assign the functions/terminals
 		// ------------------------------
-		for ( int i = 0 ; i < command_len ; i++ ) {
+		for ( int i = 0 ; i < commandLen ; i++ ) {
 			logger.info("function1: " + commands[i]);
 			nodeSets[0][i + numInputVariables] = commands[i];
 		}
@@ -266,26 +309,15 @@ public final class GeneticProgramFrame extends GPProblem implements
 		
 	}
 	
-	/*
-	 * makeCommands: makes the CommandGene array given the function listed in
-	 * the configurations file
-	 * ------------------------------------------------------------
-	 */
-
 	/**
-	 * <p>Getter for the field <code>fittest</code>.</p>
-	 *
-	 * @return a {@link org.jgap.gp.IGPProgram} object.
-	 */
-	public IGPProgram getFittest() {
-		return fittest;
-	}
-	
-	/**
-	 * <p>initConfig.</p>
-	 *
-	 * @param config a {@link org.jgap.gp.impl.GPConfiguration} object.
-	 * @throws org.jgap.InvalidConfigurationException if any.
+	 * <p>
+	 * initConfig.
+	 * </p>
+	 * 
+	 * @param config
+	 *            a {@link org.jgap.gp.impl.GPConfiguration} object.
+	 * @throws org.jgap.InvalidConfigurationException
+	 *             if any.
 	 */
 	public void initConfig(final GPConfiguration config)
 			throws InvalidConfigurationException {
@@ -294,7 +326,7 @@ public final class GeneticProgramFrame extends GPProblem implements
 		// not
 		// a point score!
 		// -------------------------------------------------------
-		config.setGPFitnessEvaluator(new DeltaGPFitnessEvaluator());
+		// config.setGPFitnessEvaluator(new DeltaGPFitnessEvaluator());
 		config.setFitnessFunction(factory.getGPFitnessFunction());
 		config.setMaxInitDepth(maxInitDepth);
 		config.setPopulationSize(populationSize);
@@ -308,18 +340,6 @@ public final class GeneticProgramFrame extends GPProblem implements
 		 * The maximum depth of an individual resulting from crossover.
 		 */
 		config.setMaxCrossoverDepth(maxCrossoverDepth);
-		
-		/**
-		 * @param a_strict
-		 *            true: throw an error during evolution in case a situation
-		 *            is detected where no function or terminal of a required
-		 *            type is declared in the GPConfiguration; false: don't
-		 *            throw an error but try a completely different combination
-		 *            of functions and terminals
-		 */
-		// config.setStrictProgramCreation(true);
-		config.setStrictProgramCreation(false);
-		// Default from GPConfiguration.java
 		
 		/**
 		 * In crossover: If random number (0..1) < this value, then choose a
@@ -336,11 +356,7 @@ public final class GeneticProgramFrame extends GPProblem implements
 		 * The probability that a node is mutated during growing a program.
 		 */
 		config.setMutationProb(mutationProb);
-		/**
-		 * The probability that the arity of a node is changed during growing a
-		 * program.
-		 */
-		config.setDynamizeArityProb(dynamizeArityProb);
+		
 		/**
 		 * Percentage of the population that will be filled with new individuals
 		 * during evolution. Must be between 0.0d and 1.0d.
@@ -358,33 +374,22 @@ public final class GeneticProgramFrame extends GPProblem implements
 	}
 	
 	/**
-	 * <p>run.</p>
+	 * <p>
+	 * run.
+	 * </p>
 	 */
-	public void run() {
+	@Override
+	public void start() {
 		GPGenotype gp = null;
 		try {
-			// Use the log4j configuration
-			// Log to stdout instead of file
-			// -----------------------------
-			// org.apache.log4j.PropertyConfigurator.configure("log4j.properties");
-			
-			// logger.addAppender(new ConsoleAppender(new SimpleLayout(),
-			// "System.out"));
-			//
 			
 			gp = create();
 			
 		} catch (final InvalidConfigurationException e) {
 			e.printStackTrace();
+			logger.fatal("Could not create Genotype", e);
+			System.exit(1);
 		}
-		
-		// Setup the algorithm's parameters.
-		// ---------------------------------
-		
-		// Create the genotype of the problem, i.e., define the GP commands and
-		// terminals that can be used, and constrain the structure of the GP
-		// program.
-		// --------------------------------------------------------------------
 		
 		// gp.setVerboseOutput(true);
 		gp.setVerboseOutput(false);
@@ -406,12 +411,9 @@ public final class GeneticProgramFrame extends GPProblem implements
 		double bestFit = -1.0d;
 		String bestProgram = "";
 		int bestGen = 0;
-		HashMap<String, Integer> similiar = null;
-		if (showSimiliar) {
-			similiar = new HashMap<String, Integer>();
-		}
+		
 		int plateau = 0;
-		for ( int gen = 1 ; gen <= numEvolutions ; gen++ ) {
+		for ( int gen = 1 ; gen <= numGenerations ; gen++ ) {
 			GPPopulation pop = gp.getGPPopulation();
 			for ( final EvolutionCycleListener e : cycleListeners ) {
 				e.startCycle(new EvolutionCycleEvent(pop, gen));
@@ -424,53 +426,18 @@ public final class GeneticProgramFrame extends GPProblem implements
 			gp.calcFitness();
 			pop = gp.getGPPopulation();
 			final IGPProgram thisFittest = pop.determineFittestProgram();
-			// TODO: Here I would like to have the correlation coefficient etc
 			thisFittest.setApplicationData(("gen" + gen));
 			final ProgramChromosome chrom = thisFittest.getChromosome(0);
 			final String program = chrom.toStringNorm(0);
 			final double fitness = thisFittest.getFitnessValue();
-			// if (showSimiliar || showPopulation) {
-			// if (showPopulation) {
-			// System.out.println("Generation " + gen
-			// + " (show whole population, sorted)");
-			// }
-			// pop.sortByFitness();
-			// for (IGPProgram p : pop.getGPPrograms()) {
-			// double fit = p.getFitnessValue();
-			// if (showSimiliar && fit <= bestFit) {
-			// String prog = p.toStringNorm(0);
-			// if (!similiar.containsKey(prog)) {
-			// similiar.put(prog, 1);
-			// } else {
-			// similiar.put(prog, similiar.get(prog) + 1);
-			// }
-			// }
-			// if (showPopulation) {
-			// String prg = p.toStringNorm(0);
-			// int sz = p.size();
-			// System.out.println("\tprogram: " + prg + " fitness: "
-			// + fit);
-			// }
-			// }
-			// }
-			//
-			// Yes, I have to think more about this....
-			// Right now a program is printed if it has
-			// better fitness value than the former best solution.
 			
-			// if (gen % 25 == 0) {
-			// myOutputSolution(fittest, gen);
-			// }
 			if (bestFit < 0.0d || fitness < bestFit) {
 				bestGen = gen;
 				myOutputSolution(thisFittest, gen);
 				bestFit = fitness;
 				bestProgram = program;
 				fittest = thisFittest;
-				if (showSimiliar) {
-					// reset the hash
-					similiar.clear(); // = new HashMap<String,Integer>();
-				}
+				
 				// CHECKSTYLE.OFF: MagicNumber
 				plateau = 0;
 				getGPConfiguration().setMutationProb(0.1f);
@@ -502,25 +469,17 @@ public final class GeneticProgramFrame extends GPProblem implements
 		// gp.outputSolution(gp.getAllTimeBest());
 		
 		logger.info("\nAll time best (from generation " + bestGen + ")");
-		myOutputSolution(fittest, numEvolutions);
+		myOutputSolution(fittest, numGenerations);
 		logger.info("applicationData: " + fittest.getApplicationData());
 		// Create a graphical tree of the best solution's program and write it
 		// to
 		// a PNG file.
-		// ----------------------------------------------------------------------
+		// --------------------------------------------------------------
 		// problem.showTree(gp.getAllTimeBest(), "mathproblem_best.png");
 		
 		endTime = System.currentTimeMillis();
 		final long elapsedTime = endTime - startTime;
 		logger.info("\nTotal time " + elapsedTime + "ms");
-		if (showSimiliar) {
-			logger.info("\nAll solutions with the best fitness (" + bestFit
-					+ "):");
-			// TODO: These should be sorted by values.
-			for ( final String p : similiar.keySet() ) {
-				logger.info(p + " (" + similiar.get(p) + ")");
-			}
-		}
 		
 		final EnvironmentMap map = factory.createMap();
 		
@@ -541,27 +500,20 @@ public final class GeneticProgramFrame extends GPProblem implements
 	}
 	
 	/**
-	 * Fitness function for evaluating the produced fomulas, represented as GP
-	 * programs. The fitness is computed by calculating the result (Y) of the
-	 * function/formula for integer inputs 0 to 20 (X). The sum of the
-	 * differences between expected Y and actual Y is the fitness, the lower the
-	 * better (as it is a defect rate here).
-	 */
-	
-	/**
 	 * Outputs the best solution until now at standard output.
-	 *
+	 * 
 	 * This is stolen (and somewhat edited) from GPGenotype.outputSolution which
 	 * used log4j.
-	 *
+	 * 
 	 * @param a_best
 	 *            the fittest ProgramChromosome
 	 * @author Hakan Kjellerstrand (originally by Klaus Meffert)
-	 * @param gen a int.
+	 * @param gen
+	 *            a int.
 	 */
 	public void myOutputSolution(final IGPProgram a_best, final int gen) {
 		final String freeMB = SystemKit.niceMemory(SystemKit.getFreeMemoryMB());
-		logger.info("Evolving generation " + (gen) + "/" + numEvolutions
+		logger.info("Evolving generation " + (gen) + "/" + numGenerations
 				+ ", memory free: " + freeMB + " MB");
 		if (a_best == null) {
 			logger.info("No best solution (null)");
@@ -593,10 +545,32 @@ public final class GeneticProgramFrame extends GPProblem implements
 	/** {@inheritDoc} */
 	@Override
 	public ALife getFittestLife() {
-		if (getFittest() == null) {
+		if (fittest == null) {
 			return null;
 		} else {
-			return new ALifeGP(getFittest(), null);
+			return new ALifeGP(fittest, null);
 		}
+	}
+	
+	@Override
+	public int getPopulationSize() {
+		return populationSize;
+	}
+	
+	@Override
+	public int getNumGenerations() {
+		return numGenerations;
+	}
+	
+	@Override
+	public void setMaxGenerations(final int i) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void setPopulationSize(final int i) {
+		// TODO Auto-generated method stub
+		
 	}
 }

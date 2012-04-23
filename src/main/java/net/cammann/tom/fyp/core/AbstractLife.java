@@ -25,12 +25,12 @@ import org.jgap.IChromosome;
  * @since 31/01/2012
  */
 public abstract class AbstractLife extends AbstractMapObject implements ALife {
-
+	
 	/**
 	 * Logger.
 	 */
 	private static Logger logger = Logger.getLogger(AbstractLife.class);
-
+	
 	@Beta
 	protected Resource holding;
 	/**
@@ -39,12 +39,12 @@ public abstract class AbstractLife extends AbstractMapObject implements ALife {
 	 * @see ORIENTATION
 	 */
 	protected ORIENTATION orientation;
-
+	
 	/**
 	 * Move counter. After each move increment.
 	 */
 	public int moveCount = 0;
-
+	
 	/**
 	 * Energy level of life.
 	 */
@@ -68,22 +68,23 @@ public abstract class AbstractLife extends AbstractMapObject implements ALife {
 	/**
 	 * Currently not used, could be used to hold a resource and move it.
 	 */
-
+	
 	/**
 	 * Tracks number of moves which are 'unique', moves that have are not in the
 	 * move memory. Used in fitness function
 	 */
 	private int uniqueMoveCount = 0;
-
+	
 	/**
-	 * Amount to decrease energy on consumption of a resource.
+	 * Amount to decrease energy on move forward.
 	 */
-	private static final int ENERGY_LOSS_ON_CONSUME = 15;
+	private static final int ENERGY_LOSS_ON_MOVE = 0;
+	
 	/**
 	 * Amount of enery got decrease on consumpiton failure on a resource.
 	 */
-	private static final int ENERGY_LOSS_ON_CONSUME_FAIL = 5;
-
+	private static final int ENERGY_LOSS_ON_MOVE_FAIL = 5;
+	
 	/**
 	 * Copy constructor.
 	 * 
@@ -94,17 +95,17 @@ public abstract class AbstractLife extends AbstractMapObject implements ALife {
 		this.map = life.getMap();
 		setPosition(new Point(0, 0));
 		initBrain();
-
+		
 		orientation = ORIENTATION.UP;
-
+		
 		genes = new int[life.getGenes().length];
-
+		
 		energy = getGene(0);
-
+		
 		this.moveMemory = new ArrayList<Point>();
-
+		
 	}
-
+	
 	/**
 	 * Creates life, creates GP/GA brain, set orientaion to up.
 	 * 
@@ -118,7 +119,7 @@ public abstract class AbstractLife extends AbstractMapObject implements ALife {
 		orientation = ORIENTATION.UP;
 		moveMemory = new ArrayList<Point>();
 	}
-
+	
 	/**
 	 * Constructor using JGAP chromosome.
 	 * 
@@ -137,32 +138,34 @@ public abstract class AbstractLife extends AbstractMapObject implements ALife {
 		orientation = ORIENTATION.UP;
 		final int len = chrome.getGenes().length;
 		genes = new int[len];
-
-		for (int i = 0; i < len; i++) {
+		
+		for ( int i = 0 ; i < len ; i++ ) {
 			final Gene g = chrome.getGene(i);
 			genes[i] = (Integer) g.getAllele();
 		}
-
+		
 		energy = getGene(0);
-
+		
 		this.moveMemory = new ArrayList<Point>();
 	}
-
+	
 	/**
 	 * Used to setup 'brain'.
 	 * 
 	 * The decision making center is initiailised here.
 	 */
 	public abstract void initBrain();
-
+	
+	@Override
 	public final void setBrain(final Brain brain) {
 		this.brain = brain;
 	}
-
+	
+	@Override
 	public final Brain getBrain() {
 		return brain;
 	}
-
+	
 	/**
 	 * Constructor taking raw ints as gene values
 	 * 
@@ -182,9 +185,9 @@ public abstract class AbstractLife extends AbstractMapObject implements ALife {
 		this.moveMemory = new ArrayList<Point>();
 		// TODO make sure both place sit getGene(0)
 		energy = getGene(0);
-
+		
 	}
-
+	
 	/**
 	 * Create empty life instance.
 	 * 
@@ -192,21 +195,21 @@ public abstract class AbstractLife extends AbstractMapObject implements ALife {
 	 */
 	@Deprecated
 	protected AbstractLife() {
-
+		
 	}
-
+	
 	@Override
 	public abstract Object clone();
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public final void reset() {
 		setEnergy(getStartEnergy());
 		setOrientation(new Random().nextInt(ORIENTATION.values().length));
 		moveMemory.clear();
-
+		
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 * 
@@ -218,72 +221,79 @@ public abstract class AbstractLife extends AbstractMapObject implements ALife {
 	@Beta
 	public final boolean pickUpResource() {
 		return false;
-
+		
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final int getGene(final int gene) {
 		return genes[gene];
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final int getGene(final GENE_TYPE gene) {
 		return getGene(gene.ordinal());
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public final EnvironmentMap getMap() {
 		return map;
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public final boolean consume() {
 		return map.consumeResource(this);
 	}
-
+	
 	/** {@inheritDoc} */
+	@Override
 	public final void incrementEnergy(final int i) {
 		energy += i;
-
+		
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final void setEnergy(final int energy) {
 		this.energy = energy;
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final void decrementEnegery(final int decrementBy) {
 		this.energy -= decrementBy;
-
+		
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final int[] getGenes() {
 		return Arrays.copyOf(genes, genes.length);
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public final ORIENTATION getOrientation() {
 		return orientation;
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final void setOrientation(final int o) {
 		if (o < 0 || o > ORIENTATION.values().length - 1) {
 			throw new IllegalArgumentException("Cannot set orientation to: "
@@ -291,14 +301,15 @@ public abstract class AbstractLife extends AbstractMapObject implements ALife {
 		}
 		this.orientation = ORIENTATION.values()[o];
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final void setOrientation(final ORIENTATION orientation) {
 		this.orientation = orientation;
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -306,26 +317,26 @@ public abstract class AbstractLife extends AbstractMapObject implements ALife {
 	public final int getEnergy() {
 		return energy;
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public final void addMoveToMemory(final Point p) {
-
+		
 		if (moveMemory.size() > getMemoryLength()) {
 			moveMemory.remove(0);
 		}
 		moveMemory.add(p);
-
+		
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public final void moveForward() {
-
+		
 		moveCount++;
 		logger.trace("Move forward");
 		logger.trace("Orientation: " + orientation.toString());
-
+		
 		final Point p = getPositionAhead();
 		final boolean moveValid = map.validPosition(p);
 		logger.trace("Valid Move = " + moveValid);
@@ -333,17 +344,17 @@ public abstract class AbstractLife extends AbstractMapObject implements ALife {
 			logger.trace(p);
 			logger.trace(getPosition());
 			setPosition(p);
-			energy -= ENERGY_LOSS_ON_CONSUME_FAIL;
-
+			energy -= ENERGY_LOSS_ON_MOVE;
+			
 		} else {
 			logger.trace("Fail Move Forward");
 			logger.trace("Position: " + getPosition());
-
-			decrementEnegery(ENERGY_LOSS_ON_CONSUME);
+			
+			decrementEnegery(ENERGY_LOSS_ON_MOVE_FAIL);
 		}
 		addMoveToMemory(getPosition());
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public final Point getPositionAhead() {
@@ -355,10 +366,10 @@ public abstract class AbstractLife extends AbstractMapObject implements ALife {
 			return new Point(getX(), getY() + AbstractEnvironmentMap.STEP_SIZE);
 		} else {
 			return new Point(getX() - AbstractEnvironmentMap.STEP_SIZE, getY());
-
+			
 		}
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public final Point getPositionAhead(final int steps) {
@@ -376,7 +387,7 @@ public abstract class AbstractLife extends AbstractMapObject implements ALife {
 					getY());
 		}
 	}
-
+	
 	// public boolean consumePosition(Point p) {
 	// if (map.hasResource(p)) {
 	// Resource r = map.getResource(p);
@@ -388,7 +399,7 @@ public abstract class AbstractLife extends AbstractMapObject implements ALife {
 	// }
 	// return false;
 	// }
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public final void doMove() {
@@ -401,9 +412,9 @@ public abstract class AbstractLife extends AbstractMapObject implements ALife {
 				uniqueMoveCount++;
 			}
 		}
-
+		
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public final boolean consumeResource(final Resource r) {
@@ -412,13 +423,13 @@ public abstract class AbstractLife extends AbstractMapObject implements ALife {
 			return false;
 		}
 		if (canConsumeResource(r)) {
-
+			
 			map.consumeResource(this);
 			return true;
 		}
 		return false;
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public final boolean hasMoveInMemory(final Point position) {
@@ -427,26 +438,26 @@ public abstract class AbstractLife extends AbstractMapObject implements ALife {
 		}
 		return false;
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	@Deprecated
 	public final List<Point> getMoveMemory() {
 		return moveMemory;
 	}
-
+	
 	/**
 	 * Returns image used to visualise life.
 	 * 
 	 * @return image of ALife
 	 */
 	protected final Image getImage() {
-
+		
 		final int scale = (int) (getRadius() * 3);
-
+		
 		final BufferedImage bi = new BufferedImage(scale, scale,
 				BufferedImage.TYPE_INT_ARGB);
-
+		
 		final Graphics2D g2 = bi.createGraphics();
 		g2.setColor(Color.GREEN);
 		g2.fill(new Ellipse2D.Double(0, 0, scale, scale));
@@ -469,7 +480,7 @@ public abstract class AbstractLife extends AbstractMapObject implements ALife {
 					+ scale / 4, scale / 4, scale / 4));
 			g2.fill(new Ellipse2D.Double(scale / 2 - (scale / 4), scale / 2
 					+ scale / 4, scale / 4, scale / 4));
-
+			
 		} else {
 			g2.setPaint(Color.BLACK);
 			g2.fill(new Ellipse2D.Double(scale / 2 - (scale / 4), scale / 2
@@ -478,77 +489,78 @@ public abstract class AbstractLife extends AbstractMapObject implements ALife {
 					scale / 4, scale / 4));
 			// CHECKSTYLE.ON: MAGICNUMBER
 		}
-
+		
 		return bi.getScaledInstance(scale, scale, Image.SCALE_SMOOTH);
-
+		
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public final void turnLeft() {
 		moveCount++;
-
+		
 		switch (orientation) {
-		case UP:
-			setOrientation(ORIENTATION.LEFT);
-			break;
-		case RIGHT:
-			setOrientation(ORIENTATION.UP);
-			break;
-		case DOWN:
-			setOrientation(ORIENTATION.RIGHT);
-			break;
-		case LEFT:
-			setOrientation(ORIENTATION.DOWN);
-			break;
-		default:
-			throw new IllegalStateException("Illegeal orientation");
+			case UP:
+				setOrientation(ORIENTATION.LEFT);
+				break;
+			case RIGHT:
+				setOrientation(ORIENTATION.UP);
+				break;
+			case DOWN:
+				setOrientation(ORIENTATION.RIGHT);
+				break;
+			case LEFT:
+				setOrientation(ORIENTATION.DOWN);
+				break;
+			default:
+				throw new IllegalStateException("Illegeal orientation");
 		}
 		decrementEnegery(4);
-
+		
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public final void turnRight() {
 		moveCount++;
-
+		
 		switch (orientation) {
-		case UP:
-			setOrientation(ORIENTATION.RIGHT);
-			break;
-		case RIGHT:
-			setOrientation(ORIENTATION.DOWN);
-			break;
-		case DOWN:
-			setOrientation(ORIENTATION.LEFT);
-			break;
-		case LEFT:
-			setOrientation(ORIENTATION.UP);
-			break;
-		default:
-			throw new IllegalStateException("Illegeal orientation");
+			case UP:
+				setOrientation(ORIENTATION.RIGHT);
+				break;
+			case RIGHT:
+				setOrientation(ORIENTATION.DOWN);
+				break;
+			case DOWN:
+				setOrientation(ORIENTATION.LEFT);
+				break;
+			case LEFT:
+				setOrientation(ORIENTATION.UP);
+				break;
+			default:
+				throw new IllegalStateException("Illegeal orientation");
 		}
 		decrementEnegery(4);
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public final boolean isHoldingResource() {
 		return false;
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public final void draw(final Graphics2D g2) {
 		g2.drawImage(getImage(), getX(), getY(), null);
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public int getMoveCount() {
 		return moveCount;
 	}
-
+	
 }

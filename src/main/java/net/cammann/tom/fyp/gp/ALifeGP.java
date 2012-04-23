@@ -23,27 +23,27 @@ import org.jgap.gp.IGPProgram;
  * @version $Id: $
  */
 public final class ALifeGP extends AbstractLife {
-
+	
 	/**
 	 * Logger.
 	 */
 	private static Logger logger = Logger.getLogger(ALifeGP.class);
-
+	
 	/**
 	 * Energy to init life with.
 	 */
-	private static final int START_ENERGY = 1000;
-
+	private static final int START_ENERGY = 100;
+	
 	/**
 	 * Length of memory.
 	 */
 	private static final int MEMORY_LENGTH = 10;
-
+	
 	/**
 	 * Used in Brain for controlling the ALife.
 	 */
 	private final IGPProgram gp;
-
+	
 	/**
 	 * Create ALife from IGPProgram.
 	 * 
@@ -57,80 +57,76 @@ public final class ALifeGP extends AbstractLife {
 	public ALifeGP(final IGPProgram igp, final EnvironmentMap map) {
 		super(map);
 		this.gp = igp;
-
+		
 		initBrain();
 		orientation = ORIENTATION.UP;
-
-		energy = START_ENERGY;
-
+		
+		energy = getStartEnergy();
+		
 		this.moveMemory = new ArrayList<Point>();
-
+		
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public LifeCommand[] getCommandList() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public void initBrain() {
 		logger.trace("Init brain");
 		setBrain(new Brain(this) {
-
+			
 			@Override
 			public int think() {
+				if (energy <= 0) {
+					return 0;
+				}
 				final Object[] o = { life };
 				final double x = gp.execute_double(0, o);
-				if (x < 0) {
-					moveForward();
-				} else if (x > 0 && x < 10) {
-					turnLeft();
-				} else if (x > 10 && x < 20) {
-					turnRight();
-				}
-				moveCount++;
-				energy -= 5;
+				
+				moveCount += 4;
+				energy -= 0;
 				return 1;
 			}
 		});
-
+		
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public ALife clone() {
 		return new ALifeGP(gp, getMap());
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public int getMemoryLength() {
 		// TODO add limit in genes?
 		return MEMORY_LENGTH;
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	@Beta
 	public boolean dropResource() {
 		return false;
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public boolean canConsumeResource(final Resource r) {
 		// Eat anything
 		return true;
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public int getStartEnergy() {
-		// TODO Auto-generated method stub
 		return START_ENERGY;
 	}
-
+	
 }

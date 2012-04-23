@@ -1,6 +1,5 @@
 package net.cammann.tom.fyp.basicLife;
 
-import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -21,7 +20,7 @@ import net.cammann.tom.fyp.core.ResourceFactory;
  * @version $Id: $
  */
 public final class StaticMap extends AbstractEnvironmentMap {
-
+	
 	/** Constant <code>RESOURCE_LIST</code> */
 	public static List<Resource> RESOURCE_LIST;
 	private final int numResources;
@@ -33,7 +32,7 @@ public final class StaticMap extends AbstractEnvironmentMap {
 	 * Static start y position for all life.
 	 */
 	private static int y = -1;
-
+	
 	/**
 	 * <p>
 	 * Constructor for StaticMap.
@@ -50,27 +49,27 @@ public final class StaticMap extends AbstractEnvironmentMap {
 		super(width, height);
 		this.numResources = numResources;
 	}
-
+	
 	private static synchronized List<Resource> getResourceList(
-			EnvironmentMap map, int numOfResources) {
+			final EnvironmentMap map, final int numOfResources) {
 		if (RESOURCE_LIST == null) {
 			RESOURCE_LIST = new ArrayList<Resource>();
 			final ResourceFactory r = new ResourceFactory(map);
-			for (int i = 0; i < numOfResources; i++) {
+			for ( int i = 0 ; i < numOfResources ; i++ ) {
 				RESOURCE_LIST.add(r.createResource(ResourceType.BASIC));
 			}
 		}
 		return RESOURCE_LIST;
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public void initResources() {
-		for (final Resource r : getResourceList(this, numResources)) {
+		for ( final Resource r : getResourceList(this, numResources) ) {
 			addResource(r);
 		}
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public void placeLife(final ALife life) {
@@ -85,10 +84,10 @@ public final class StaticMap extends AbstractEnvironmentMap {
 		life.setX(x);
 		life.setY(y);
 	}
-
+	
 	@Override
 	protected void initObstacles() {
 		// ssss33saasd
-
+		
 	}
 }

@@ -7,7 +7,7 @@ import org.jgap.gp.IGPProgram;
 
 /**
  * Skeleton class for producing an Evolution factory
- *
+ * 
  * @author TC
  * @version $Id: $
  */
@@ -15,7 +15,7 @@ public abstract class AbstractEvolutionFactory implements EvolutionFactory {
 	
 	protected int num_fit_func_cycles = 1;
 	protected int num_fit_func_alife_clones = 1;
-	protected int fit_func_run_len = 400;
+	protected int fit_func_run_len = 100;
 	protected int numOfResources = 100;
 	protected int numOfObstacles = 0;
 	protected int mapWidth = 400;

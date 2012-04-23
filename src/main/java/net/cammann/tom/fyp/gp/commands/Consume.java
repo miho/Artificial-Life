@@ -1,7 +1,9 @@
 package net.cammann.tom.fyp.gp.commands;
 
+import net.cammann.tom.fyp.core.ALife;
 import net.cammann.tom.fyp.core.Commandable;
 
+import org.apache.log4j.Logger;
 import org.jgap.InvalidConfigurationException;
 import org.jgap.gp.CommandGene;
 import org.jgap.gp.impl.GPConfiguration;
@@ -9,15 +11,22 @@ import org.jgap.gp.impl.ProgramChromosome;
 
 /**
  * Consume resource command.
- *
+ * 
  * @author TC
  * @version $Id: $
  */
 public final class Consume extends CommandGene {
 	
 	/**
-	 * <p>Constructor for Consume.</p>
-	 *
+	 * Logger.
+	 */
+	private final Logger logger = Logger.getLogger(Consume.class);
+	
+	/**
+	 * <p>
+	 * Constructor for Consume.
+	 * </p>
+	 * 
 	 * @param conf
 	 *            jgap config
 	 * @param returnType
@@ -50,6 +59,8 @@ public final class Consume extends CommandGene {
 	public double execute_double(final ProgramChromosome c, final int n,
 			final Object[] args) {
 		if (((Commandable) args[0]).consume()) {
+			// logger.info("Successful consume!!");
+			logger.trace("ALife energy: " + ((ALife) args[0]).getEnergy());
 			return 1;
 		} else {
 			return 0;

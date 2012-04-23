@@ -1,7 +1,7 @@
 package net.cammann.tom.fyp.tests;
 
 import net.cammann.tom.fyp.basicLife.BasicLifeFactory;
-import net.cammann.tom.fyp.core.GeneLab;
+import net.cammann.tom.fyp.core.GeneticAlgorithmRunner;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
@@ -37,7 +37,7 @@ public final class TestGA {
 		
 		logger.trace("Testing Genelab");
 		final BasicLifeFactory factory = new BasicLifeFactory();
-		final GeneLab genelab = new GeneLab(factory);
+		final GeneticAlgorithmRunner genelab = new GeneticAlgorithmRunner(factory);
 		
 	}
 }

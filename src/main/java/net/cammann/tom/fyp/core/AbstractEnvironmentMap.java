@@ -19,19 +19,19 @@ import org.apache.log4j.Logger;
  * @since 31/01/2012
  */
 public abstract class AbstractEnvironmentMap implements EnvironmentMap {
-
+	
 	/**
 	 * Logger.
 	 */
 	private static Logger logger = Logger
 			.getLogger(AbstractEnvironmentMap.class);
-
+	
 	/**
 	 * Step size.
 	 * 
 	 */
 	public static final int STEP_SIZE = 10;
-
+	
 	/**
 	 * height of map.
 	 */
@@ -56,7 +56,7 @@ public abstract class AbstractEnvironmentMap implements EnvironmentMap {
 	 * Records what time frame map is in.
 	 */
 	private int timeFrameNo = 0;
-
+	
 	/**
 	 * <p>
 	 * Constructor for AbstactMap.
@@ -75,7 +75,7 @@ public abstract class AbstractEnvironmentMap implements EnvironmentMap {
 		lifeList = new ArrayList<ALife>();
 		resetMap();
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public void resetMap() {
@@ -84,26 +84,26 @@ public abstract class AbstractEnvironmentMap implements EnvironmentMap {
 		resourceList.clear();
 		initResources();
 		initObstacles();
-		for (final MapObject i : lifeList) {
+		for ( final MapObject i : lifeList ) {
 			final ALife life = (ALife) i;
 			placeLife(life);
 		}
 	}
-
+	
 	/**
 	 * <p>
 	 * initResources.
 	 * </p>
 	 */
 	protected abstract void initResources();
-
+	
 	/**
 	 * <p>
 	 * initObstacles
 	 * <p>
 	 */
 	protected abstract void initObstacles();
-
+	
 	/**
 	 * <p>
 	 * placeLife.
@@ -112,51 +112,57 @@ public abstract class AbstractEnvironmentMap implements EnvironmentMap {
 	 * @param life
 	 *            a {@link net.cammann.tom.fyp.core.ALife} object.
 	 */
-	protected void placeLife(final ALife life) {
-		// TODO check not on resource
-		life.setX(new Random().nextInt((getWidth() + 1) / STEP_SIZE)
-				* STEP_SIZE);
-		life.setY(new Random().nextInt((getHeight() + 1) / STEP_SIZE)
-				* STEP_SIZE);
+	@Override
+	public void placeLife(final ALife life) {
+		
+		do {
+			
+			life.setX(new Random().nextInt((getWidth() + 1) / STEP_SIZE)
+					* STEP_SIZE);
+			life.setY(new Random().nextInt((getHeight() + 1) / STEP_SIZE)
+					* STEP_SIZE);
+			
+		} while (hasResource(life.getPosition())
+				&& this.validPosition(life.getPosition()));
 		life.reset();
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
-	public int getHeight() {
+	public final int getHeight() {
 		return height;
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
-	public int getWidth() {
+	public final int getWidth() {
 		return width;
-
+		
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public final Dimension getDimension() {
 		return new Dimension(width, height);
-
+		
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public final boolean hasResource(final int x, final int y) {
 		return this.hasResource(new Point(x, y));
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public final boolean hasResource(final Point p) {
-
+		
 		return resourceList.hasObject(p) ? true : false;
 	}
-
+	
 	// could change to return resource.
 	// only remove one resource (not stacked)
-
+	
 	/**
 	 * <p>
 	 * removeResource.
@@ -169,7 +175,7 @@ public abstract class AbstractEnvironmentMap implements EnvironmentMap {
 	protected boolean removeResource(final Point p) {
 		return resourceList.removeObject(p);
 	}
-
+	
 	/**
 	 * <p>
 	 * addResource.
@@ -198,13 +204,13 @@ public abstract class AbstractEnvironmentMap implements EnvironmentMap {
 		resourceList.addObject(r);
 		return true;
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public final Iterator<MapObject> getResourceIterator() {
 		return resourceList.hashMap.values().iterator();
 	}
-
+	
 	/**
 	 * <p>
 	 * removeResource.
@@ -217,11 +223,11 @@ public abstract class AbstractEnvironmentMap implements EnvironmentMap {
 	protected boolean removeResource(final Resource r) {
 		return resourceList.removeObject(r);
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public final boolean validPosition(final Point p) {
-
+		
 		if (p.getX() > getWidth() || p.getX() < 0) {
 			return false;
 		} else if (p.getY() > getHeight() || p.getY() < 0) {
@@ -230,11 +236,11 @@ public abstract class AbstractEnvironmentMap implements EnvironmentMap {
 		if (obstacleList.hasObject(p)) {
 			return false;
 		}
-
+		
 		return true;
-
+		
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public final boolean validPosition(final double x, final double y) {
@@ -242,7 +248,7 @@ public abstract class AbstractEnvironmentMap implements EnvironmentMap {
 		p.setLocation(x, y);
 		return validPosition(p);
 	}
-
+	
 	/**
 	 * Adds an obstacle to the current map.
 	 * 
@@ -268,9 +274,9 @@ public abstract class AbstractEnvironmentMap implements EnvironmentMap {
 		}
 		obstacleList.addObject(obstacle);
 		return true;
-
+		
 	}
-
+	
 	/**
 	 * <p>
 	 * removeObstacle.
@@ -283,7 +289,7 @@ public abstract class AbstractEnvironmentMap implements EnvironmentMap {
 	protected boolean removeObstacle(final Obstacle o) {
 		return obstacleList.removeObject(o);
 	}
-
+	
 	/**
 	 * <p>
 	 * removeObstacle.
@@ -296,7 +302,7 @@ public abstract class AbstractEnvironmentMap implements EnvironmentMap {
 	protected boolean removeObstacle(final Point p) {
 		return obstacleList.removeObject(p);
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public final boolean consumeResource(final ALife life) {
@@ -310,18 +316,18 @@ public abstract class AbstractEnvironmentMap implements EnvironmentMap {
 		life.decrementEnegery(5);
 		return false;
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public final boolean hasLife(final Point p) {
-		for (final ALife i : lifeList) {
+		for ( final ALife i : lifeList ) {
 			if (i.getPosition().equals(p)) {
 				return true;
 			}
 		}
 		return false;
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public final boolean addLife(final ALife life) {
@@ -337,7 +343,7 @@ public abstract class AbstractEnvironmentMap implements EnvironmentMap {
 		// Check in bounds
 		if (life.getX() > getWidth() || life.getX() < 0
 				|| life.getY() > getHeight() || life.getY() < 0) {
-
+			
 			logger.trace("life out of map");
 			return false;
 		}
@@ -349,18 +355,18 @@ public abstract class AbstractEnvironmentMap implements EnvironmentMap {
 		placeLife(life);
 		return true;
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public final boolean removeLife(final ALife life) {
 		return lifeList.remove(life);
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public final boolean removeLife(final Point p) {
 		ALife tmp = null;
-		for (final ALife i : lifeList) {
+		for ( final ALife i : lifeList ) {
 			if (i.getPosition().equals(p)) {
 				tmp = i;
 			}
@@ -371,35 +377,35 @@ public abstract class AbstractEnvironmentMap implements EnvironmentMap {
 			return lifeList.remove(tmp);
 		}
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public final Iterator<ALife> getLifeIterator() {
 		return lifeList.iterator();
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public final Iterator<MapObject> getObstacleIterator() {
 		return obstacleList.hashMap.values().iterator();
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public final int getTimeFrameNo() {
 		return timeFrameNo;
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public final void incrementTimeFrame() {
 		timeFrameNo++;
-		for (final MapObject mo : lifeList) {
+		for ( final MapObject mo : lifeList ) {
 			((ALife) mo).doMove();
-
+			
 		}
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public final List<Paintable> getLifePaintables() {
@@ -407,7 +413,7 @@ public abstract class AbstractEnvironmentMap implements EnvironmentMap {
 		// TODO finish
 		return paints;
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public final List<Paintable> getObstaclePaintables() {
@@ -415,7 +421,7 @@ public abstract class AbstractEnvironmentMap implements EnvironmentMap {
 		// TODO finish
 		return paints;
 	}
-
+	
 	/** {@inheritDoc} */
 	@Override
 	public final List<Paintable> getResourcePaintables() {

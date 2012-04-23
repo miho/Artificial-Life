@@ -1,6 +1,9 @@
 package net.cammann.tom.fyp.core;
 
+import javax.swing.JOptionPane;
+
 import net.cammann.tom.fyp.basicLife.BasicLifeFactory;
+import net.cammann.tom.fyp.gp.GeneticProgramRunner;
 import net.cammann.tom.fyp.gui.BestLifeLauncher;
 import net.cammann.tom.fyp.gui.LoggingFrame;
 import net.cammann.tom.fyp.gui.SimulationFrame;
@@ -8,7 +11,6 @@ import net.cammann.tom.fyp.stats.StatsPackage;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
-import org.jgap.IChromosome;
 
 /**
  * Main class to launch GA algorithm.
@@ -16,20 +18,20 @@ import org.jgap.IChromosome;
  * @author TC
  * @version $Id: $
  */
-public class SimulationContext {
-
+public final class SimulationLauncher {
+	
 	/**
 	 * 
 	 */
-	private SimulationContext() {
-
+	private SimulationLauncher() {
+		
 	}
-
+	
 	/**
 	 * Logger.
 	 */
-	private static Logger logger = Logger.getLogger(SimulationContext.class);
-
+	private static Logger logger = Logger.getLogger(SimulationLauncher.class);
+	
 	/**
 	 * Starts genetic algorithm for creating ALife.
 	 * 
@@ -39,81 +41,103 @@ public class SimulationContext {
 	 *            do nothing
 	 */
 	public static void main(final String[] args) {
-
+		
 		PropertyConfigurator.configure("src/main/resources/log4j.properties");
-
+		
+		EvolutionModule evolutionModule = null;
+		final EvolutionFactory factory = new BasicLifeFactory();
+		// final EvolutionModule g = new GeneticAlgorithmRunner(lf);
+		// final GeneticProgramRunner gpf = new GeneticProgramRunner(factory);
+		
+		final Object[] options = { "Genetic Programming", "Genetic Algorithm",
+				"Cancel" };
+		final int n = JOptionPane.showOptionDialog(null,
+				"What algorithm would you like to use?", "Launch Options",
+				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,
+				null, options, options[2]);
+		
+		if (n == 0) {
+			logger.info("Genetic Programming selected.");
+			evolutionModule = new GeneticProgramRunner(factory);
+		} else if (n == 1) {
+			logger.info("Genetic Alogirthm selected.");
+			evolutionModule = new GeneticAlgorithmRunner(factory);
+		} else {
+			
+			logger.info("Simulation Cancelled");
+			
+			System.exit(1);
+		}
+		
 		logger.info("Starting gene lab");
-
+		
 		final StatsPackage stats = new StatsPackage();
-
+		
 		final EvolutionFactory lf = new BasicLifeFactory();
-
-		final GeneLab g = new GeneLab(lf);
-
-		LoggingFrame.getInstance().setVisible("simCOn", true);
-
-		g.setEvolutions(10);
+		
+		final BestLifeLauncher bll = new BestLifeLauncher(evolutionModule, lf);
+		
+		LoggingFrame.getInstance().setVisible("simCon", true);
+		
+		evolutionModule.setMaxGenerations(10);
 		// g.setPopulationSize(100);
-		final BestLifeLauncher bll = new BestLifeLauncher(g, lf);
+		
 		bll.createAndShowGui();
 		stats.startFitnessGraph();
 		// stats.startFreqFitnessGraph();
-		g.addEvolutionCycleListener(new EvolutionCycleListener() {
-
+		evolutionModule.addEvolutionCycleListener(new EvolutionCycleListener() {
+			
 			@Override
 			public void startCycle(final EvolutionCycleEvent e) {
 				logger.info("Generation: " + e.getGenerationNum());
-				logger.info("Highest fitness: "
-						+ e.getPopulation().determineFittestChromosome()
-								.getFitnessValue());
-
+				logger.info("Highest fitness: " + e.getHighestFitnessInPop());
+				
 			}
-
+			
 			@Override
 			public void endCycle(final EvolutionCycleEvent e) {
 				logger.info("Finished Generation: " + e.getGenerationNum());
-				stats.add(e.getPopulation(), e.getGenerationNum());
-
+				stats.add(e);
 			}
 		});
-
-		g.start();
+		
+		evolutionModule.start();
 		// stats.showFreqFitnessGraph();
-
+		
 		stats.showGenerationGeneTable();
-
+		
 		logger.trace("Finished gene lab");
-
-		createAndShowFromFactory(lf, g.getBestSolutionSoFar());
-
+		
+		createAndShowFromFactory(lf, evolutionModule.getFittestLife());
+		
 	}
-
+	
 	/**
 	 * Create and show gui with chromosome.
 	 * 
 	 * @param factory
 	 *            creates map and life
-	 * @param chromo
+	 * @param life_
 	 *            used to create life
 	 */
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings(value = "deprecation")
 	public static void createAndShowFromFactory(final EvolutionFactory factory,
-			final IChromosome chromo) {
-
+			final ALife life_) {
+		
 		final EnvironmentMap map = factory.createMap();
-		ALife life = factory.createLife(chromo, map);
+		final ALife life = factory.createLife(life_, map);
 		logger.info("Life Pos: " + life.getPosition());
 		map.addLife(life);
-
+		
 		final SimulationFrame sf = new SimulationFrame(map);
-
+		
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
-
+			
 			@Override
 			public void run() {
 				SimulationFrame.createAndShowGUI(sf);
 			}
 		});
-
+		
 	}
 }

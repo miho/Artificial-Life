@@ -6,8 +6,10 @@ import org.jgap.gp.IGPProgram;
 import org.jgap.gp.impl.GPPopulation;
 
 /**
- * <p>EvolutionCycleEvent class.</p>
- *
+ * <p>
+ * EvolutionCycleEvent class.
+ * </p>
+ * 
  * @author tc
  * @version $Id: $
  */
@@ -19,22 +21,30 @@ public class EvolutionCycleEvent {
 	private boolean isGeneticProgram = true;
 	
 	/**
-	 * <p>Constructor for EvolutionCycleEvent.</p>
-	 *
-	 * @param population a {@link org.jgap.Population} object.
-	 * @param genNum a int.
+	 * <p>
+	 * Constructor for EvolutionCycleEvent.
+	 * </p>
+	 * 
+	 * @param population
+	 *            a {@link org.jgap.Population} object.
+	 * @param genNum
+	 *            a int.
 	 */
 	public EvolutionCycleEvent(final Population population, final int genNum) {
 		this.population = population;
-		
+		isGeneticProgram = false;
 		this.genNum = genNum;
 	}
 	
 	/**
-	 * <p>Constructor for EvolutionCycleEvent.</p>
-	 *
-	 * @param population a {@link org.jgap.gp.impl.GPPopulation} object.
-	 * @param genNum a int.
+	 * <p>
+	 * Constructor for EvolutionCycleEvent.
+	 * </p>
+	 * 
+	 * @param population
+	 *            a {@link org.jgap.gp.impl.GPPopulation} object.
+	 * @param genNum
+	 *            a int.
 	 */
 	public EvolutionCycleEvent(final GPPopulation population, final int genNum) {
 		this.gpPopulation = population;
@@ -43,8 +53,10 @@ public class EvolutionCycleEvent {
 	}
 	
 	/**
-	 * <p>getFittestChromosome.</p>
-	 *
+	 * <p>
+	 * getFittestChromosome.
+	 * </p>
+	 * 
 	 * @return a {@link org.jgap.IChromosome} object.
 	 */
 	public IChromosome getFittestChromosome() {
@@ -52,8 +64,10 @@ public class EvolutionCycleEvent {
 	}
 	
 	/**
-	 * <p>getFittestProgram.</p>
-	 *
+	 * <p>
+	 * getFittestProgram.
+	 * </p>
+	 * 
 	 * @return a {@link org.jgap.gp.IGPProgram} object.
 	 */
 	public IGPProgram getFittestProgram() {
@@ -62,8 +76,10 @@ public class EvolutionCycleEvent {
 	}
 	
 	/**
-	 * <p>isGeneticProgram.</p>
-	 *
+	 * <p>
+	 * isGeneticProgram.
+	 * </p>
+	 * 
 	 * @return a boolean.
 	 */
 	public boolean isGeneticProgram() {
@@ -71,8 +87,10 @@ public class EvolutionCycleEvent {
 	}
 	
 	/**
-	 * <p>isGeneticAlgorithm.</p>
-	 *
+	 * <p>
+	 * isGeneticAlgorithm.
+	 * </p>
+	 * 
 	 * @return a boolean.
 	 */
 	public boolean isGeneticAlgorithm() {
@@ -80,8 +98,10 @@ public class EvolutionCycleEvent {
 	}
 	
 	/**
-	 * <p>getGPPopulation.</p>
-	 *
+	 * <p>
+	 * getGPPopulation.
+	 * </p>
+	 * 
 	 * @return a {@link org.jgap.gp.impl.GPPopulation} object.
 	 */
 	public GPPopulation getGPPopulation() {
@@ -89,8 +109,10 @@ public class EvolutionCycleEvent {
 	}
 	
 	/**
-	 * <p>Getter for the field <code>population</code>.</p>
-	 *
+	 * <p>
+	 * Getter for the field <code>population</code>.
+	 * </p>
+	 * 
 	 * @return a {@link org.jgap.Population} object.
 	 */
 	public Population getPopulation() {
@@ -98,11 +120,21 @@ public class EvolutionCycleEvent {
 	}
 	
 	/**
-	 * <p>getGenerationNum.</p>
-	 *
+	 * <p>
+	 * getGenerationNum.
+	 * </p>
+	 * 
 	 * @return a int.
 	 */
 	public int getGenerationNum() {
 		return genNum;
+	}
+	
+	public double getHighestFitnessInPop() {
+		if (isGeneticProgram) {
+			return gpPopulation.determineFittestProgram().getFitnessValue();
+		} else {
+			return population.determineFittestChromosome().getFitnessValue();
+		}
 	}
 }
