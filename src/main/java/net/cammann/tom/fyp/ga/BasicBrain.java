@@ -84,6 +84,9 @@ public final class BasicBrain extends Brain {
 		
 		for ( int i = 1 ; i < lifeRange + 1 ; i++ ) {
 			final Point p = life.getPositionAhead(i);
+			if (!life.getMap().validPosition(p)) {
+				return false;
+			}
 			if (life.getMap().hasLife(p)) {
 				logger.trace("Life at: " + p);
 				return true;
@@ -122,7 +125,9 @@ public final class BasicBrain extends Brain {
 		logger.trace("Checking for resources");
 		for ( int i = 1 ; i < foodRange + 1 ; i++ ) {
 			final Point p = life.getPositionAhead(i);
-			
+			if (!life.getMap().validPosition(p)) {
+				return false;
+			}
 			if (life.getMap().hasResource(p)) {
 				logger.trace("Resource at: " + p);
 				return true;

@@ -1,9 +1,14 @@
-package net.cammann.tom.fyp.core;
+package net.cammann.tom.fyp.ga;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import net.cammann.tom.fyp.ga.BasicLife;
+import net.cammann.tom.fyp.commands.LifeCommand;
+import net.cammann.tom.fyp.core.ALife;
+import net.cammann.tom.fyp.core.EvolutionCycleEvent;
+import net.cammann.tom.fyp.core.EvolutionCycleListener;
+import net.cammann.tom.fyp.core.EvolutionFactory;
+import net.cammann.tom.fyp.core.EvolutionModule;
 
 import org.apache.log4j.Logger;
 import org.jgap.Chromosome;
@@ -140,6 +145,13 @@ public final class GeneticAlgorithmRunner implements EvolutionModule {
 	private Chromosome getChromosome() {
 		
 		final int rangeOfCommands = factory.nullInstance().getCommandList().length - 1;
+		
+		logger.info("Functions available: ");
+		for ( final LifeCommand i : factory.nullInstance().getCommandList() ) {
+			logger.info("Gene: " + i.toString());
+		}
+		logger.info(factory.nullInstance().getCommandList().length
+				+ " function(s)");
 		
 		try {
 			final Gene[] genes = new Gene[29];

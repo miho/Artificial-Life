@@ -3,6 +3,7 @@ package net.cammann.tom.fyp.core;
 import javax.swing.JOptionPane;
 
 import net.cammann.tom.fyp.basicLife.BasicLifeFactory;
+import net.cammann.tom.fyp.ga.GeneticAlgorithmRunner;
 import net.cammann.tom.fyp.gp.GeneticProgramRunner;
 import net.cammann.tom.fyp.gui.BestLifeLauncher;
 import net.cammann.tom.fyp.gui.LoggingFrame;
