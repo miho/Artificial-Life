@@ -58,8 +58,12 @@ public abstract class SimpleFitnessFunction extends FitnessFunction {
 			final ALife life = factory.createLife(chromo, map);
 			lifeList.add(life);
 			map.placeLife(life);
-			if (!map.addLife(life)) {
-				logger.error("Failed to add life");
+			int cnt = 0;
+			while(!map.addLife(life)) {
+				map.placeLife(life);
+				cnt++;
+				if(cnt > 10)
+					logger.info("Failed to add life");
 			}
 			logger.trace("Start nrg: " + life.getEnergy());
 		}

@@ -51,7 +51,7 @@ public final class Consume extends CommandGene {
 	public boolean execute_boolean(final ProgramChromosome c, final int n,
 			final Object[] args) {
 		
-		return ((Commandable) args[0]).consume();
+		return ((ALife) args[0]).consume();
 	}
 	
 	/** {@inheritDoc} */
@@ -60,7 +60,7 @@ public final class Consume extends CommandGene {
 			final Object[] args) {
 		if (((Commandable) args[0]).consume()) {
 			// logger.info("Successful consume!!");
-			logger.trace("ALife energy: " + ((ALife) args[0]).getEnergy());
+//			logger.info("ALife energy: " + ((ALife) args[0]).getEnergy());
 			return 1;
 		} else {
 			return 0;

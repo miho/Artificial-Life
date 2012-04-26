@@ -83,17 +83,17 @@ public final class GeneticProgramRunner extends GPProblem implements
 	/**
 	 * Maximum Depth of initial gp tree.
 	 */
-	private final int maxInitDepth = 10;
+	private final int maxInitDepth = 4;
 	
 	/**
 	 * Population Size of run.
 	 */
-	private final int populationSize = 10000;
+	private int populationSize = 10000;
 	
 	/**
 	 * Maximum cross over depth of run.
 	 */
-	private final int maxCrossoverDepth = 10;
+	private final int maxCrossoverDepth = 6;
 	
 	/**
 	 * Initial program creation tries.
@@ -103,7 +103,7 @@ public final class GeneticProgramRunner extends GPProblem implements
 	/**
 	 * Number of generations to iterate through.
 	 */
-	private final int numGenerations = 500;
+	private int numGenerations = 500;
 	
 	/**
 	 * Verbose output?
@@ -113,7 +113,7 @@ public final class GeneticProgramRunner extends GPProblem implements
 	/**
 	 * Max number of nodes in gp tree.
 	 */
-	private final int maxNodes = 1000;
+	private final int maxNodes = 100;
 	
 	/**
 	 * Probabilty of using a function as node.
@@ -197,44 +197,6 @@ public final class GeneticProgramRunner extends GPProblem implements
 		this.factory = factory;
 	}
 	
-	/**
-	 * <p>
-	 * main.
-	 * </p>
-	 * 
-	 * @param args
-	 *            an array of {@link java.lang.String} objects.
-	 */
-	public static void main(final String[] args) {
-		
-		final EvolutionFactory factory = new BasicLifeFactory();
-		
-		final GeneticProgramRunner gpf = new GeneticProgramRunner(factory);
-		
-		final BestLifeLauncher launcherFrame = new BestLifeLauncher(gpf,
-				factory);
-		launcherFrame.createAndShowGui();
-		
-		final StatsPackage stats = new StatsPackage();
-		
-		gpf.addEvolutionCycleListener(new EvolutionCycleListener() {
-			
-			@Override
-			public void startCycle(final EvolutionCycleEvent e) {
-				
-			}
-			
-			@Override
-			public void endCycle(final EvolutionCycleEvent e) {
-				stats.add(e.getGPPopulation(), e.getGenerationNum());
-				
-			}
-		});
-		
-		stats.startFitnessGraph();
-		
-		gpf.start();
-	}
 	
 	/**
 	 * {@inheritDoc}
@@ -262,27 +224,27 @@ public final class GeneticProgramRunner extends GPProblem implements
 				new TurnLeft(conf, CommandGene.DoubleClass),
 				new TurnRight(conf, CommandGene.DoubleClass),
 				new Add(conf, CommandGene.DoubleClass),
-				new Subtract(conf, CommandGene.DoubleClass),
-				new Multiply(conf, CommandGene.DoubleClass),
-				new OnResource(conf, CommandGene.DoubleClass),
+//				new Subtract(conf, CommandGene.DoubleClass),
+//				new Multiply(conf, CommandGene.DoubleClass),
+//				new OnResource(conf, CommandGene.DoubleClass),
 				// new If(conf, CommandGene.DoubleClass),
 				// new IfElse(conf, CommandGene.DoubleClass),
 				// new LesserThan(conf, CommandGene.DoubleClass),
 				// new GreaterThan(conf, CommandGene.DoubleClass),
-				new Terminal(conf, CommandGene.DoubleClass, 3, 3),
+//				new Terminal(conf, CommandGene.DoubleClass, 3, 3),
 				new Terminal(conf, CommandGene.DoubleClass, 1, 1),
 				new Terminal(conf, CommandGene.DoubleClass, 0, 0),
-				new Terminal(conf, CommandGene.DoubleClass, 2, 2),
-				new Terminal(conf, CommandGene.DoubleClass, 5, 5),
+//				new Terminal(conf, CommandGene.DoubleClass, 2, 2),
+//				new Terminal(conf, CommandGene.DoubleClass, 5, 5),
 				new FoodAhead(conf, CommandGene.DoubleClass),
 				new WallAhead(conf, CommandGene.DoubleClass),
-				new Orientation(conf, CommandGene.DoubleClass),
+//				new Orientation(conf, CommandGene.DoubleClass),
 				// new MoveTowards(conf, CommandGene.DoubleClass),
-				new Equals(conf, CommandGene.DoubleClass),
-				new SmellResource(conf, CommandGene.DoubleClass),
+//				new Equals(conf, CommandGene.DoubleClass),
+//				new SmellResource(conf, CommandGene.DoubleClass),
 				// new SubProgram(conf, 5, CommandGene.DoubleClass),
 				// new SubProgram(conf, 4, CommandGene.DoubleClass),
-				// new SubProgram(conf, 3, CommandGene.DoubleClass),
+//				 new SubProgram(conf, 3, CommandGene.DoubleClass),
 				new SubProgram(conf, 2, CommandGene.DoubleClass), };
 		// Create the node sets
 		final int commandLen = commands.length;
@@ -322,11 +284,7 @@ public final class GeneticProgramRunner extends GPProblem implements
 	public void initConfig(final GPConfiguration config)
 			throws InvalidConfigurationException {
 		
-		// We use a delta fitness evaluator because we compute a defect rate,
-		// not
-		// a point score!
-		// -------------------------------------------------------
-		// config.setGPFitnessEvaluator(new DeltaGPFitnessEvaluator());
+		
 		config.setFitnessFunction(factory.getGPFitnessFunction());
 		config.setMaxInitDepth(maxInitDepth);
 		config.setPopulationSize(populationSize);
@@ -420,18 +378,21 @@ public final class GeneticProgramRunner extends GPProblem implements
 			}
 			
 			gp.evolve(); // evolve one generation
-			if (gen % 20 == 0) {
-				logger.info("Generation: " + gen);
-			}
+			
 			gp.calcFitness();
 			pop = gp.getGPPopulation();
 			final IGPProgram thisFittest = pop.determineFittestProgram();
-			thisFittest.setApplicationData(("gen" + gen));
+//			thisFittest.setApplicationData(("gen" + gen));
 			final ProgramChromosome chrom = thisFittest.getChromosome(0);
 			final String program = chrom.toStringNorm(0);
 			final double fitness = thisFittest.getFitnessValue();
+			if(fittest == null){
+				fittest = thisFittest;
+			}
 			
-			if (bestFit < 0.0d || fitness < bestFit) {
+			if (fitness > fittest.getFitnessValue()) {
+				myOutputSolution(fittest, numGenerations);
+				myOutputSolution(fittest, numGenerations);
 				bestGen = gen;
 				myOutputSolution(thisFittest, gen);
 				bestFit = fitness;
@@ -564,13 +525,13 @@ public final class GeneticProgramRunner extends GPProblem implements
 	
 	@Override
 	public void setMaxGenerations(final int i) {
-		// TODO Auto-generated method stub
+		numGenerations = i;
 		
 	}
 	
 	@Override
 	public void setPopulationSize(final int i) {
-		// TODO Auto-generated method stub
+		populationSize = i;
 		
 	}
 }

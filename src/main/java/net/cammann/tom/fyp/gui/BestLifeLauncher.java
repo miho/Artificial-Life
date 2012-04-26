@@ -75,7 +75,7 @@ public class BestLifeLauncher extends JFrame {
 		
 		setContentPane(jp);
 		
-		setSize(200, 120);
+		setSize(200, 100);
 		setLocationByPlatform(true);
 		
 	}

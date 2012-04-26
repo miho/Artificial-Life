@@ -42,6 +42,7 @@ public class BasicMap extends AbstractEnvironmentMap {
 		super(width, height);
 		this.numObstacles = numObstacles;
 		this.numResource = numResource;
+	
 		resetMap();
 	}
 

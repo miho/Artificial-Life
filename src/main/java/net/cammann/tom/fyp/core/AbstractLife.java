@@ -78,12 +78,12 @@ public abstract class AbstractLife extends AbstractMapObject implements ALife {
 	/**
 	 * Amount to decrease energy on move forward.
 	 */
-	private static final int ENERGY_LOSS_ON_MOVE = 0;
+	private static final int ENERGY_LOSS_ON_MOVE = 3;
 	
 	/**
 	 * Amount of enery got decrease on consumpiton failure on a resource.
 	 */
-	private static final int ENERGY_LOSS_ON_MOVE_FAIL = 5;
+	private static final int ENERGY_LOSS_ON_MOVE_FAIL = 8;
 	
 	/**
 	 * Copy constructor.
@@ -207,6 +207,7 @@ public abstract class AbstractLife extends AbstractMapObject implements ALife {
 		setEnergy(getStartEnergy());
 		setOrientation(new Random().nextInt(ORIENTATION.values().length));
 		moveMemory.clear();
+		moveCount = 0;
 		
 	}
 	
@@ -332,7 +333,9 @@ public abstract class AbstractLife extends AbstractMapObject implements ALife {
 	/** {@inheritDoc} */
 	@Override
 	public final void moveForward() {
-		
+		if(energy <= 0){
+			return;
+		}
 		moveCount++;
 		logger.trace("Move forward");
 		logger.trace("Orientation: " + orientation.toString());

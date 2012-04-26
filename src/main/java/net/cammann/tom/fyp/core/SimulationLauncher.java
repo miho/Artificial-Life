@@ -47,9 +47,8 @@ public final class SimulationLauncher {
 		
 		EvolutionModule evolutionModule = null;
 		final EvolutionFactory factory = new BasicLifeFactory();
-		// final EvolutionModule g = new GeneticAlgorithmRunner(lf);
-		// final GeneticProgramRunner gpf = new GeneticProgramRunner(factory);
 		
+				
 		final Object[] options = { "Genetic Programming", "Genetic Algorithm",
 				"Cancel" };
 		final int n = JOptionPane.showOptionDialog(null,
@@ -79,8 +78,11 @@ public final class SimulationLauncher {
 		final BestLifeLauncher bll = new BestLifeLauncher(evolutionModule, lf);
 		
 		LoggingFrame.getInstance().setVisible("simCon", true);
-		
+		factory.setNumOfResources(200);
+		factory.setNumOfObstacles(40);
 		evolutionModule.setMaxGenerations(60);
+		evolutionModule.setPopulationSize(1000);
+		logger.info("Generations to run: "+evolutionModule.getNumGenerations());
 		// g.setPopulationSize(100);
 		
 		bll.createAndShowGui();
@@ -104,8 +106,8 @@ public final class SimulationLauncher {
 		
 		evolutionModule.start();
 		// stats.showFreqFitnessGraph();
-		
-		stats.showGenerationGeneTable();
+		if( n == 1)
+			stats.showGenerationGeneTable();
 		
 		logger.trace("Finished gene lab");
 		

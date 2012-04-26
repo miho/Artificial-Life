@@ -32,7 +32,7 @@ public final class ALifeGP extends AbstractLife {
 	/**
 	 * Energy to init life with.
 	 */
-	private static final int START_ENERGY = 100;
+	private static final int START_ENERGY = 400;
 	
 	/**
 	 * Length of memory.
@@ -86,10 +86,10 @@ public final class ALifeGP extends AbstractLife {
 					return 0;
 				}
 				final Object[] o = { life };
+			
 				final double x = gp.execute_double(0, o);
-				
-				moveCount += 4;
-				energy -= 0;
+//				life.moveForward();
+				energy -= 4;
 				return 1;
 			}
 		});

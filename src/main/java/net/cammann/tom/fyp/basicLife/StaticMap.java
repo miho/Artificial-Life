@@ -90,4 +90,6 @@ public final class StaticMap extends AbstractEnvironmentMap {
 		// ssss33saasd
 		
 	}
+
+	
 }

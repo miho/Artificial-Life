@@ -93,6 +93,7 @@ public final class GeneticAlgorithmRunner implements EvolutionModule {
 	private void initConfig() {
 		
 		try {
+			Configuration.reset();
 			conf = new DefaultConfiguration();
 			final Chromosome chromo = getChromosome();
 			conf.setSampleChromosome(chromo);
@@ -122,13 +123,10 @@ public final class GeneticAlgorithmRunner implements EvolutionModule {
 	@Override
 	public void setPopulationSize(final int popSize) {
 		this.popSize = popSize;
-		try {
-			conf.setPopulationSize(popSize);
-		} catch (final InvalidConfigurationException e) {
-			logger.fatal("Could not load configuration");
-			e.printStackTrace();
-			System.exit(1);
-		}
+	
+			initConfig();
+//			conf.setPopulationSize(popSize);
+	
 	}
 	
 	/** {@inheritDoc} */

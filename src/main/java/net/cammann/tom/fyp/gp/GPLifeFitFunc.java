@@ -70,7 +70,7 @@ public class GPLifeFitFunc extends GPFitnessFunction {
 			}
 		}
 		
-		for ( int i = 0 ; i < factory.getLenOfFitFuncRun() ; i++ ) {
+		for ( int i = 0 ; i < 100 ; i++ ) {
 			map.incrementTimeFrame();
 		}
 		
@@ -83,10 +83,11 @@ public class GPLifeFitFunc extends GPFitnessFunction {
 			final double f = computeRawFitness(life);
 			
 			if (f > 0) {
+//				logger.info("Fitness: "+f);
 				fitness += f;
 			} else {
 				// fitness += ((ABug) life).getEnergy();
-				fitness += 0;
+				fitness += life.getMoveCount() / 10;
 			}
 			
 		}

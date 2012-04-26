@@ -67,7 +67,7 @@ public class Obstacle extends AbstractMapObject {
 	 * @param g2 a {@link java.awt.Graphics2D} object.
 	 */
 	public void draw(final Graphics2D g2) {
-
+//		logger.info("Drawing..");
 		g2.drawImage(getObstacleImage(), getX(), getY(), null);
 
 	}

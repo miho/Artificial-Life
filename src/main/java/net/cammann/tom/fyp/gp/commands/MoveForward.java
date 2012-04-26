@@ -2,6 +2,7 @@ package net.cammann.tom.fyp.gp.commands;
 
 import net.cammann.tom.fyp.core.Commandable;
 
+import org.apache.log4j.Logger;
 import org.jgap.InvalidConfigurationException;
 import org.jgap.gp.CommandGene;
 import org.jgap.gp.impl.GPConfiguration;
@@ -15,6 +16,11 @@ import org.jgap.gp.impl.ProgramChromosome;
  */
 public final class MoveForward extends CommandGene {
 	
+	
+	/**
+	 * Logger.
+	 */
+	private static final Logger logger = Logger.getLogger(MoveForward.class);
 	/**
 	 * <p>Constructor for MoveForward.</p>
 	 *
@@ -41,8 +47,10 @@ public final class MoveForward extends CommandGene {
 		
 		final double x = c.execute_double(n, 0, args);
 		
+		
 		for ( int i = 0 ; i < x ; i++ ) {
 			life.moveForward();
+		
 		}
 	}
 	
@@ -52,9 +60,11 @@ public final class MoveForward extends CommandGene {
 			final Object[] args) {
 		final Commandable life = (Commandable) args[0];
 		final double x = c.execute_double(n, 0, args);
-		
+//		logger.info("From: "+life.getPosition());
 		for ( int i = 0 ; i < x ; i++ ) {
 			life.moveForward();
+//			logger.info("Moved: "+life.getPosition());
+			life.consume();
 		}
 		return 1;
 	}

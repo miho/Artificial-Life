@@ -7,6 +7,7 @@ import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.util.Iterator;
 import java.util.Random;
 
 import javax.swing.ButtonGroup;
@@ -30,6 +31,7 @@ import net.cammann.tom.fyp.utils.MapUtils;
 import net.cammann.tom.fyp.utils.VisibilityEvent;
 import net.cammann.tom.fyp.utils.VisibilityListener;
 
+import org.apache.commons.lang.math.Fraction;
 import org.apache.log4j.Logger;
 
 /**
@@ -81,7 +83,7 @@ public class SimulationFrame {
 	
 	private Timer timer = null;
 	private JPanel mapPanel = null;
-	private int simulationRate;
+	private int simulationRate = MED_SIMULATION_RATE;
 	
 	private final JFrame mainFrame;
 	
@@ -129,7 +131,8 @@ public class SimulationFrame {
 					
 				}
 				if (e.getKeyCode() == KeyEvent.VK_F) {
-					moveOnce();
+					moveOnce(); 
+					mainFrame.repaint();
 				}
 				if (e.getKeyCode() == KeyEvent.VK_S) {
 					stop();
@@ -335,10 +338,12 @@ public class SimulationFrame {
 		});
 		menu.add(addLifeItem);
 		
-		// TODO add back in
-		// for (final ALife i : sc.getLife()) {
-		// addLifeToMenu(i);
-		// }
+		
+		Iterator<ALife> it = map.getLifeIterator();
+		while(it.hasNext()){
+			
+			addLifeToMenu(it.next());
+		 }
 		
 		menu.add(cloneLife);
 		menu.add(removeLife);
@@ -373,14 +378,13 @@ public class SimulationFrame {
 				final int r = jfc.showOpenDialog(mainFrame);
 				if (r == JFileChooser.APPROVE_OPTION) {
 					final File file = jfc.getSelectedFile();
-					// TODO add back in
-					// sc.setMap(MapUtils.LoadMap(file));
+					
+					map.setMap(MapUtils.loadMap(file));
 				}
 			}
 		});
 		menu.add(importMap);
-		// final JMenuItem mapEdit = new JMenuItem("Edit Map");
-		// TODO implement this.
+
 		bar.add(menu);
 		
 		return bar;
@@ -390,8 +394,8 @@ public class SimulationFrame {
 	private void addLifeToMenu(final ALife life) {
 		
 		final int numItems = removeLife.getItemCount();
-		final JMenuItem cloneItem = new JMenuItem("Life " + numItems);
-		final JMenuItem removeItem = new JMenuItem("Life " + numItems);
+		final JMenuItem cloneItem = new JMenuItem("Life " + (numItems + 1 ));
+		final JMenuItem removeItem = new JMenuItem("Life " + (numItems + 1));
 		
 		cloneItem.addActionListener(new ActionListener() {
 			
@@ -404,8 +408,9 @@ public class SimulationFrame {
 				clone.setY(new Random().nextInt((map.getHeight() + 2)
 						/ AbstractEnvironmentMap.STEP_SIZE)
 						* AbstractEnvironmentMap.STEP_SIZE);
-				// map.addLife(clone);
-				// TODO ADD BACK IN
+				map.placeLife(clone);
+				map.addLife(clone);
+				mainFrame.repaint();
 				addLifeToMenu(clone);
 				if (!removeLife.isEnabled()) {
 					cloneLife.setEnabled(true);
@@ -419,8 +424,8 @@ public class SimulationFrame {
 			
 			@Override
 			public void actionPerformed(final ActionEvent e) {
-				// TODO add this back in
-				// sc.removeLife(life);
+				
+				map.removeLife(life);
 				cloneLife.remove(cloneItem);
 				removeLife.remove(removeItem);
 				

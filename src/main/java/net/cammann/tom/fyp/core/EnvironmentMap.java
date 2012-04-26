@@ -229,6 +229,8 @@ public interface EnvironmentMap {
 	
 	List<Paintable> getResourcePaintables();
 	
+	void setMap(EnvironmentMap map);
+	
 	void placeLife(final ALife life);
 	
 }
