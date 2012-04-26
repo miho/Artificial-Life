@@ -31,7 +31,7 @@ import org.jgap.impl.IntegerGene;
  * @since 31/01/2012
  */
 public final class GeneticAlgorithmRunner implements EvolutionModule {
-	
+
 	/**
 	 * Logger.
 	 */
@@ -61,14 +61,16 @@ public final class GeneticAlgorithmRunner implements EvolutionModule {
 	 * Population object.
 	 */
 	private Genotype population;
-	
+
+	private boolean paused = false;
+
 	/**
 	 * Used to keep evolution cycle listeners.
 	 * 
 	 * Will fire an event to the listeners when a generation begins or starts.
 	 */
 	private final List<EvolutionCycleListener> cycleListeners;
-	
+
 	/**
 	 * <p>
 	 * Constructor for GeneLab.
@@ -80,38 +82,38 @@ public final class GeneticAlgorithmRunner implements EvolutionModule {
 	public GeneticAlgorithmRunner(final EvolutionFactory factory) {
 		this.factory = factory;
 		popSize = 1000;
-		
+
 		generations = 60;
-		
+
 		cycleListeners = new ArrayList<EvolutionCycleListener>();
 		initConfig();
 	}
-	
+
 	/**
 	 * Sets the normal configuration for a GA run.
 	 */
 	private void initConfig() {
-		
+
 		try {
 			Configuration.reset();
 			conf = new DefaultConfiguration();
 			final Chromosome chromo = getChromosome();
 			conf.setSampleChromosome(chromo);
-			
+
 			final FitnessFunction ff = factory.getFitnessFunction();
-			
+
 			conf.setFitnessFunction(ff);
-			
+
 			conf.setPopulationSize(popSize);
-			
+
 			population = Genotype.randomInitialGenotype(conf);
-			
+
 		} catch (final InvalidConfigurationException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	/**
 	 * <p>
 	 * setPopulationSize.
@@ -123,68 +125,68 @@ public final class GeneticAlgorithmRunner implements EvolutionModule {
 	@Override
 	public void setPopulationSize(final int popSize) {
 		this.popSize = popSize;
-	
-			initConfig();
-//			conf.setPopulationSize(popSize);
-	
+
+		initConfig();
+		// conf.setPopulationSize(popSize);
+
 	}
-	
+
 	/** {@inheritDoc} */
 	@Override
 	public int getPopulationSize() {
 		return conf.getPopulationSize();
 	}
-	
+
 	/**
 	 * Sets up the genes for the population.
 	 * 
 	 * @return the Chromosome for the population
 	 */
 	private Chromosome getChromosome() {
-		
+
 		final int rangeOfCommands = factory.nullInstance().getCommandList().length - 1;
-		
+
 		logger.info("Functions available: ");
-		for ( final LifeCommand i : factory.nullInstance().getCommandList() ) {
+		for (final LifeCommand i : factory.nullInstance().getCommandList()) {
 			logger.info("Gene: " + i.toString());
 		}
 		logger.info(factory.nullInstance().getCommandList().length
 				+ " function(s)");
-		
+
 		try {
 			final Gene[] genes = new Gene[29];
-			
+
 			// START_ENERGY
 			genes[0] = new IntegerGene(conf, 0, 200);
 			// MEMORY_LENGTH
 			genes[1] = new IntegerGene(conf, 5, 15);
-			
+
 			genes[2] = new IntegerGene(conf, 0, rangeOfCommands);
-			
+
 			genes[3] = new IntegerGene(conf, 0, rangeOfCommands);
-			
+
 			genes[4] = new IntegerGene(conf, 0, rangeOfCommands);
-			
+
 			genes[5] = new IntegerGene(conf, 0, rangeOfCommands);
 			genes[6] = new IntegerGene(conf, 0, rangeOfCommands);
 			genes[7] = new IntegerGene(conf, 0, rangeOfCommands);
 			genes[8] = new IntegerGene(conf, 0, rangeOfCommands);
-			
+
 			genes[9] = new IntegerGene(conf, 0, rangeOfCommands);
-			
-			for ( int i = 10 ; i < (12 + 17) ; i++ ) {
+
+			for (int i = 10; i < (12 + 17); i++) {
 				genes[i] = new IntegerGene(conf, 0, rangeOfCommands);
 			}
-			
+
 			final Chromosome sampleChromosome = new Chromosome(conf, genes);
-			
+
 			return sampleChromosome;
 		} catch (final InvalidConfigurationException e) {
 			e.printStackTrace();
 		}
 		throw new IllegalStateException("Could not configure gene array");
 	}
-	
+
 	/**
 	 * <p>
 	 * getBestSolutionSoFar.
@@ -195,7 +197,7 @@ public final class GeneticAlgorithmRunner implements EvolutionModule {
 	public IChromosome getBestSolutionSoFar() {
 		return population.getFittestChromosome();
 	}
-	
+
 	/**
 	 * <p>
 	 * Setter for the field <code>evolutions</code>.
@@ -208,40 +210,53 @@ public final class GeneticAlgorithmRunner implements EvolutionModule {
 	public void setMaxGenerations(final int evolutions) {
 		this.generations = evolutions;
 	}
-	
+
 	/** {@inheritDoc} */
 	@Override
 	public void addEvolutionCycleListener(final EvolutionCycleListener ecl) {
 		cycleListeners.add(ecl);
-		
+
 	}
-	
+
 	/** {@inheritDoc} */
 	@Override
 	public void removeEvolutionCycleListener(final EvolutionCycleListener ecl) {
 		cycleListeners.remove(ecl);
 	}
-	
+
 	/** {@inheritDoc} */
 	@Override
 	public void start() {
 		genNum = 0;
-		for ( int i = 0 ; i < generations ; i++ ) {
-			for ( final EvolutionCycleListener e : cycleListeners ) {
+		for (int i = 0; i < generations; i++) {
+
+			if (paused == true) {
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				i--;
+				continue;
+
+			}
+
+			for (final EvolutionCycleListener e : cycleListeners) {
 				e.startCycle(new EvolutionCycleEvent(
 						population.getPopulation(), genNum));
 			}
-			
+
 			population.evolve();
 			genNum++;
-			for ( final EvolutionCycleListener e : cycleListeners ) {
+			for (final EvolutionCycleListener e : cycleListeners) {
 				e.endCycle(new EvolutionCycleEvent(population.getPopulation(),
 						genNum));
 			}
 		}
-		
+
 	}
-	
+
 	/** {@inheritDoc} */
 	@Override
 	public ALife getFittestLife() {
@@ -251,11 +266,20 @@ public final class GeneticAlgorithmRunner implements EvolutionModule {
 			return new BasicLife(getBestSolutionSoFar(), null);
 		}
 	}
-	
+
 	/** {@inheritDoc} */
 	@Override
 	public int getNumGenerations() {
 		return generations;
 	}
-	
+
+	@Override
+	public void startpause() {
+		if (paused == true) {
+			paused = false;
+			return;
+		}
+		paused = true;
+	}
+
 }

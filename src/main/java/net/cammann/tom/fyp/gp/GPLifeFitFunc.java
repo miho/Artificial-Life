@@ -20,14 +20,14 @@ import org.jgap.gp.IGPProgram;
  * @version $Id: $
  */
 public class GPLifeFitFunc extends GPFitnessFunction {
-	
+
 	/**
 	 * Logger.
 	 */
 	private final Logger logger = Logger.getLogger(GPLifeFitFunc.class);
-	
+
 	private final EvolutionFactory factory;
-	
+
 	/**
 	 * <p>
 	 * Constructor for GPLifeFitFunc.
@@ -39,7 +39,7 @@ public class GPLifeFitFunc extends GPFitnessFunction {
 	public GPLifeFitFunc(final EvolutionFactory factory) {
 		this.factory = factory;
 	}
-	
+
 	/**
 	 * <p>
 	 * run.
@@ -50,52 +50,58 @@ public class GPLifeFitFunc extends GPFitnessFunction {
 	 * @return a double.
 	 */
 	public double run(final IGPProgram gp) {
-		
+
 		double fitness = 0;
-		
+
 		final int num_clones = factory.getNumClones();
-		
+
 		// TODO add checks on num_runs and clones
-		
+
 		final EnvironmentMap map = factory.createMap();
 		final List<ALife> lifeList = new ArrayList<ALife>();
-		
-		for ( int j = 0 ; j < num_clones ; j++ ) {
-			
+
+		for (int j = 0; j < num_clones; j++) {
+
 			final ALife life = factory.createLife(gp, map);
 			lifeList.add(life);
+
+			int cnt = 0;
 			map.placeLife(life);
-			if (!map.addLife(life)) {
-				logger.error("Failed to add life at pos: " + life.getPosition());
+			while (!map.addLife(life)) {
+				map.placeLife(life);
+				cnt++;
+				if (cnt > 10) {
+					logger.error("Cannot place life");
+				}
 			}
 		}
-		
-		for ( int i = 0 ; i < 100 ; i++ ) {
+
+		for (int i = 0; i < 100; i++) {
 			map.incrementTimeFrame();
 		}
-		
+
 		logger.trace("Life NRG: " + map.getLifeIterator().next().getEnergy());
-		
+
 		logger.trace("Finished run: " + map.getTimeFrameNo());
-		
-		for ( final ALife life : lifeList ) {
-			
+
+		for (final ALife life : lifeList) {
+
 			final double f = computeRawFitness(life);
-			
+
 			if (f > 0) {
-//				logger.info("Fitness: "+f);
+				// logger.info("Fitness: "+f);
 				fitness += f;
 			} else {
 				// fitness += ((ABug) life).getEnergy();
 				fitness += life.getMoveCount() / 10;
 			}
-			
+
 		}
-		
+
 		return fitness / lifeList.size();
-		
+
 	}
-	
+
 	/**
 	 * {@inheritDoc}.
 	 * 
@@ -105,15 +111,15 @@ public class GPLifeFitFunc extends GPFitnessFunction {
 	protected double evaluate(final IGPProgram gp) {
 		// logger.info("Starting eval run");
 		double fitness = 0;
-		
+
 		final int num_runs = factory.getFitnessFunctionRuns();
-		for ( int i = 0 ; i < num_runs ; i++ ) {
+		for (int i = 0; i < num_runs; i++) {
 			fitness += run(gp);
-			
+
 		}
 		return fitness / num_runs;
 	}
-	
+
 	/**
 	 * Higher fitness equals fitter here.
 	 * 
@@ -124,5 +130,5 @@ public class GPLifeFitFunc extends GPFitnessFunction {
 	public double computeRawFitness(final ALife life) {
 		return (life.getEnergy());
 	}
-	
+
 }

@@ -118,13 +118,14 @@ public abstract class AbstractEnvironmentMap implements EnvironmentMap {
 
 		do {
 
-			life.setX(new Random().nextInt((getWidth() + 1) / STEP_SIZE)
+			life.setX(new Random().nextInt((getWidth()) / STEP_SIZE)
 					* STEP_SIZE);
-			life.setY(new Random().nextInt((getHeight() + 1) / STEP_SIZE)
+			life.setY(new Random().nextInt((getHeight()) / STEP_SIZE)
 					* STEP_SIZE);
-
+			// logger.info("New pos: " + life.getX() + " + " + life.getY());
+			// logger.info(life.getPosition());
 		} while (hasResource(life.getPosition())
-				&& this.validPosition(life.getPosition()));
+				|| !this.validPosition(life.getPosition()));
 		life.reset();
 	}
 
@@ -259,7 +260,7 @@ public abstract class AbstractEnvironmentMap implements EnvironmentMap {
 
 			resourceList = (MapObjectMap) _resourceList.get(map);
 			obstacleList = (MapObjectMap) _obstacleList.get(map);
-
+			logger.info("Imported Obstacle List: " + obstacleList.size());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

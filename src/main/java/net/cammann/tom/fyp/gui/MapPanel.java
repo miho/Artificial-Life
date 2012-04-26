@@ -96,7 +96,7 @@ public final class MapPanel extends JPanel {
 			MapObject i = iMap.next();
 			for (; iMap.hasNext(); i = iMap.next()) {
 				((Obstacle) i).draw(g2);
-				logger.info("adding obst");
+				// logger.info("adding obst");
 			}
 		}
 

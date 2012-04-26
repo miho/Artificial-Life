@@ -186,7 +186,7 @@ public final class MapUtils {
 			e.printStackTrace();
 			return null;
 		}
-
+		map.resetMap();
 		return map;
 	}
 }

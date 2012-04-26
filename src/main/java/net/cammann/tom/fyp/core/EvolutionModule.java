@@ -9,7 +9,7 @@ package net.cammann.tom.fyp.core;
  * @version $Id: $
  */
 public interface EvolutionModule {
-	
+
 	/**
 	 * <p>
 	 * getFittestLife.
@@ -18,7 +18,7 @@ public interface EvolutionModule {
 	 * @return a {@link net.cammann.tom.fyp.core.ALife} object.
 	 */
 	ALife getFittestLife();
-	
+
 	/**
 	 * <p>
 	 * addEvolutionCycleListener.
@@ -29,7 +29,7 @@ public interface EvolutionModule {
 	 *            object.
 	 */
 	void addEvolutionCycleListener(final EvolutionCycleListener ecl);
-	
+
 	/**
 	 * <p>
 	 * removeEvolutionCycleListener.
@@ -40,7 +40,7 @@ public interface EvolutionModule {
 	 *            object.
 	 */
 	void removeEvolutionCycleListener(final EvolutionCycleListener ecl);
-	
+
 	/**
 	 * <p>
 	 * start
@@ -49,7 +49,7 @@ public interface EvolutionModule {
 	 * Start the Evolutionary Computation.
 	 */
 	void start();
-	
+
 	/**
 	 * <p>
 	 * getPopulationSize.
@@ -59,7 +59,7 @@ public interface EvolutionModule {
 	 *         computation.
 	 */
 	int getPopulationSize();
-	
+
 	/**
 	 * <p>
 	 * getNumGenerations.
@@ -70,7 +70,7 @@ public interface EvolutionModule {
 	 * 
 	 */
 	int getNumGenerations();
-	
+
 	/**
 	 * <p>
 	 * setMaxGenerations.
@@ -83,7 +83,7 @@ public interface EvolutionModule {
 	 *            maxGenerations
 	 */
 	void setMaxGenerations(int i);
-	
+
 	/**
 	 * <p>
 	 * getPopulationSize.
@@ -96,5 +96,7 @@ public interface EvolutionModule {
 	 * 
 	 */
 	void setPopulationSize(int i);
-	
+
+	void startpause();
+
 }

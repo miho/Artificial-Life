@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JToolBar;
+import javax.swing.text.BadLocationException;
 
 import net.cammann.tom.fyp.utils.VisibilityEvent;
 import net.cammann.tom.fyp.utils.VisibilityListener;
@@ -218,7 +219,17 @@ public class LoggingFrame {
 	public void appendLine(final String line) {
 
 		if (loggingStrings.size() > 1500) {
+			try {
+				if (textArea.getDocument().getLength() > 500) {
+					textArea.getDocument().remove(0,
+							loggingStrings.get(0).length() + 1);
+				}
+			} catch (BadLocationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			loggingStrings.remove(0);
+
 		}
 
 		loggingStrings.add(line);
